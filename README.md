@@ -54,7 +54,7 @@ npm run dev
 3. เชื่อมต่อ repository `PatcharaV/strauss-dashboard-nic`
 4. ตรวจชื่อ service แล้วกด `Apply`
 
-Render จะติดตั้ง Python dependencies, build React และเปิด Dashboard ผ่าน URL
+Render จะติดตั้ง Python dependencies และเปิด React production bundle ผ่าน URL
 `https://strauss-dashboard-nic.onrender.com` หรือ URL ที่ Render กำหนดให้
 
 ข้อมูลใน `backend/data/products.json` เป็นข้อมูลตั้งต้นล่าสุด ส่วนปุ่ม
