@@ -68,6 +68,9 @@ function buildQuery(filters) {
   if (filters.categories.length) {
     params.set("categories", filters.categories.join(","));
   }
+  if (filters.subcategories.length) {
+    params.set("subcategories", filters.subcategories.join(","));
+  }
   if (filters.minPrice !== "") params.set("min_price", filters.minPrice);
   if (filters.maxPrice !== "") params.set("max_price", filters.maxPrice);
   if (filters.availability !== "all") {
@@ -231,6 +234,7 @@ function App() {
     brands: ["strauss"],
     audiences: [],
     categories: [],
+    subcategories: [],
     minPrice: "",
     maxPrice: "",
     availability: "all",
@@ -249,11 +253,16 @@ function App() {
   async function loadDashboard() {
     setLoading(true);
     try {
-      const brandQuery = filters.brands.length
-        ? `?brands=${encodeURIComponent(filters.brands.join(","))}`
-        : "";
+      const optionParams = new URLSearchParams();
+      if (filters.brands.length) {
+        optionParams.set("brands", filters.brands.join(","));
+      }
+      if (filters.categories.length) {
+        optionParams.set("categories", filters.categories.join(","));
+      }
+      const optionQuery = optionParams.toString();
       const [optionsResponse, dashboardResponse] = await Promise.all([
-        fetch(`/api/options${brandQuery}`),
+        fetch(`/api/options${optionQuery ? `?${optionQuery}` : ""}`),
         fetch(`/api/dashboard${query ? `?${query}` : ""}`),
       ]);
       if (!optionsResponse.ok || !dashboardResponse.ok) {
@@ -294,6 +303,7 @@ function App() {
       brands: filters.brands,
       audiences: [],
       categories: [],
+      subcategories: [],
       minPrice: "",
       maxPrice: "",
       availability: "all",
@@ -308,6 +318,7 @@ function App() {
       brands: [brand],
       audiences: [],
       categories: [],
+      subcategories: [],
     });
   }
 
@@ -317,6 +328,7 @@ function App() {
       categories: filters.categories.includes(category)
         ? filters.categories.filter((item) => item !== category)
         : [...filters.categories, category],
+      subcategories: [],
     });
   }
 
@@ -341,6 +353,7 @@ function App() {
       .map((item) => item.label),
     ...selectedAudienceLabels,
     ...filters.categories,
+    ...filters.subcategories,
     filters.availability === "available" ? "Available only" : null,
     filters.availability === "unavailable" ? "Unavailable only" : null,
     filters.topSeller === "yes" ? "Top seller only" : null,
@@ -472,6 +485,7 @@ function App() {
                     ...filters,
                     categories:
                       event.target.value === "all" ? [] : [event.target.value],
+                    subcategories: [],
                   })
                 }
               >
@@ -479,6 +493,32 @@ function App() {
                 {productCategories.map((category) => (
                   <option key={category} value={category}>
                     {category}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              <span className="filter-title">Sub category</span>
+              <select
+                value={
+                  filters.subcategories.length === 1
+                    ? filters.subcategories[0]
+                    : "all"
+                }
+                onChange={(event) =>
+                  setFilters({
+                    ...filters,
+                    subcategories:
+                      event.target.value === "all" ? [] : [event.target.value],
+                  })
+                }
+                disabled={!options.subcategories.length}
+              >
+                <option value="all">All sub categories</option>
+                {options.subcategories.map((subcategory) => (
+                  <option key={subcategory} value={subcategory}>
+                    {subcategory}
                   </option>
                 ))}
               </select>
@@ -769,8 +809,8 @@ function App() {
                   <thead>
                     <tr>
                       <th>Product</th>
-                      <th>Brand</th>
                       <th>Category</th>
+                      <th>Sub category</th>
                       <th>Collection</th>
                       <th>Color</th>
                       <th>Material</th>
@@ -788,21 +828,6 @@ function App() {
                           </a>
                         </td>
                         <td>
-                          <button
-                            className="table-filter-button"
-                            type="button"
-                            onClick={() =>
-                              setFilters({
-                                ...filters,
-                                brands: [product.brand],
-                                categories: [],
-                              })
-                            }
-                          >
-                            {product.brand_label}
-                          </button>
-                        </td>
-                        <td>
                           {(product.categories || [product.category]).map(
                             (category, index) => (
                               <span key={category}>
@@ -817,6 +842,27 @@ function App() {
                               </span>
                             ),
                           )}
+                        </td>
+                        <td>
+                          {product.subcategories?.length
+                            ? product.subcategories.map((subcategory, index) => (
+                                <span key={subcategory}>
+                                  {index > 0 && ", "}
+                                  <button
+                                    className="table-filter-button"
+                                    type="button"
+                                    onClick={() =>
+                                      setFilters({
+                                        ...filters,
+                                        subcategories: [subcategory],
+                                      })
+                                    }
+                                  >
+                                    {subcategory}
+                                  </button>
+                                </span>
+                              ))
+                            : "Not specified"}
                         </td>
                         <td>{product.audience_labels.join(", ")}</td>
                         <td className="color-cell">

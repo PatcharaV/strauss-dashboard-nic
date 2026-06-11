@@ -60,11 +60,15 @@ async def health() -> dict[str, Any]:
 
 
 @app.get("/api/options")
-async def options(brands: str | None = None) -> dict[str, Any]:
+async def options(
+    brands: str | None = None,
+    categories: str | None = None,
+) -> dict[str, Any]:
     data = await get_data()
     products = filter_products(
         data["products"],
         brands=normalize_csv(brands),
+        categories=normalize_csv(categories),
     )
     options = build_options(products)
     options["brands"] = build_options(data["products"])["brands"]
@@ -77,6 +81,7 @@ async def dashboard(
     brands: str | None = None,
     audiences: str | None = None,
     categories: str | None = None,
+    subcategories: str | None = None,
     min_price: float | None = Query(default=None, ge=0),
     max_price: float | None = Query(default=None, ge=0),
     availability: str | None = Query(default=None, pattern="^(available|unavailable)$"),
@@ -93,6 +98,7 @@ async def dashboard(
         normalize_csv(brands),
         normalize_csv(audiences),
         normalize_csv(categories),
+        normalize_csv(subcategories),
         min_price,
         max_price,
         availability,
@@ -108,6 +114,7 @@ async def products(
     brands: str | None = None,
     audiences: str | None = None,
     categories: str | None = None,
+    subcategories: str | None = None,
     min_price: float | None = Query(default=None, ge=0),
     max_price: float | None = Query(default=None, ge=0),
     availability: str | None = Query(default=None, pattern="^(available|unavailable)$"),
@@ -122,6 +129,7 @@ async def products(
         normalize_csv(brands),
         normalize_csv(audiences),
         normalize_csv(categories),
+        normalize_csv(subcategories),
         min_price,
         max_price,
         availability,

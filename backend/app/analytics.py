@@ -8,6 +8,7 @@ def filter_products(
     brands: list[str] | None = None,
     audiences: list[str] | None = None,
     categories: list[str] | None = None,
+    subcategories: list[str] | None = None,
     min_price: float | None = None,
     max_price: float | None = None,
     availability: str | None = None,
@@ -17,6 +18,7 @@ def filter_products(
     selected_brands = set(brands or [])
     selected_audiences = set(audiences or [])
     selected_categories = set(categories or [])
+    selected_subcategories = set(subcategories or [])
     search_term = (search or "").strip().lower()
 
     def matches(product: dict[str, Any]) -> bool:
@@ -29,6 +31,7 @@ def filter_products(
                         product.get("categories")
                         or [str(product.get("category", ""))]
                     ),
+                    " ".join(product.get("subcategories", [])),
                     str(product.get("material", "")),
                     str(product.get("color", "")),
                     " ".join(product.get("audience_labels", [])),
@@ -47,6 +50,10 @@ def filter_products(
             or [product.get("category", "Uncategorized")]
         )
         if selected_categories and not (selected_categories & product_categories):
+            return False
+        if selected_subcategories and not (
+            selected_subcategories & set(product.get("subcategories", []))
+        ):
             return False
         price = float(product.get("price_min", 0))
         if min_price is not None and price < min_price:
@@ -187,6 +194,13 @@ def build_options(products: list[dict[str, Any]]) -> dict[str, Any]:
                     product.get("categories")
                     or [product.get("category", "Uncategorized")]
                 )
+            }
+        ),
+        "subcategories": sorted(
+            {
+                subcategory
+                for product in products
+                for subcategory in product.get("subcategories", [])
             }
         ),
         "price": {

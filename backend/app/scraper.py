@@ -54,6 +54,19 @@ CATEGORY_COLLECTIONS = {
     "Belts": (("belts", "gear-accessories"),),
     "Glasses": (("glasses", "gear-accessories"),),
 }
+SUBCATEGORY_COLLECTIONS = {
+    "T-Shirts": (
+        ("t-shirts", "men"),
+        ("women-t-shirts", "women"),
+    ),
+    "Polos": (("polos", "men"),),
+    "Long Sleeves": (
+        ("long-sleeves", "men"),
+        ("women-long-sleeves", "women"),
+    ),
+    "Work Shirts": (("work-shirts", "men"),),
+    "High-Vis": (("high-vis-shirts", "men"),),
+}
 
 def _plain_text(value: str | None) -> str:
     if not value:
@@ -263,6 +276,19 @@ async def _fetch_category_memberships(
     return memberships, category_cards, category_products
 
 
+async def _fetch_subcategory_memberships(
+    client: httpx.AsyncClient,
+) -> dict[str, set[str]]:
+    memberships: dict[str, set[str]] = {}
+    for subcategory, collections in SUBCATEGORY_COLLECTIONS.items():
+        for collection, _audience in collections:
+            cards = await _fetch_collection_cards(client, collection)
+            for identity in cards:
+                memberships.setdefault(identity, set()).add(subcategory)
+            await asyncio.sleep(REQUEST_DELAY_SECONDS)
+    return memberships
+
+
 async def _fetch_collection_products(
     client: httpx.AsyncClient, handle: str
 ) -> list[dict[str, Any]]:
@@ -401,6 +427,7 @@ async def scrape_strauss_products() -> dict[str, Any]:
             category_cards,
             category_products,
         ) = await _fetch_category_memberships(client)
+        subcategory_memberships = await _fetch_subcategory_memberships(client)
         raw_products.update(category_products)
         for identity, card in category_cards.items():
             if identity in listings:
@@ -428,13 +455,13 @@ async def scrape_strauss_products() -> dict[str, Any]:
         if not product:
             continue
         categories = sorted(category_memberships.get(identity, set()))
+        subcategories = sorted(subcategory_memberships.get(identity, set()))
         product_type = str(product.get("product_type") or "Other").strip()
         if not categories:
             categories = [
                 product_type if product_type not in mapped_categories else "Other"
             ]
-        products.append(
-            _normalize_product(
+        normalized = _normalize_product(
                 product,
                 card,
                 sorted(card["audiences"]),
@@ -442,7 +469,8 @@ async def scrape_strauss_products() -> dict[str, Any]:
                 identity in top_seller_ids,
                 _extract_material(str(product.get("body_html", ""))),
             )
-        )
+        normalized["subcategories"] = subcategories
+        products.append(normalized)
     products.sort(key=lambda item: (item["title"].lower(), item["color"].lower()))
     return {
         "source": BASE_URL,

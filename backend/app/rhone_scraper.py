@@ -82,6 +82,7 @@ def _normalize(
         "description": _plain_text(html),
         "category": category,
         "categories": [category],
+        "subcategories": [],
         "vendor": str(product.get("vendor") or "Rhone"),
         "audiences": audience_list,
         "audience_labels": [audience.title() for audience in audience_list],

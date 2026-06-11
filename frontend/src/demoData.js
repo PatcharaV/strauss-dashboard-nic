@@ -23,6 +23,13 @@ export const demoOptions = {
     "Gloves",
     "Overalls, Bib & Coveralls",
   ],
+  subcategories: [
+    "T-Shirts",
+    "Polos",
+    "Long Sleeves",
+    "Work Shirts",
+    "High-Vis",
+  ],
   price: { min: 0, max: 350 },
 };
 

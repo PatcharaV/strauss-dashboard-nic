@@ -92,6 +92,7 @@ def _normalize(
         "description": str(product.get("shortDescription", "")).strip(),
         "category": category_list[0],
         "categories": category_list,
+        "subcategories": [],
         "vendor": "Arc'teryx",
         "audiences": audience_list,
         "audience_labels": [audience.title() for audience in audience_list],
