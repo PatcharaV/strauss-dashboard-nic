@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from .analytics import build_dashboard, build_options, filter_products
-from .scraper import load_cache, normalize_csv, scrape_products
+from .catalog import load_cache, normalize_csv, scrape_products
 
 store: dict[str, Any] = {}
 scrape_lock = asyncio.Lock()
@@ -60,14 +60,21 @@ async def health() -> dict[str, Any]:
 
 
 @app.get("/api/options")
-async def options() -> dict[str, Any]:
+async def options(brands: str | None = None) -> dict[str, Any]:
     data = await get_data()
-    return build_options(data["products"])
+    products = filter_products(
+        data["products"],
+        brands=normalize_csv(brands),
+    )
+    options = build_options(products)
+    options["brands"] = build_options(data["products"])["brands"]
+    return options
 
 
 @app.get("/api/dashboard")
 async def dashboard(
     search: str | None = None,
+    brands: str | None = None,
     audiences: str | None = None,
     categories: str | None = None,
     min_price: float | None = Query(default=None, ge=0),
@@ -83,6 +90,7 @@ async def dashboard(
     products = filter_products(
         data["products"],
         search,
+        normalize_csv(brands),
         normalize_csv(audiences),
         normalize_csv(categories),
         min_price,
@@ -97,6 +105,7 @@ async def dashboard(
 @app.get("/api/products")
 async def products(
     search: str | None = None,
+    brands: str | None = None,
     audiences: str | None = None,
     categories: str | None = None,
     min_price: float | None = Query(default=None, ge=0),
@@ -110,6 +119,7 @@ async def products(
     rows = filter_products(
         data["products"],
         search,
+        normalize_csv(brands),
         normalize_csv(audiences),
         normalize_csv(categories),
         min_price,

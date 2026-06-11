@@ -59,6 +59,9 @@ function formatDate(value) {
 function buildQuery(filters) {
   const params = new URLSearchParams();
   if (filters.search.trim()) params.set("search", filters.search.trim());
+  if (filters.brands.length) {
+    params.set("brands", filters.brands.join(","));
+  }
   if (filters.audiences.length) {
     params.set("audiences", filters.audiences.join(","));
   }
@@ -216,6 +219,7 @@ function App() {
   const [dashboard, setDashboard] = useState(demoDashboard);
   const [filters, setFilters] = useState({
     search: "",
+    brands: [],
     audiences: [],
     categories: [],
     minPrice: "",
@@ -236,8 +240,11 @@ function App() {
   async function loadDashboard() {
     setLoading(true);
     try {
+      const brandQuery = filters.brands.length
+        ? `?brands=${encodeURIComponent(filters.brands.join(","))}`
+        : "";
       const [optionsResponse, dashboardResponse] = await Promise.all([
-        fetch("/api/options"),
+        fetch(`/api/options${brandQuery}`),
         fetch(`/api/dashboard${query ? `?${query}` : ""}`),
       ]);
       if (!optionsResponse.ok || !dashboardResponse.ok) {
@@ -245,7 +252,7 @@ function App() {
       }
       setOptions(await optionsResponse.json());
       setDashboard(await dashboardResponse.json());
-      setMessage("Live data from us.strauss.com");
+      setMessage("Live data from Strauss, Rhone and Arc'teryx");
     } catch {
       setMessage("Demo preview: start the Python API for live data");
     } finally {
@@ -275,6 +282,7 @@ function App() {
   function resetFilters() {
     setFilters({
       search: "",
+      brands: [],
       audiences: [],
       categories: [],
       minPrice: "",
@@ -310,6 +318,9 @@ function App() {
     .map((item) => item.label);
   const activeFilterLabels = [
     filters.search.trim() ? `Search: ${filters.search.trim()}` : null,
+    ...options.brands
+      .filter((item) => filters.brands.includes(item.value))
+      .map((item) => item.label),
     ...selectedAudienceLabels,
     ...filters.categories,
     filters.availability === "available" ? "Available only" : null,
@@ -326,12 +337,12 @@ function App() {
     <main>
       <header className="topbar">
         <div className="brand-block">
-          <div className="brand-mark">S</div>
+          <div className="brand-mark">M</div>
           <div>
             <p className="eyebrow">PUBLIC CATALOG ANALYTICS</p>
-            <h1>STRAUSS Product Dashboard</h1>
+            <h1>Multi-Brand Product Dashboard</h1>
             <p className="page-description">
-              Explore collections, categories, availability and product details.
+              Compare Strauss, Rhone and Arc&apos;teryx public product catalogs.
             </p>
           </div>
         </div>
@@ -400,6 +411,28 @@ function App() {
                   setFilters({ ...filters, search: event.target.value })
                 }
               />
+            </label>
+
+            <label>
+              <span className="filter-title">Brand / website</span>
+              <select
+                value={filters.brands.length === 1 ? filters.brands[0] : "all"}
+                onChange={(event) =>
+                  setFilters({
+                    ...filters,
+                    brands:
+                      event.target.value === "all" ? [] : [event.target.value],
+                    categories: [],
+                  })
+                }
+              >
+                <option value="all">All brands</option>
+                {options.brands.map((brand) => (
+                  <option key={brand.value} value={brand.value}>
+                    {brand.label}
+                  </option>
+                ))}
+              </select>
             </label>
 
             <label>
@@ -558,7 +591,7 @@ function App() {
           >
             <span>Product categories</span>
             <strong>{formatNumber.format(dashboard.summary.categories)}</strong>
-            <small>Based on Shopify product type</small>
+            <small>Across the current brand selection</small>
           </button>
           <button
             className="kpi-card interactive-card"
@@ -706,6 +739,7 @@ function App() {
                   <thead>
                     <tr>
                       <th>Product</th>
+                      <th>Brand</th>
                       <th>Category</th>
                       <th>Collection</th>
                       <th>Color</th>
@@ -722,6 +756,21 @@ function App() {
                           <a href={product.url} target="_blank" rel="noreferrer">
                             {product.title}
                           </a>
+                        </td>
+                        <td>
+                          <button
+                            className="table-filter-button"
+                            type="button"
+                            onClick={() =>
+                              setFilters({
+                                ...filters,
+                                brands: [product.brand],
+                                categories: [],
+                              })
+                            }
+                          >
+                            {product.brand_label}
+                          </button>
                         </td>
                         <td>
                           {(product.categories || [product.category]).map(
@@ -814,10 +863,18 @@ function App() {
 
       <footer>
         Public catalog analysis from{" "}
-        <a href={dashboard.source} target="_blank" rel="noreferrer">
-          us.strauss.com
+        <a href="https://us.strauss.com" target="_blank" rel="noreferrer">
+          Strauss
         </a>
-        . Product names and data belong to their respective owner.
+        ,{" "}
+        <a href="https://www.rhone.com" target="_blank" rel="noreferrer">
+          Rhone
+        </a>{" "}
+        and{" "}
+        <a href="https://arcteryx.com/us/en" target="_blank" rel="noreferrer">
+          Arc&apos;teryx
+        </a>
+        . Product names and data belong to their respective owners.
       </footer>
     </main>
   );

@@ -2,12 +2,10 @@ from collections import Counter
 from statistics import mean
 from typing import Any
 
-from .scraper import COLLECTIONS
-
-
 def filter_products(
     products: list[dict[str, Any]],
     search: str | None = None,
+    brands: list[str] | None = None,
     audiences: list[str] | None = None,
     categories: list[str] | None = None,
     min_price: float | None = None,
@@ -16,6 +14,7 @@ def filter_products(
     top_seller: str | None = None,
     material: str | None = None,
 ) -> list[dict[str, Any]]:
+    selected_brands = set(brands or [])
     selected_audiences = set(audiences or [])
     selected_categories = set(categories or [])
     search_term = (search or "").strip().lower()
@@ -25,6 +24,7 @@ def filter_products(
             searchable_text = " ".join(
                 [
                     str(product.get("title", "")),
+                    str(product.get("brand_label", "")),
                     " ".join(
                         product.get("categories")
                         or [str(product.get("category", ""))]
@@ -36,6 +36,8 @@ def filter_products(
             ).lower()
             if search_term not in searchable_text:
                 return False
+        if selected_brands and product.get("brand") not in selected_brands:
+            return False
         if selected_audiences and not (
             selected_audiences & set(product.get("audiences", []))
         ):
@@ -78,8 +80,11 @@ def _counter_rows(counter: Counter[str]) -> list[dict[str, Any]]:
 
 
 def build_dashboard(
-    products: list[dict[str, Any]], source: str, scraped_at: str | None
+    products: list[dict[str, Any]], source: Any, scraped_at: str | None
 ) -> dict[str, Any]:
+    brand_counts = Counter(
+        product.get("brand_label", "Unknown") for product in products
+    )
     category_counts: Counter[str] = Counter()
     for product in products:
         category_counts.update(
@@ -88,8 +93,9 @@ def build_dashboard(
         )
     audience_counts: Counter[str] = Counter()
     for product in products:
-        for audience in product.get("audiences", []):
-            audience_counts[COLLECTIONS.get(audience, audience.title())] += 1
+        labels = product.get("audience_labels", [])
+        for label in labels:
+            audience_counts[label] += 1
 
     prices = [float(product.get("price_min", 0)) for product in products]
     available_count = sum(bool(product.get("available")) for product in products)
@@ -120,6 +126,7 @@ def build_dashboard(
         "scraped_at": scraped_at,
         "summary": {
             "total_products": len(products),
+            "brands": len(brand_counts),
             "categories": len(category_counts),
             "average_price": round(mean(prices), 2) if prices else 0,
             "available_products": available_count,
@@ -135,6 +142,7 @@ def build_dashboard(
             if products
             else 0,
         },
+        "brands": _counter_rows(brand_counts),
         "audiences": _counter_rows(audience_counts),
         "categories": _counter_rows(category_counts),
         "products": products,
@@ -144,8 +152,32 @@ def build_dashboard(
 def build_options(products: list[dict[str, Any]]) -> dict[str, Any]:
     prices = [float(product.get("price_min", 0)) for product in products]
     return {
+        "brands": [
+            {"value": brand, "label": label}
+            for brand, label in sorted(
+                {
+                    (
+                        product.get("brand", "unknown"),
+                        product.get("brand_label", "Unknown"),
+                    )
+                    for product in products
+                },
+                key=lambda item: item[1].lower(),
+            )
+        ],
         "audiences": [
-            {"value": key, "label": label} for key, label in COLLECTIONS.items()
+            {"value": value, "label": label}
+            for value, label in sorted(
+                {
+                    (value, label)
+                    for product in products
+                    for value, label in zip(
+                        product.get("audiences", []),
+                        product.get("audience_labels", []),
+                    )
+                },
+                key=lambda item: item[1].lower(),
+            )
         ],
         "categories": sorted(
             {

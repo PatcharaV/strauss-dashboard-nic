@@ -33,8 +33,9 @@ async def main() -> None:
                     await _fetch_collection_cards(client, collection)
                 )
             cache_ids = {
-                str(product["id"])
+                str(product.get("source_id", product["id"]))
                 for product in products
+                if product.get("brand") == "strauss"
                 if category
                 in (
                     product.get("categories")
@@ -54,7 +55,9 @@ async def main() -> None:
     print(
         json.dumps(
             {
-                "cache_products": len(products),
+                "cache_products": sum(
+                    product.get("brand") == "strauss" for product in products
+                ),
                 "categories_match": all(
                     not row["missing_ids"] and not row["extra_ids"]
                     for row in results

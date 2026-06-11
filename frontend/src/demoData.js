@@ -1,4 +1,9 @@
 export const demoOptions = {
+  brands: [
+    { value: "strauss", label: "Strauss" },
+    { value: "rhone", label: "Rhone" },
+    { value: "arcteryx", label: "Arc'teryx" },
+  ],
   audiences: [
     { value: "men", label: "Men" },
     { value: "women", label: "Women" },
@@ -22,10 +27,15 @@ export const demoOptions = {
 };
 
 export const demoDashboard = {
-  source: "https://us.strauss.com",
+  source: [
+    "https://us.strauss.com",
+    "https://www.rhone.com",
+    "https://arcteryx.com/us/en",
+  ],
   scraped_at: null,
   summary: {
     total_products: 572,
+    brands: 3,
     categories: 19,
     average_price: 84.2,
     available_products: 498,

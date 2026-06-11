@@ -55,10 +55,6 @@ CATEGORY_COLLECTIONS = {
     "Glasses": (("glasses", "gear-accessories"),),
 }
 
-DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-CACHE_PATH = DATA_DIR / "products.json"
-
-
 def _plain_text(value: str | None) -> str:
     if not value:
         return ""
@@ -111,8 +107,12 @@ def _normalize_product(
         image_url = image.get("src", "") if isinstance(image, dict) else ""
 
     return {
-        "id": variant_id or str(product.get("id", "")),
+        "id": f"strauss:{variant_id or product.get('id', '')}",
+        "source_id": variant_id or str(product.get("id", "")),
         "product_id": str(product.get("id", "")),
+        "brand": "strauss",
+        "brand_label": "Strauss",
+        "source": BASE_URL,
         "title": str(card.get("title") or product.get("title", "")).strip(),
         "handle": str(product.get("handle", "")).strip(),
         "description": _plain_text(product.get("body_html")),
@@ -361,7 +361,7 @@ def _extract_material(html: str) -> str:
     return ""
 
 
-async def scrape_products() -> dict[str, Any]:
+async def scrape_strauss_products() -> dict[str, Any]:
     timeout = httpx.Timeout(30.0, connect=15.0)
     headers = {
         "User-Agent": USER_AGENT,
@@ -444,29 +444,9 @@ async def scrape_products() -> dict[str, Any]:
             )
         )
     products.sort(key=lambda item: (item["title"].lower(), item["color"].lower()))
-    payload = {
+    return {
         "source": BASE_URL,
         "scraped_at": datetime.now(timezone.utc).isoformat(),
         "product_count": len(products),
         "products": products,
     }
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    CACHE_PATH.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    return payload
-
-
-def load_cache() -> dict[str, Any] | None:
-    if not CACHE_PATH.exists():
-        return None
-    try:
-        return json.loads(CACHE_PATH.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return None
-
-
-def normalize_csv(value: str | None) -> list[str]:
-    if not value:
-        return []
-    return [part.strip() for part in re.split(r",\s*", value) if part.strip()]
