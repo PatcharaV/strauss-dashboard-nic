@@ -98,10 +98,10 @@ function DonutChart({
             data={data}
             dataKey="value"
             nameKey="name"
-            cx="42%"
+            cx="37%"
             cy="50%"
-            innerRadius={72}
-            outerRadius={112}
+            innerRadius={68}
+            outerRadius={104}
             paddingAngle={1}
             onClick={(entry) => onSelect?.(entry.name)}
             className="clickable-chart"
@@ -119,6 +119,8 @@ function DonutChart({
             ))}
           </Pie>
           <Tooltip
+            contentStyle={{ fontSize: 10, padding: "7px 9px" }}
+            itemStyle={{ fontSize: 10 }}
             formatter={(value, name) => [
               `${formatNumber.format(value)} (${total ? ((value / total) * 100).toFixed(1) : 0}%)`,
               name,
@@ -129,6 +131,8 @@ function DonutChart({
             verticalAlign="middle"
             align="right"
             iconType="circle"
+            iconSize={7}
+            wrapperStyle={{ fontSize: 8, lineHeight: "13px" }}
             onClick={(entry) => onSelect?.(entry.value)}
           />
         </PieChart>
@@ -155,7 +159,12 @@ function TreemapContent(props) {
     selectedNames = [],
   } = props;
   if (depth !== 1) return null;
-  const showValue = width > 95 && height > 58;
+  const showValue = width > 105 && height > 54;
+  const maxLabelLength = Math.max(5, Math.floor(width / 7));
+  const displayName =
+    name.length > maxLabelLength
+      ? `${name.slice(0, Math.max(4, maxLabelLength - 3))}...`
+      : name;
   const selected = selectedNames.length === 0 || selectedNames.includes(name);
   return (
     <g className="clickable-chart" onClick={() => onSelect?.(name)}>
@@ -169,13 +178,13 @@ function TreemapContent(props) {
         strokeWidth={3}
         opacity={selected ? 1 : 0.32}
       />
-      {width > 58 && height > 34 && (
-        <text x={x + 10} y={y + 22} fill="#fff" fontSize={13} fontWeight={700}>
-          {name.length > 22 ? `${name.slice(0, 20)}...` : name}
+      {width > 62 && height > 30 && (
+        <text x={x + 8} y={y + 18} fill="#fff" fontSize={10} fontWeight={700}>
+          {displayName}
         </text>
       )}
       {showValue && (
-        <text x={x + 10} y={y + 42} fill="rgba(255,255,255,.82)" fontSize={12}>
+        <text x={x + 8} y={y + 34} fill="rgba(255,255,255,.82)" fontSize={9}>
           {formatNumber.format(value)} products
         </text>
       )}
@@ -219,7 +228,7 @@ function App() {
   const [dashboard, setDashboard] = useState(demoDashboard);
   const [filters, setFilters] = useState({
     search: "",
-    brands: [],
+    brands: ["strauss"],
     audiences: [],
     categories: [],
     minPrice: "",
@@ -282,7 +291,7 @@ function App() {
   function resetFilters() {
     setFilters({
       search: "",
-      brands: [],
+      brands: filters.brands,
       audiences: [],
       categories: [],
       minPrice: "",
@@ -296,7 +305,8 @@ function App() {
   function selectBrand(brand) {
     setFilters({
       ...filters,
-      brands: brand ? [brand] : [],
+      brands: [brand],
+      audiences: [],
       categories: [],
     });
   }
@@ -376,16 +386,9 @@ function App() {
       <section className="brand-switcher" aria-label="Filter by brand">
         <div className="brand-switcher-copy">
           <span className="filter-title">Choose brand</span>
-          <strong>Filter the entire dashboard by website</strong>
+          <strong>Select one brand to view its dashboard</strong>
         </div>
         <div className="brand-switcher-buttons">
-          <button
-            className={filters.brands.length === 0 ? "active" : ""}
-            type="button"
-            onClick={() => selectBrand("")}
-          >
-            All brands
-          </button>
           <button
             className={filters.brands.includes("strauss") ? "active" : ""}
             type="button"
@@ -734,7 +737,11 @@ function App() {
                   />
                 }
               >
-                <Tooltip formatter={(value) => `${value} products`} />
+                <Tooltip
+                  contentStyle={{ fontSize: 10, padding: "7px 9px" }}
+                  itemStyle={{ fontSize: 10 }}
+                  formatter={(value) => `${value} products`}
+                />
               </Treemap>
             </ResponsiveContainer>
           </article>

@@ -219,7 +219,7 @@ h2 {
 
 .brand-switcher-buttons {
   display: grid;
-  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
   gap: 8px;
   width: 100%;
 }
@@ -618,10 +618,24 @@ h2 {
   margin-top: 4px;
 }
 
+.chart-shell .recharts-legend-item {
+  margin-right: 0 !important;
+}
+
+.chart-shell .recharts-legend-item-text {
+  color: #5f6267 !important;
+  font-size: 8px;
+  line-height: 1.2;
+}
+
+.chart-shell .recharts-default-tooltip {
+  font-size: 10px;
+}
+
 .donut-center {
   position: absolute;
   top: 50%;
-  left: 42%;
+  left: 37%;
   display: grid;
   width: 118px;
   text-align: center;
@@ -951,7 +965,7 @@ footer a {
   }
 
   .brand-switcher-buttons {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 
   .main-search {
