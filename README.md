@@ -45,6 +45,21 @@ npm run dev
 
 หรือใช้ `start-dashboard.ps1` หลังจากติดตั้ง dependencies ครั้งแรกแล้ว
 
+## Deploy บน Render
+
+โปรเจกต์มี `render.yaml` สำหรับสร้าง FastAPI และ React เป็น Web Service เดียว:
+
+1. Push โปรเจกต์ขึ้น GitHub
+2. เปิด Render Dashboard และเลือก `New > Blueprint`
+3. เชื่อมต่อ repository `PatcharaV/strauss-dashboard-nic`
+4. ตรวจชื่อ service แล้วกด `Apply`
+
+Render จะติดตั้ง Python dependencies, build React และเปิด Dashboard ผ่าน URL
+`https://strauss-dashboard-nic.onrender.com` หรือ URL ที่ Render กำหนดให้
+
+ข้อมูลใน `backend/data/products.json` เป็นข้อมูลตั้งต้นล่าสุด ส่วนปุ่ม
+`Scrape latest data` จะอัปเดต cache ของ instance ที่กำลังทำงานอยู่
+
 ## API
 
 - `GET /api/health`

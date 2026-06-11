@@ -1,9 +1,11 @@
 import asyncio
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from .analytics import build_dashboard, build_options, filter_products
 from .scraper import load_cache, normalize_csv, scrape_products
@@ -130,3 +132,8 @@ async def scrape() -> dict[str, Any]:
         "product_count": data["product_count"],
         "scraped_at": data["scraped_at"],
     }
+
+
+FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+if FRONTEND_DIST.exists():
+    app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="frontend")
