@@ -27,10 +27,24 @@ COLLECTIONS = {
 }
 TOP_SELLERS_COLLECTION = "top-sellers"
 CATEGORY_COLLECTIONS = {
-    "Shirts": (("shirts", "men"), ("shirts-women", "women")),
-    "Pants": (("pants-men", "men"), ("pants-women", "women")),
+    "Shirts": (
+        ("shirts", "men"),
+        ("shirts-women", "women"),
+        ("shirts-kids", "kids"),
+    ),
+    "Pants": (
+        ("pants-men", "men"),
+        ("pants-women", "women"),
+        ("pants-kids", "kids"),
+        ("bibs-coveralls-overalls", "men"),
+        ("bibs-coveralls-overalls-women", "women"),
+    ),
     "Footwear": (("footwear", "footwear"),),
-    "Outerwear": (("outerwear", "men"), ("outerwear-women", "women")),
+    "Outerwear": (
+        ("outerwear", "men"),
+        ("outerwear-women", "women"),
+        ("kids-jackets", "kids"),
+    ),
     "Hoodies & Sweatshirts": (
         ("hoodies-sweatshirts", "men"),
         ("hoodies-sweatshirts-women", "women"),
@@ -39,10 +53,6 @@ CATEGORY_COLLECTIONS = {
     "Shorts": (("shorts", "men"), ("women-shorts", "women")),
     "Hats & Beanies": (("hats-beanies", "gear-accessories"),),
     "Gloves": (("gloves", "gear-accessories"),),
-    "Overalls, Bib & Coveralls": (
-        ("bibs-coveralls-overalls", "men"),
-        ("bibs-coveralls-overalls-women", "women"),
-    ),
     "Tool Belts": (("tool-belts", "gear-accessories"),),
     "Socks": (("socks", "gear-accessories"),),
     "Knee Pads": (("knee-pads", "gear-accessories"),),
@@ -65,7 +75,82 @@ SUBCATEGORY_COLLECTIONS = {
         ("women-long-sleeves", "women"),
     ),
     "Work Shirts": (("work-shirts", "men"),),
-    "High-Vis": (("high-vis-shirts", "men"),),
+    "High-Vis Shirts": (("high-vis-shirts", "men"),),
+    "Kids Shirts": (("shirts-kids", "kids"),),
+    "Work Pants": (
+        ("work-pants", "men"),
+        ("women-work-pants", "women"),
+    ),
+    "Cargo Pants": (
+        ("cargo-pants", "men"),
+        ("cargo-pants-women", "women"),
+    ),
+    "Double-Front Pants": (
+        ("double-front-pants", "men"),
+        ("double-front-pants-women", "women"),
+    ),
+    "Jeans": (("jeans", "men"),),
+    "Bibs, Coveralls & Overalls": (
+        ("bibs-coveralls-overalls", "men"),
+        ("bibs-coveralls-overalls-women", "women"),
+    ),
+    "Kids Pants": (("pants-kids", "kids"),),
+    "Work Shorts": (("work-shorts", "men"),),
+    "Cargo Shorts": (
+        ("cargo-shorts", "men"),
+        ("cargo-shorts-women", "women"),
+    ),
+    "Women's Shorts": (("women-shorts", "women"),),
+    "Softshell Jackets": (
+        ("softshell-jackets", "men"),
+        ("softshell-jackets-women", "women"),
+    ),
+    "Lightweight Jackets": (
+        ("lightweight-jackets", "men"),
+        ("lightweight-jackets-women", "women"),
+    ),
+    "Winter Jackets": (
+        ("mens-winter-jackets", "men"),
+        ("womens-winter-jackets", "women"),
+    ),
+    "Work Jackets": (
+        ("mens-work-jackets", "men"),
+        ("womens-work-jackets", "women"),
+    ),
+    "Vests": (
+        ("vests", "men"),
+        ("vests-women", "women"),
+    ),
+    "High-Vis Outerwear": (("high-vis-outerwear", "men"),),
+    "Kids Jackets": (("kids-jackets", "kids"),),
+    "Hoodies": (("hoodie", "men"),),
+    "Crewnecks": (
+        ("crewneck", "men"),
+        ("crewneck-women", "women"),
+    ),
+    "Full-Zip Sweatshirts": (("full-zip", "men"),),
+    "Women's Hoodies & Sweatshirts": (
+        ("hoodies-sweatshirts-women", "women"),
+    ),
+    "Safety Sneakers": (("safety-sneakers", "footwear"),),
+    "Safety-Toe Boots": (("safety-toe-boots", "footwear"),),
+    "Soft-Toe Boots": (("soft-toe-boots", "footwear"),),
+    "Waterproof Boots & Shoes": (
+        ("waterproof-boots-and-shoes", "footwear"),
+    ),
+    "Work Boots": (("work-boots", "footwear"),),
+    "Work Shoes": (("work-shoes", "footwear"),),
+    "Men's Thermal Layers": (("mens-thermal-layers", "men"),),
+    "Women's Thermal Layers": (("womens-thermal-layers", "women"),),
+    "Tool Storage": (("tool-bags", "gear-accessories"),),
+    "Headwear": (("hats-beanies", "gear-accessories"),),
+    "Work Gloves": (("gloves", "gear-accessories"),),
+    "Tool Belts": (("tool-belts", "gear-accessories"),),
+    "Work Socks": (("socks", "gear-accessories"),),
+    "Knee Protection": (("knee-pads", "gear-accessories"),),
+    "Women's Leggings": (("women-s-leggings", "women"),),
+    "Work Belts": (("belts", "gear-accessories"),),
+    "Safety Glasses": (("glasses", "gear-accessories"),),
 }
 
 def _plain_text(value: str | None) -> str:
@@ -167,14 +252,14 @@ async def _get(
 ) -> httpx.Response:
     for attempt in range(MAX_RETRIES):
         response = await client.get(url, **kwargs)
-        if response.status_code != 429:
+        if response.status_code not in {429, 500, 502, 503, 504}:
             response.raise_for_status()
             return response
         retry_after = response.headers.get("Retry-After")
         wait_seconds = (
             float(retry_after)
             if retry_after and retry_after.replace(".", "", 1).isdigit()
-            else 2 ** (attempt + 1)
+            else min(2 ** (attempt + 1), 16)
         )
         await asyncio.sleep(wait_seconds)
     response.raise_for_status()
@@ -387,6 +472,28 @@ def _extract_material(html: str) -> str:
     return ""
 
 
+def _fallback_classification(
+    title: str,
+    categories: list[str],
+    subcategories: list[str],
+) -> tuple[list[str], list[str]]:
+    if subcategories:
+        return categories, subcategories
+
+    normalized_title = title.lower()
+    if categories == ["Other"]:
+        if "t-shirt" in normalized_title or re.search(r"\btee\b", normalized_title):
+            return ["Shirts"], ["T-Shirts"]
+        if "hooded sweatjacket" in normalized_title:
+            return ["Hoodies & Sweatshirts"], ["Full-Zip Sweatshirts"]
+        if "jacket" in normalized_title:
+            return ["Outerwear"], ["Lightweight Jackets"]
+
+    if categories == ["Backpacks & Bags"]:
+        return categories, ["Backpacks & Bags"]
+    return categories, subcategories
+
+
 async def scrape_strauss_products() -> dict[str, Any]:
     timeout = httpx.Timeout(30.0, connect=15.0)
     headers = {
@@ -461,6 +568,11 @@ async def scrape_strauss_products() -> dict[str, Any]:
             categories = [
                 product_type if product_type not in mapped_categories else "Other"
             ]
+        categories, subcategories = _fallback_classification(
+            str(card.get("title") or product.get("title", "")),
+            categories,
+            subcategories,
+        )
         normalized = _normalize_product(
                 product,
                 card,
