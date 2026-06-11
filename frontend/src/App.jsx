@@ -293,6 +293,14 @@ function App() {
     });
   }
 
+  function selectBrand(brand) {
+    setFilters({
+      ...filters,
+      brands: brand ? [brand] : [],
+      categories: [],
+    });
+  }
+
   function toggleCategory(category) {
     setFilters({
       ...filters,
@@ -365,6 +373,43 @@ function App() {
         </div>
       </header>
 
+      <section className="brand-switcher" aria-label="Filter by brand">
+        <div className="brand-switcher-copy">
+          <span className="filter-title">Choose brand</span>
+          <strong>Filter the entire dashboard by website</strong>
+        </div>
+        <div className="brand-switcher-buttons">
+          <button
+            className={filters.brands.length === 0 ? "active" : ""}
+            type="button"
+            onClick={() => selectBrand("")}
+          >
+            All brands
+          </button>
+          <button
+            className={filters.brands.includes("strauss") ? "active" : ""}
+            type="button"
+            onClick={() => selectBrand("strauss")}
+          >
+            Strauss
+          </button>
+          <button
+            className={filters.brands.includes("rhone") ? "active" : ""}
+            type="button"
+            onClick={() => selectBrand("rhone")}
+          >
+            Rhone
+          </button>
+          <button
+            className={filters.brands.includes("arcteryx") ? "active" : ""}
+            type="button"
+            onClick={() => selectBrand("arcteryx")}
+          >
+            Arc&apos;Teryx
+          </button>
+        </div>
+      </section>
+
       <nav className="page-nav" aria-label="Dashboard sections">
         <a href="#overview">Overview</a>
         <a href="#charts">Charts</a>
@@ -411,28 +456,6 @@ function App() {
                   setFilters({ ...filters, search: event.target.value })
                 }
               />
-            </label>
-
-            <label>
-              <span className="filter-title">Brand / website</span>
-              <select
-                value={filters.brands.length === 1 ? filters.brands[0] : "all"}
-                onChange={(event) =>
-                  setFilters({
-                    ...filters,
-                    brands:
-                      event.target.value === "all" ? [] : [event.target.value],
-                    categories: [],
-                  })
-                }
-              >
-                <option value="all">All brands</option>
-                {options.brands.map((brand) => (
-                  <option key={brand.value} value={brand.value}>
-                    {brand.label}
-                  </option>
-                ))}
-              </select>
             </label>
 
             <label>
