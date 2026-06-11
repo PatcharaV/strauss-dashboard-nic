@@ -119,8 +119,8 @@ function DonutChart({
             ))}
           </Pie>
           <Tooltip
-            contentStyle={{ fontSize: 10, padding: "7px 9px" }}
-            itemStyle={{ fontSize: 10 }}
+            contentStyle={{ fontSize: 11, padding: "7px 9px" }}
+            itemStyle={{ fontSize: 11 }}
             formatter={(value, name) => [
               `${formatNumber.format(value)} (${total ? ((value / total) * 100).toFixed(1) : 0}%)`,
               name,
@@ -132,7 +132,7 @@ function DonutChart({
             align="right"
             iconType="circle"
             iconSize={7}
-            wrapperStyle={{ fontSize: 8, lineHeight: "13px" }}
+            wrapperStyle={{ fontSize: 9, lineHeight: "14px" }}
             onClick={(entry) => onSelect?.(entry.value)}
           />
         </PieChart>
@@ -179,12 +179,12 @@ function TreemapContent(props) {
         opacity={selected ? 1 : 0.32}
       />
       {width > 62 && height > 30 && (
-        <text x={x + 8} y={y + 18} fill="#fff" fontSize={10} fontWeight={700}>
+        <text x={x + 8} y={y + 19} fill="#fff" fontSize={11} fontWeight={700}>
           {displayName}
         </text>
       )}
       {showValue && (
-        <text x={x + 8} y={y + 34} fill="rgba(255,255,255,.82)" fontSize={9}>
+        <text x={x + 8} y={y + 35} fill="rgba(255,255,255,.82)" fontSize={10}>
           {formatNumber.format(value)} products
         </text>
       )}
@@ -738,8 +738,8 @@ function App() {
                 }
               >
                 <Tooltip
-                  contentStyle={{ fontSize: 10, padding: "7px 9px" }}
-                  itemStyle={{ fontSize: 10 }}
+                  contentStyle={{ fontSize: 11, padding: "7px 9px" }}
+                  itemStyle={{ fontSize: 11 }}
                   formatter={(value) => `${value} products`}
                 />
               </Treemap>

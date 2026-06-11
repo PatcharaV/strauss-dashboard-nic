@@ -624,12 +624,12 @@ h2 {
 
 .chart-shell .recharts-legend-item-text {
   color: #5f6267 !important;
-  font-size: 8px;
+  font-size: 9px;
   line-height: 1.2;
 }
 
 .chart-shell .recharts-default-tooltip {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .donut-center {
