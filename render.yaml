@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: strauss-dashboard-nic
+    name: vvic-dashboard-nic
     runtime: python
     plan: free
     buildCommand: python -m pip install --timeout 120 --retries 10 -r backend/requirements.txt
