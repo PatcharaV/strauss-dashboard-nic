@@ -17,10 +17,6 @@ CATEGORY_SLUGS = {
     "Fleece": "fleece",
     "Shirts and Tops": "shirts-and-tops",
     "Shorts": "shorts",
-    "Footwear": "footwear",
-    "Accessories": "accessories",
-    "Packs": "packs",
-    "Climbing Gear": "climbing-gear",
 }
 
 
@@ -136,14 +132,6 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
         products_by_id: dict[str, dict[str, Any]] = {}
         audiences_by_id: dict[str, set[str]] = {}
         categories_by_id: dict[str, set[str]] = {}
-
-        for audience, audience_slug in AUDIENCES.items():
-            for product in await _all_listing_products(client, audience_slug):
-                product_id = str(product.get("id", ""))
-                if not product_id:
-                    continue
-                products_by_id[product_id] = product
-                audiences_by_id.setdefault(product_id, set()).add(audience)
 
         for audience, audience_slug in AUDIENCES.items():
             for category, category_slug in CATEGORY_SLUGS.items():

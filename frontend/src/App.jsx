@@ -289,7 +289,7 @@ function App() {
 
   async function scrapeLatest() {
     setScraping(true);
-    setMessage("Scraping the latest catalog...");
+    setMessage("Scraping the latest clothing catalog...");
     try {
       const response = await fetch("/api/scrape", { method: "POST" });
       if (!response.ok) throw new Error("Scrape failed");
@@ -386,10 +386,11 @@ function App() {
         <div className="brand-block">
           <div className="brand-mark">M</div>
           <div>
-            <p className="eyebrow">PUBLIC CATALOG ANALYTICS</p>
-            <h1>Multi-Brand Product Dashboard</h1>
+            <p className="eyebrow">PUBLIC CLOTHING CATALOG ANALYTICS</p>
+            <h1>Multi-Brand Clothing Dashboard</h1>
             <p className="page-description">
-              Compare Strauss, Rhone and Arc&apos;teryx public product catalogs.
+              Compare clothing from Strauss, Rhone and Arc&apos;teryx. Footwear
+              and gear are excluded.
             </p>
           </div>
         </div>
@@ -978,7 +979,7 @@ function App() {
       )}
 
       <footer>
-        Public catalog analysis from{" "}
+        Public clothing catalog analysis from{" "}
         <a href="https://us.strauss.com" target="_blank" rel="noreferrer">
           Strauss
         </a>

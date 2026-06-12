@@ -14,6 +14,26 @@ AUDIENCE_COLLECTIONS = {
 }
 TOP_SELLER_COLLECTIONS = ("mens-best-sellers", "womens-best-sellers")
 PAGE_SIZE = 250
+CLOTHING_CATEGORIES = {
+    "Blazers/Jackets",
+    "Bras",
+    "Dresses/Jumpsuits",
+    "Leggings/Tights",
+    "Midlayers",
+    "Outerwear",
+    "Pants",
+    "Polos",
+    "Shirts",
+    "Shorts",
+    "Skirts",
+    "Sports bras",
+    "Sweaters",
+    "Swim",
+    "Tanks",
+    "Tees",
+    "Tees/Tanks",
+    "Underwear",
+}
 
 
 async def _collection_products(
@@ -128,14 +148,15 @@ async def scrape_rhone_products() -> dict[str, Any]:
                 for product in await _collection_products(client, collection)
             )
 
-    products = [
-        _normalize(
+    products = []
+    for handle, product in products_by_handle.items():
+        normalized = _normalize(
             product,
             audiences_by_handle.get(handle, set()),
             handle in top_seller_handles,
         )
-        for handle, product in products_by_handle.items()
-    ]
+        if normalized["category"] in CLOTHING_CATEGORIES:
+            products.append(normalized)
     products.sort(key=lambda item: item["title"].lower())
     return {
         "source": BASE_URL,

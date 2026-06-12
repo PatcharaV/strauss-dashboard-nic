@@ -22,8 +22,6 @@ COLLECTIONS = {
     "men": "Men",
     "women": "Women",
     "kids": "Kids",
-    "footwear": "Footwear",
-    "gear-accessories": "Gear & Accessories",
 }
 PRODUCT_COLLECTION_FALLBACK_PATTERNS = (
     (r"\be\.s\.\s*motion\s+2020\b", "e.s.motion 2020"),
@@ -59,7 +57,6 @@ CATEGORY_COLLECTIONS = {
         ("bibs-coveralls-overalls", "men"),
         ("bibs-coveralls-overalls-women", "women"),
     ),
-    "Footwear": (("footwear", "footwear"),),
     "Outerwear": (
         ("outerwear", "men"),
         ("outerwear-women", "women"),
@@ -69,20 +66,12 @@ CATEGORY_COLLECTIONS = {
         ("hoodies-sweatshirts", "men"),
         ("hoodies-sweatshirts-women", "women"),
     ),
-    "Tool Bags": (("tool-bags", "gear-accessories"),),
     "Shorts": (("shorts", "men"), ("women-shorts", "women")),
-    "Hats & Beanies": (("hats-beanies", "gear-accessories"),),
-    "Gloves": (("gloves", "gear-accessories"),),
-    "Tool Belts": (("tool-belts", "gear-accessories"),),
-    "Socks": (("socks", "gear-accessories"),),
-    "Knee Pads": (("knee-pads", "gear-accessories"),),
     "Leggings": (("women-s-leggings", "women"),),
     "Thermal Layers": (
         ("mens-thermal-layers", "men"),
         ("womens-thermal-layers", "women"),
     ),
-    "Belts": (("belts", "gear-accessories"),),
-    "Glasses": (("glasses", "gear-accessories"),),
 }
 SUBCATEGORY_COLLECTIONS = {
     "T-Shirts": (
@@ -152,25 +141,9 @@ SUBCATEGORY_COLLECTIONS = {
     "Women's Hoodies & Sweatshirts": (
         ("hoodies-sweatshirts-women", "women"),
     ),
-    "Safety Sneakers": (("safety-sneakers", "footwear"),),
-    "Safety-Toe Boots": (("safety-toe-boots", "footwear"),),
-    "Soft-Toe Boots": (("soft-toe-boots", "footwear"),),
-    "Waterproof Boots & Shoes": (
-        ("waterproof-boots-and-shoes", "footwear"),
-    ),
-    "Work Boots": (("work-boots", "footwear"),),
-    "Work Shoes": (("work-shoes", "footwear"),),
     "Men's Thermal Layers": (("mens-thermal-layers", "men"),),
     "Women's Thermal Layers": (("womens-thermal-layers", "women"),),
-    "Tool Storage": (("tool-bags", "gear-accessories"),),
-    "Headwear": (("hats-beanies", "gear-accessories"),),
-    "Work Gloves": (("gloves", "gear-accessories"),),
-    "Tool Belts": (("tool-belts", "gear-accessories"),),
-    "Work Socks": (("socks", "gear-accessories"),),
-    "Knee Protection": (("knee-pads", "gear-accessories"),),
     "Women's Leggings": (("women-s-leggings", "women"),),
-    "Work Belts": (("belts", "gear-accessories"),),
-    "Safety Glasses": (("glasses", "gear-accessories"),),
 }
 
 def _plain_text(value: str | None) -> str:

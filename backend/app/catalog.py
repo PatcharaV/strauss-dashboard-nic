@@ -11,6 +11,80 @@ from .scraper import scrape_strauss_products
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 CACHE_PATH = DATA_DIR / "products.json"
+CLOTHING_CATEGORIES = {
+    "strauss": {
+        "Shirts",
+        "Pants",
+        "Outerwear",
+        "Hoodies & Sweatshirts",
+        "Shorts",
+        "Leggings",
+        "Thermal Layers",
+    },
+    "rhone": {
+        "Blazers/Jackets",
+        "Bras",
+        "Dresses/Jumpsuits",
+        "Leggings/Tights",
+        "Midlayers",
+        "Outerwear",
+        "Pants",
+        "Polos",
+        "Shirts",
+        "Shorts",
+        "Skirts",
+        "Sports bras",
+        "Sweaters",
+        "Swim",
+        "Tanks",
+        "Tees",
+        "Tees/Tanks",
+        "Underwear",
+    },
+    "arcteryx": {
+        "Shell Jackets",
+        "Insulated Jackets",
+        "Base Layer",
+        "Pants",
+        "Fleece",
+        "Shirts and Tops",
+        "Shorts",
+    },
+}
+
+
+def _clothing_products(products: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    clothing: list[dict[str, Any]] = []
+    for product in products:
+        allowed = CLOTHING_CATEGORIES.get(str(product.get("brand")), set())
+        categories = set(
+            product.get("categories")
+            or [str(product.get("category", "Other"))]
+        )
+        matched_categories = sorted(categories & allowed)
+        if not matched_categories:
+            continue
+        clothing.append(
+            {
+                **product,
+                "category": matched_categories[0],
+                "categories": matched_categories,
+                "audiences": [
+                    audience
+                    for audience in product.get("audiences", [])
+                    if audience not in {"footwear", "gear-accessories"}
+                ],
+                "audience_labels": [
+                    label
+                    for value, label in zip(
+                        product.get("audiences", []),
+                        product.get("audience_labels", []),
+                    )
+                    if value not in {"footwear", "gear-accessories"}
+                ],
+            }
+        )
+    return clothing
 
 
 async def scrape_products() -> dict[str, Any]:
@@ -38,14 +112,18 @@ async def scrape_products() -> dict[str, Any]:
         brand_sources, scraped_results
     ):
         if not isinstance(result, Exception):
+            result["products"] = _clothing_products(result.get("products", []))
+            result["product_count"] = len(result["products"])
             results.append(result)
             continue
 
-        fallback_products = [
-            product
-            for product in cached_products
-            if product.get("brand") == brand
-        ]
+        fallback_products = _clothing_products(
+            [
+                product
+                for product in cached_products
+                if product.get("brand") == brand
+            ]
+        )
         if not fallback_products:
             errors.append(f"{label}: {result}")
             continue
