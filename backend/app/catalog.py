@@ -14,11 +14,57 @@ CACHE_PATH = DATA_DIR / "products.json"
 
 
 async def scrape_products() -> dict[str, Any]:
-    results = await asyncio.gather(
+    cached = load_cache() or {}
+    cached_products = cached.get("products", [])
+    cached_sources = {
+        source.get("brand"): source
+        for source in cached.get("sources", [])
+        if source.get("brand")
+    }
+    scraped_results = await asyncio.gather(
         scrape_strauss_products(),
         scrape_rhone_products(),
         scrape_arcteryx_products(),
+        return_exceptions=True,
     )
+    brand_sources = (
+        ("strauss", "Strauss", "https://us.strauss.com"),
+        ("rhone", "Rhone", "https://www.rhone.com"),
+        ("arcteryx", "Arc'teryx", "https://arcteryx.com/us/en"),
+    )
+    results: list[dict[str, Any]] = []
+    errors: list[str] = []
+    for (brand, label, source_url), result in zip(
+        brand_sources, scraped_results
+    ):
+        if not isinstance(result, Exception):
+            results.append(result)
+            continue
+
+        fallback_products = [
+            product
+            for product in cached_products
+            if product.get("brand") == brand
+        ]
+        if not fallback_products:
+            errors.append(f"{label}: {result}")
+            continue
+        cached_source = cached_sources.get(brand, {})
+        results.append(
+            {
+                "source": cached_source.get("url", source_url),
+                "scraped_at": cached_source.get("scraped_at")
+                or cached.get("scraped_at"),
+                "product_count": len(fallback_products),
+                "products": fallback_products,
+                "cached_fallback": True,
+            }
+        )
+        errors.append(f"{label} used cached data: {result}")
+
+    if not results:
+        raise RuntimeError("; ".join(errors) or "No catalog source returned data")
+
     products = [
         product
         for result in results
@@ -43,6 +89,7 @@ async def scrape_products() -> dict[str, Any]:
             for result in results
             if result.get("products")
         ],
+        "scrape_warnings": errors,
         "scraped_at": datetime.now(timezone.utc).isoformat(),
         "product_count": len(products),
         "products": products,

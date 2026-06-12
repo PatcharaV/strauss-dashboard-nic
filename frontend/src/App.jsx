@@ -65,6 +65,9 @@ function buildQuery(filters) {
   if (filters.audiences.length) {
     params.set("audiences", filters.audiences.join(","));
   }
+  if (filters.collections.length) {
+    params.set("collections", filters.collections.join(","));
+  }
   if (filters.categories.length) {
     params.set("categories", filters.categories.join(","));
   }
@@ -233,6 +236,7 @@ function App() {
     search: "",
     brands: ["strauss"],
     audiences: [],
+    collections: [],
     categories: [],
     subcategories: [],
     minPrice: "",
@@ -302,6 +306,7 @@ function App() {
       search: "",
       brands: filters.brands,
       audiences: [],
+      collections: [],
       categories: [],
       subcategories: [],
       minPrice: "",
@@ -317,6 +322,7 @@ function App() {
       ...filters,
       brands: [brand],
       audiences: [],
+      collections: [],
       categories: [],
       subcategories: [],
     });
@@ -343,6 +349,15 @@ function App() {
     });
   }
 
+  function toggleCollection(collection) {
+    setFilters({
+      ...filters,
+      collections: filters.collections.includes(collection)
+        ? filters.collections.filter((item) => item !== collection)
+        : [...filters.collections, collection],
+    });
+  }
+
   const selectedAudienceLabels = options.audiences
     .filter((item) => filters.audiences.includes(item.value))
     .map((item) => item.label);
@@ -352,6 +367,7 @@ function App() {
       .filter((item) => filters.brands.includes(item.value))
       .map((item) => item.label),
     ...selectedAudienceLabels,
+    ...filters.collections,
     ...filters.categories,
     ...filters.subcategories,
     filters.availability === "available" ? "Available only" : null,
@@ -568,10 +584,16 @@ function App() {
           </div>
 
           <FilterGroup
-            title="Audience / collection"
+            title="Audience"
             options={options.audiences}
             selected={filters.audiences}
             onChange={(audiences) => setFilters({ ...filters, audiences })}
+          />
+          <FilterGroup
+            title="Product collection"
+            options={options.collections || []}
+            selected={filters.collections}
+            onChange={(collections) => setFilters({ ...filters, collections })}
           />
           <div className="filter-row">
             <div className="price-control">
@@ -704,26 +726,29 @@ function App() {
             <div className="panel-heading">
               <div>
                 <p className="eyebrow">COLLECTION MIX</p>
-                <h2>Audience & collection</h2>
+                <h2>Product collection</h2>
               </div>
               <span className="panel-tag">
                 {formatNumber.format(dashboard.summary.collection_memberships)} memberships
               </span>
             </div>
             <p className="panel-help">
-              {formatNumber.format(dashboard.summary.total_products)} unique
-              products. {formatNumber.format(
+              {formatNumber.format(
+                dashboard.summary.named_collection_products ?? 0,
+              )} products have a named collection. {formatNumber.format(
+                dashboard.summary.unassigned_collection_products ?? 0,
+              )} have no named collection, and {formatNumber.format(
                 dashboard.summary.multi_collection_products,
-              )} products appear in more than one collection, creating{" "}
+              )} appear in more than one collection, creating{" "}
               {formatNumber.format(dashboard.summary.overlap_memberships)} extra
               collection memberships.
             </p>
             <DonutChart
-              data={dashboard.audiences}
-              centerValue={dashboard.summary.total_products}
-              centerLabel="unique products"
-              onSelect={toggleAudienceLabel}
-              selectedNames={selectedAudienceLabels}
+              data={dashboard.collections || []}
+              centerValue={dashboard.summary.named_collection_products ?? 0}
+              centerLabel="named products"
+              onSelect={toggleCollection}
+              selectedNames={filters.collections}
             />
           </article>
         )}
@@ -864,7 +889,22 @@ function App() {
                               ))
                             : "Not specified"}
                         </td>
-                        <td>{product.audience_labels.join(", ")}</td>
+                        <td>
+                          {product.collections?.length
+                            ? product.collections.map((collection, index) => (
+                                <span key={collection}>
+                                  {index > 0 && ", "}
+                                  <button
+                                    className="table-filter-button"
+                                    type="button"
+                                    onClick={() => toggleCollection(collection)}
+                                  >
+                                    {collection}
+                                  </button>
+                                </span>
+                              ))
+                            : "No named collection"}
+                        </td>
                         <td className="color-cell">
                           {product.color || "Not specified"}
                         </td>

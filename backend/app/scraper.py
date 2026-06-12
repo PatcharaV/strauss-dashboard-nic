@@ -25,6 +25,26 @@ COLLECTIONS = {
     "footwear": "Footwear",
     "gear-accessories": "Gear & Accessories",
 }
+PRODUCT_COLLECTION_FALLBACK_PATTERNS = (
+    (r"\be\.s\.\s*motion\s+2020\b", "e.s.motion 2020"),
+    (r"\be\.s\.\s*motion\s+ten\b", "e.s.motion ten"),
+    (r"\be\.s\.\s*e:pic\b", "e.s.e:pic"),
+    (r"\be\.s\.\s*t:aktik\b", "e.s.t:aktik"),
+    (r"\be\.s\.\s*iconic\b", "e.s.iconic"),
+    (r"\be\.s\.\s*ambition\b", "e.s.ambition"),
+    (r"\be\.s\.\s*concrete\b", "e.s.concrete"),
+    (r"\be\.s\.\s*vintage\b", "e.s.vintage"),
+    (r"\be\.s\.\s*motion\b(?!\s+(?:2020|ten))", "e.s.motion"),
+    (r"\be\.s\.\s*trail\b", "e.s.trail"),
+)
+COLLABORATION_COLLECTION_PATTERNS = (
+    (
+        r"\bSTRAUSS\s+x\s+STUNTMEN'?S\s+ASSOCIATION\b",
+        "Strauss x Stuntmen's Association",
+    ),
+    (r"\bSTRAUSS\s+x\s+1620\b", "Strauss x 1620"),
+    (r"\bLA\s+FC\b", "Strauss x LA FC"),
+)
 TOP_SELLERS_COLLECTION = "top-sellers"
 CATEGORY_COLLECTIONS = {
     "Shirts": (
@@ -166,6 +186,17 @@ def _number(value: Any) -> float:
         return 0.0
 
 
+def extract_product_collections(title: str) -> list[str]:
+    collections: list[str] = []
+    for pattern, label in (
+        *PRODUCT_COLLECTION_FALLBACK_PATTERNS,
+        *COLLABORATION_COLLECTION_PATTERNS,
+    ):
+        if re.search(pattern, title, re.I) and label not in collections:
+            collections.append(label)
+    return collections
+
+
 def _variant_color(product: dict[str, Any], variant: dict[str, Any]) -> str:
     values = [variant.get("option1"), variant.get("option2"), variant.get("option3")]
     colors: list[str] = []
@@ -182,6 +213,7 @@ def _normalize_product(
     card: dict[str, Any],
     audiences: list[str],
     categories: list[str],
+    collections: list[str],
     top_seller: bool,
     material: str,
 ) -> dict[str, Any]:
@@ -219,6 +251,7 @@ def _normalize_product(
         "vendor": str(product.get("vendor", "")).strip(),
         "audiences": audiences,
         "audience_labels": [COLLECTIONS[audience] for audience in audiences],
+        "collections": collections,
         "price_min": min(prices, default=0),
         "price_max": max(prices, default=0),
         "available": bool(variant.get("available")) if variant else any(
@@ -277,13 +310,17 @@ def _card_identity(href: str) -> tuple[str, str]:
 
 
 async def _fetch_collection_cards(
-    client: httpx.AsyncClient, handle: str
+    client: httpx.AsyncClient,
+    handle: str,
+    filters: dict[str, str] | None = None,
 ) -> dict[str, dict[str, Any]]:
     cards_by_id: dict[str, dict[str, Any]] = {}
 
     for page in range(1, MAX_COLLECTION_PAGES + 1):
         response = await _get(
-            client, f"{BASE_URL}/collections/{handle}", params={"page": page}
+            client,
+            f"{BASE_URL}/collections/{handle}",
+            params={**(filters or {}), "page": page},
         )
         soup = BeautifulSoup(response.text, "html.parser")
         cards = soup.select("product-card")
@@ -331,6 +368,46 @@ async def _fetch_collection_cards(
         await asyncio.sleep(REQUEST_DELAY_SECONDS)
 
     return cards_by_id
+
+
+async def _fetch_product_collection_memberships(
+    client: httpx.AsyncClient,
+) -> dict[str, set[str]]:
+    response = await _get(client, f"{BASE_URL}/collections/all")
+    soup = BeautifulSoup(response.text, "html.parser")
+    heading = next(
+        (
+            node
+            for node in soup.find_all("p")
+            if node.get_text(" ", strip=True).lower() == "e.s. collection lines"
+        ),
+        None,
+    )
+    if heading is None:
+        return {}
+
+    container = heading.find_parent("div", class_="first-level-filter")
+    if container is None:
+        return {}
+
+    memberships: dict[str, set[str]] = {}
+    for filter_value in container.select("filter-value[value]"):
+        label = filter_value.get_text(" ", strip=True)
+        query = parse_qs(urlparse(str(filter_value.get("value", ""))).query)
+        if not label or not query:
+            continue
+        filter_name, values = next(iter(query.items()))
+        if not values:
+            continue
+        cards = await _fetch_collection_cards(
+            client,
+            "all",
+            {filter_name: values[0]},
+        )
+        for identity in cards:
+            memberships.setdefault(identity, set()).add(label)
+        await asyncio.sleep(REQUEST_DELAY_SECONDS)
+    return memberships
 
 
 async def _fetch_category_memberships(
@@ -535,6 +612,9 @@ async def scrape_strauss_products() -> dict[str, Any]:
             category_products,
         ) = await _fetch_category_memberships(client)
         subcategory_memberships = await _fetch_subcategory_memberships(client)
+        product_collection_memberships = (
+            await _fetch_product_collection_memberships(client)
+        )
         raw_products.update(category_products)
         for identity, card in category_cards.items():
             if identity in listings:
@@ -573,11 +653,17 @@ async def scrape_strauss_products() -> dict[str, Any]:
             categories,
             subcategories,
         )
+        title = str(card.get("title") or product.get("title", ""))
+        collections = sorted(product_collection_memberships.get(identity, set()))
+        for collection in extract_product_collections(title):
+            if collection.startswith("Strauss x ") and collection not in collections:
+                collections.append(collection)
         normalized = _normalize_product(
                 product,
                 card,
                 sorted(card["audiences"]),
                 categories,
+                collections,
                 identity in top_seller_ids,
                 _extract_material(str(product.get("body_html", ""))),
             )

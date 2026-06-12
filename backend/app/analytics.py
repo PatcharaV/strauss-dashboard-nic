@@ -2,11 +2,23 @@ from collections import Counter
 from statistics import mean
 from typing import Any
 
+from .scraper import extract_product_collections
+
+
+def _product_collections(product: dict[str, Any]) -> list[str]:
+    collections = product.get("collections")
+    if isinstance(collections, list):
+        return [str(item) for item in collections if str(item).strip()]
+    if product.get("brand") == "strauss":
+        return extract_product_collections(str(product.get("title", "")))
+    return []
+
 def filter_products(
     products: list[dict[str, Any]],
     search: str | None = None,
     brands: list[str] | None = None,
     audiences: list[str] | None = None,
+    collections: list[str] | None = None,
     categories: list[str] | None = None,
     subcategories: list[str] | None = None,
     min_price: float | None = None,
@@ -17,6 +29,7 @@ def filter_products(
 ) -> list[dict[str, Any]]:
     selected_brands = set(brands or [])
     selected_audiences = set(audiences or [])
+    selected_collections = set(collections or [])
     selected_categories = set(categories or [])
     selected_subcategories = set(subcategories or [])
     search_term = (search or "").strip().lower()
@@ -35,6 +48,7 @@ def filter_products(
                     str(product.get("material", "")),
                     str(product.get("color", "")),
                     " ".join(product.get("audience_labels", [])),
+                    " ".join(_product_collections(product)),
                 ]
             ).lower()
             if search_term not in searchable_text:
@@ -43,6 +57,10 @@ def filter_products(
             return False
         if selected_audiences and not (
             selected_audiences & set(product.get("audiences", []))
+        ):
+            return False
+        if selected_collections and not (
+            selected_collections & set(_product_collections(product))
         ):
             return False
         product_categories = set(
@@ -103,14 +121,20 @@ def build_dashboard(
         labels = product.get("audience_labels", [])
         for label in labels:
             audience_counts[label] += 1
+    collection_counts: Counter[str] = Counter()
+    for product in products:
+        collection_counts.update(_product_collections(product))
 
     prices = [float(product.get("price_min", 0)) for product in products]
     available_count = sum(bool(product.get("available")) for product in products)
     collection_memberships = sum(
-        len(product.get("audiences", [])) for product in products
+        len(_product_collections(product)) for product in products
+    )
+    named_collection_products = sum(
+        bool(_product_collections(product)) for product in products
     )
     multi_collection_products = sum(
-        len(product.get("audiences", [])) > 1 for product in products
+        len(_product_collections(product)) > 1 for product in products
     )
     category_memberships = sum(
         len(
@@ -138,8 +162,12 @@ def build_dashboard(
             "average_price": round(mean(prices), 2) if prices else 0,
             "available_products": available_count,
             "collection_memberships": collection_memberships,
+            "named_collection_products": named_collection_products,
+            "unassigned_collection_products": len(products)
+            - named_collection_products,
             "multi_collection_products": multi_collection_products,
-            "overlap_memberships": collection_memberships - len(products),
+            "overlap_memberships": collection_memberships
+            - named_collection_products,
             "category_memberships": category_memberships,
             "multi_category_products": multi_category_products,
             "category_overlap_memberships": category_memberships - len(products),
@@ -152,7 +180,11 @@ def build_dashboard(
         "brands": _counter_rows(brand_counts),
         "audiences": _counter_rows(audience_counts),
         "categories": _counter_rows(category_counts),
-        "products": products,
+        "collections": _counter_rows(collection_counts),
+        "products": [
+            {**product, "collections": _product_collections(product)}
+            for product in products
+        ],
     }
 
 
@@ -186,6 +218,14 @@ def build_options(products: list[dict[str, Any]]) -> dict[str, Any]:
                 key=lambda item: item[1].lower(),
             )
         ],
+        "collections": sorted(
+            {
+                collection
+                for product in products
+                for collection in _product_collections(product)
+            },
+            key=str.lower,
+        ),
         "categories": sorted(
             {
                 category
