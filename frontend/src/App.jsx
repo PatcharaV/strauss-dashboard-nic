@@ -74,6 +74,7 @@ function buildQuery(filters) {
   if (filters.subcategories.length) {
     params.set("subcategories", filters.subcategories.join(","));
   }
+  if (filters.color.trim()) params.set("color", filters.color.trim());
   if (filters.minPrice !== "") params.set("min_price", filters.minPrice);
   if (filters.maxPrice !== "") params.set("max_price", filters.maxPrice);
   if (filters.availability !== "all") {
@@ -239,6 +240,7 @@ function App() {
     collections: [],
     categories: [],
     subcategories: [],
+    color: "",
     minPrice: "",
     maxPrice: "",
     availability: "all",
@@ -309,6 +311,7 @@ function App() {
       collections: [],
       categories: [],
       subcategories: [],
+      color: "",
       minPrice: "",
       maxPrice: "",
       availability: "all",
@@ -325,6 +328,7 @@ function App() {
       collections: [],
       categories: [],
       subcategories: [],
+      color: "",
     });
   }
 
@@ -370,6 +374,7 @@ function App() {
     ...filters.collections,
     ...filters.categories,
     ...filters.subcategories,
+    filters.color.trim() ? `Color: ${filters.color.trim()}` : null,
     filters.availability === "available" ? "Available only" : null,
     filters.availability === "unavailable" ? "Unavailable only" : null,
     filters.topSeller === "yes" ? "Top seller only" : null,
@@ -853,7 +858,7 @@ function App() {
             <div className="table-wrap">
                 <table>
                   <thead>
-                    <tr>
+                    <tr className="table-heading-row">
                       <th>Product</th>
                       <th>Category</th>
                       <th>Sub category</th>
@@ -863,6 +868,187 @@ function App() {
                       <th>Top seller</th>
                       <th>Price range</th>
                       <th>Status</th>
+                    </tr>
+                    <tr className="table-filter-row">
+                      <th>
+                        <input
+                          type="search"
+                          aria-label="Filter products by name"
+                          placeholder="Search..."
+                          value={filters.search}
+                          onChange={(event) =>
+                            setFilters({ ...filters, search: event.target.value })
+                          }
+                        />
+                      </th>
+                      <th>
+                        <select
+                          aria-label="Filter by category"
+                          value={
+                            filters.categories.length === 1
+                              ? filters.categories[0]
+                              : "all"
+                          }
+                          onChange={(event) =>
+                            setFilters({
+                              ...filters,
+                              categories:
+                                event.target.value === "all"
+                                  ? []
+                                  : [event.target.value],
+                              subcategories: [],
+                            })
+                          }
+                        >
+                          <option value="all">All</option>
+                          {options.categories.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                          ))}
+                        </select>
+                      </th>
+                      <th>
+                        <select
+                          aria-label="Filter by sub category"
+                          value={
+                            filters.subcategories.length === 1
+                              ? filters.subcategories[0]
+                              : "all"
+                          }
+                          onChange={(event) =>
+                            setFilters({
+                              ...filters,
+                              subcategories:
+                                event.target.value === "all"
+                                  ? []
+                                  : [event.target.value],
+                            })
+                          }
+                        >
+                          <option value="all">All</option>
+                          {options.subcategories.map((subcategory) => (
+                            <option key={subcategory} value={subcategory}>
+                              {subcategory}
+                            </option>
+                          ))}
+                        </select>
+                      </th>
+                      <th>
+                        <select
+                          aria-label="Filter by collection"
+                          value={
+                            filters.collections.length === 1
+                              ? filters.collections[0]
+                              : "all"
+                          }
+                          onChange={(event) =>
+                            setFilters({
+                              ...filters,
+                              collections:
+                                event.target.value === "all"
+                                  ? []
+                                  : [event.target.value],
+                            })
+                          }
+                        >
+                          <option value="all">All</option>
+                          {(options.collections || []).map((collection) => (
+                            <option key={collection} value={collection}>
+                              {collection}
+                            </option>
+                          ))}
+                        </select>
+                      </th>
+                      <th>
+                        <input
+                          type="search"
+                          aria-label="Filter by color"
+                          placeholder="Color..."
+                          value={filters.color}
+                          onChange={(event) =>
+                            setFilters({ ...filters, color: event.target.value })
+                          }
+                        />
+                      </th>
+                      <th>
+                        <select
+                          aria-label="Filter by material"
+                          value={filters.material}
+                          onChange={(event) =>
+                            setFilters({
+                              ...filters,
+                              material: event.target.value,
+                            })
+                          }
+                        >
+                          <option value="all">All</option>
+                          <option value="specified">Specified</option>
+                          <option value="missing">Missing</option>
+                        </select>
+                      </th>
+                      <th>
+                        <select
+                          aria-label="Filter by top seller"
+                          value={filters.topSeller}
+                          onChange={(event) =>
+                            setFilters({
+                              ...filters,
+                              topSeller: event.target.value,
+                            })
+                          }
+                        >
+                          <option value="all">All</option>
+                          <option value="yes">Top seller</option>
+                          <option value="no">Not top seller</option>
+                        </select>
+                      </th>
+                      <th>
+                        <div className="table-price-filter">
+                          <input
+                            type="number"
+                            min="0"
+                            aria-label="Minimum price"
+                            placeholder="Min"
+                            value={filters.minPrice}
+                            onChange={(event) =>
+                              setFilters({
+                                ...filters,
+                                minPrice: event.target.value,
+                              })
+                            }
+                          />
+                          <input
+                            type="number"
+                            min="0"
+                            aria-label="Maximum price"
+                            placeholder="Max"
+                            value={filters.maxPrice}
+                            onChange={(event) =>
+                              setFilters({
+                                ...filters,
+                                maxPrice: event.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                      </th>
+                      <th>
+                        <select
+                          aria-label="Filter by availability"
+                          value={filters.availability}
+                          onChange={(event) =>
+                            setFilters({
+                              ...filters,
+                              availability: event.target.value,
+                            })
+                          }
+                        >
+                          <option value="all">All</option>
+                          <option value="available">Available</option>
+                          <option value="unavailable">Unavailable</option>
+                        </select>
+                      </th>
                     </tr>
                   </thead>
                   <tbody>

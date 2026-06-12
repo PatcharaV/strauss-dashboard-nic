@@ -691,6 +691,41 @@ th {
   text-transform: uppercase;
 }
 
+.table-filter-row th {
+  top: 40px;
+  z-index: 4;
+  padding: 7px 6px;
+  background: #f8f8f7;
+}
+
+.table-filter-row input,
+.table-filter-row select {
+  width: 100%;
+  min-width: 90px;
+  height: 32px;
+  padding: 0 7px;
+  color: #34363a;
+  background: #fff;
+  border: 1px solid #d5d7da;
+  border-radius: 5px;
+  font-size: 10px;
+  letter-spacing: 0;
+  text-transform: none;
+  outline: none;
+}
+
+.table-filter-row input:focus,
+.table-filter-row select:focus {
+  border-color: #ef3e42;
+  box-shadow: 0 0 0 2px rgba(239, 62, 66, 0.1);
+}
+
+.table-price-filter {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(58px, 1fr));
+  gap: 4px;
+}
+
 tbody tr:nth-child(even) {
   background: #fafafa;
 }

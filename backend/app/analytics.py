@@ -21,6 +21,7 @@ def filter_products(
     collections: list[str] | None = None,
     categories: list[str] | None = None,
     subcategories: list[str] | None = None,
+    color: str | None = None,
     min_price: float | None = None,
     max_price: float | None = None,
     availability: str | None = None,
@@ -33,6 +34,7 @@ def filter_products(
     selected_categories = set(categories or [])
     selected_subcategories = set(subcategories or [])
     search_term = (search or "").strip().lower()
+    color_term = (color or "").strip().lower()
 
     def matches(product: dict[str, Any]) -> bool:
         if search_term:
@@ -72,6 +74,8 @@ def filter_products(
         if selected_subcategories and not (
             selected_subcategories & set(product.get("subcategories", []))
         ):
+            return False
+        if color_term and color_term not in str(product.get("color", "")).lower():
             return False
         price = float(product.get("price_min", 0))
         if min_price is not None and price < min_price:
