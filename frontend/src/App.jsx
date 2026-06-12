@@ -542,6 +542,32 @@ function App() {
             </label>
 
             <label>
+              <span className="filter-title">Collection</span>
+              <select
+                value={
+                  filters.collections.length === 1
+                    ? filters.collections[0]
+                    : "all"
+                }
+                onChange={(event) =>
+                  setFilters({
+                    ...filters,
+                    collections:
+                      event.target.value === "all" ? [] : [event.target.value],
+                  })
+                }
+                disabled={!options.collections?.length}
+              >
+                <option value="all">All collections</option>
+                {(options.collections || []).map((collection) => (
+                  <option key={collection} value={collection}>
+                    {collection}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
               <span className="filter-title">Top seller</span>
               <select
                 value={filters.topSeller}
@@ -589,12 +615,6 @@ function App() {
             options={options.audiences}
             selected={filters.audiences}
             onChange={(audiences) => setFilters({ ...filters, audiences })}
-          />
-          <FilterGroup
-            title="Product collection"
-            options={options.collections || []}
-            selected={filters.collections}
-            onChange={(collections) => setFilters({ ...filters, collections })}
           />
           <div className="filter-row">
             <div className="price-control">
@@ -890,7 +910,7 @@ function App() {
                               ))
                             : "Not specified"}
                         </td>
-                        <td>
+                        <td className="collection-cell">
                           {product.collections?.length
                             ? product.collections.map((collection, index) => (
                                 <span key={collection}>

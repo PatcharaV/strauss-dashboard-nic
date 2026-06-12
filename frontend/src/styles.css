@@ -343,7 +343,7 @@ h2 {
 
 .primary-filter-grid {
   display: grid;
-  grid-template-columns: minmax(240px, 1.7fr) repeat(5, minmax(135px, 1fr));
+  grid-template-columns: minmax(240px, 1.7fr) repeat(6, minmax(125px, 1fr));
   gap: 12px;
 }
 
@@ -715,6 +715,10 @@ td:first-child {
   min-width: 150px;
   color: #4f5257;
   font-weight: 650;
+}
+
+.collection-cell {
+  min-width: 150px;
 }
 
 .price-cell {
