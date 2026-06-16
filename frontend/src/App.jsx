@@ -33,6 +33,14 @@ const DEFAULT_SECTIONS = {
   products: true,
 };
 
+const SHOP_HIGHLIGHTS = [
+  "Topseller",
+  "News",
+  "New Color",
+  "Spring Favorite",
+  "STRAUSS Pick",
+];
+
 const formatNumber = new Intl.NumberFormat("en-US");
 const formatMoney = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -67,7 +75,7 @@ async function exportProductsToExcel(products) {
     Color: product.color || "Not specified",
     Material: product.material || "Not specified",
     Function: (product.product_functions || []).join(", "),
-    "Top Seller": product.top_seller ? "Yes" : "No",
+    "Shop Highlights": (product.shop_highlights || []).join(", "),
     "Price Min": product.price_min,
     "Price Max": product.price_max,
     "Price Range": formatPrice(product),
@@ -121,8 +129,8 @@ function buildQuery(filters) {
   if (filters.availability !== "all") {
     params.set("availability", filters.availability);
   }
-  if (filters.topSeller !== "all") {
-    params.set("top_seller", filters.topSeller);
+  if (filters.shopHighlight !== "all") {
+    params.set("shop_highlight", filters.shopHighlight);
   }
   if (filters.material !== "all") {
     params.set("material", filters.material);
@@ -285,7 +293,7 @@ function App() {
     minPrice: "",
     maxPrice: "",
     availability: "all",
-    topSeller: "all",
+    shopHighlight: "all",
     material: "all",
   });
   const [sections, setSections] = useState(DEFAULT_SECTIONS);
@@ -369,7 +377,7 @@ function App() {
       minPrice: "",
       maxPrice: "",
       availability: "all",
-      topSeller: "all",
+      shopHighlight: "all",
       material: "all",
     });
   }
@@ -440,8 +448,9 @@ function App() {
     filters.color.trim() ? `Color: ${filters.color.trim()}` : null,
     filters.availability === "available" ? "Available only" : null,
     filters.availability === "unavailable" ? "Unavailable only" : null,
-    filters.topSeller === "yes" ? "Top seller only" : null,
-    filters.topSeller === "no" ? "Not top seller" : null,
+    filters.shopHighlight !== "all"
+      ? `Shop Highlight: ${filters.shopHighlight}`
+      : null,
     filters.material === "specified" ? "Material specified" : null,
     filters.material === "missing" ? "Material not specified" : null,
     filters.minPrice !== "" ? `Min $${filters.minPrice}` : null,
@@ -635,16 +644,20 @@ function App() {
             </label>
 
             <label>
-              <span className="filter-title">Top seller</span>
+              <span className="filter-title">Shop Highlights</span>
               <select
-                value={filters.topSeller}
+                value={filters.shopHighlight}
                 onChange={(event) =>
-                  setFilters({ ...filters, topSeller: event.target.value })
+                  setFilters({ ...filters, shopHighlight: event.target.value })
                 }
               >
                 <option value="all">All products</option>
-                <option value="yes">Top sellers</option>
-                <option value="no">Not top sellers</option>
+                {SHOP_HIGHLIGHTS.map((highlight) => (
+                  <option key={highlight} value={highlight}>
+                    {highlight}
+                  </option>
+                ))}
+                <option value="none">No highlights</option>
               </select>
             </label>
 
@@ -1002,7 +1015,7 @@ function App() {
                       <th>Color</th>
                       <th>Material</th>
                       <th>Function</th>
-                      <th>Top seller</th>
+                      <th>Shop Highlights</th>
                       <th>Price range</th>
                       <th>Status</th>
                     </tr>
@@ -1158,18 +1171,22 @@ function App() {
                       </th>
                       <th>
                         <select
-                          aria-label="Filter by top seller"
-                          value={filters.topSeller}
+                          aria-label="Filter by shop highlights"
+                          value={filters.shopHighlight}
                           onChange={(event) =>
                             setFilters({
                               ...filters,
-                              topSeller: event.target.value,
+                              shopHighlight: event.target.value,
                             })
                           }
                         >
                           <option value="all">All</option>
-                          <option value="yes">Top seller</option>
-                          <option value="no">Not top seller</option>
+                          {SHOP_HIGHLIGHTS.map((highlight) => (
+                            <option key={highlight} value={highlight}>
+                              {highlight}
+                            </option>
+                          ))}
+                          <option value="none">No highlights</option>
                         </select>
                       </th>
                       <th>
@@ -1336,22 +1353,36 @@ function App() {
                             : "Not specified"}
                         </td>
                         <td>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setFilters({
-                                ...filters,
-                                topSeller: product.top_seller ? "yes" : "no",
-                              })
-                            }
-                            className={
-                              product.top_seller
-                                ? "seller-badge yes"
-                                : "seller-badge no"
-                            }
-                          >
-                            {product.top_seller ? "Top seller" : "No"}
-                          </button>
+                          {product.shop_highlights?.length ? (
+                            product.shop_highlights.map((highlight) => (
+                              <button
+                                key={highlight}
+                                type="button"
+                                onClick={() =>
+                                  setFilters({
+                                    ...filters,
+                                    shopHighlight: highlight,
+                                  })
+                                }
+                                className="seller-badge yes"
+                              >
+                                {highlight}
+                              </button>
+                            ))
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setFilters({
+                                  ...filters,
+                                  shopHighlight: "none",
+                                })
+                              }
+                              className="seller-badge no"
+                            >
+                              No highlights
+                            </button>
+                          )}
                         </td>
                         <td className="price-cell">{formatPrice(product)}</td>
                         <td>

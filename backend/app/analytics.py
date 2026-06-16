@@ -97,6 +97,7 @@ def filter_products(
     max_price: float | None = None,
     availability: str | None = None,
     top_seller: str | None = None,
+    shop_highlight: str | None = None,
     material: str | None = None,
 ) -> list[dict[str, Any]]:
     selected_brands = set(brands or [])
@@ -162,6 +163,12 @@ def filter_products(
             return False
         if top_seller == "no" and product.get("top_seller"):
             return False
+        if shop_highlight and shop_highlight != "all":
+            if shop_highlight == "none":
+                if product.get("shop_highlights", []):
+                    return False
+            elif shop_highlight not in product.get("shop_highlights", []):
+                return False
         if material == "specified" and not product.get("material"):
             return False
         if material == "missing" and product.get("material"):

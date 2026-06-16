@@ -63,6 +63,13 @@ PRODUCT_FUNCTION_PATTERNS = (
     (r"\bstretch\b|\belastane\b|\bspandex\b", "Stretch"),
 )
 TOP_SELLERS_COLLECTION = "top-sellers"
+SHOP_HIGHLIGHT_LABELS = {
+    "Top Seller": "Topseller",
+    "New": "News",
+    "New Color": "New Color",
+    "Spring Favorite": "Spring Favorite",
+    "STRAUSS Pick": "STRAUSS Pick",
+}
 CATEGORY_COLLECTIONS = {
     "Shirts": (
         ("shirts", "men"),
@@ -216,7 +223,7 @@ def _normalize_product(
     audiences: list[str],
     categories: list[str],
     collections: list[str],
-    top_seller: bool,
+    shop_highlights: list[str],
     material: str,
 ) -> dict[str, Any]:
     variants = product.get("variants") or []
@@ -274,7 +281,8 @@ def _normalize_product(
             tags,
             material,
         ),
-        "top_seller": top_seller,
+        "shop_highlights": shop_highlights,
+        "top_seller": "Topseller" in shop_highlights,
         "published_at": product.get("published_at"),
         "updated_at": product.get("updated_at"),
     }
@@ -318,6 +326,15 @@ def _card_identity(href: str) -> tuple[str, str]:
     handle = path.split("/products/", 1)[1].strip("/")
     variant_id = parse_qs(parsed.query).get("variant", [""])[0]
     return variant_id or handle, handle
+
+
+def _card_shop_highlights(card: Any) -> list[str]:
+    highlights: list[str] = []
+    for label in card.select(".product-label"):
+        mapped = SHOP_HIGHLIGHT_LABELS.get(label.get_text(" ", strip=True))
+        if mapped and mapped not in highlights:
+            highlights.append(mapped)
+    return highlights
 
 
 async def _fetch_collection_cards(
@@ -368,6 +385,7 @@ async def _fetch_collection_cards(
                 "handle": product_handle,
                 "href": link,
                 "title": title.get_text(" ", strip=True) if title else "",
+                "shop_highlights": _card_shop_highlights(card),
                 "price": (
                     float(price_match.group(1).replace(",", ""))
                     if price_match
@@ -435,13 +453,18 @@ async def _fetch_category_memberships(
         for collection, audience in collections:
             cards = await _fetch_collection_cards(client, collection)
             for identity, card in cards.items():
+                card_highlights = set(card.get("shop_highlights", []))
                 memberships.setdefault(identity, set()).add(category)
                 if identity in category_cards:
                     category_cards[identity]["audiences"].add(audience)
+                    category_cards[identity]["shop_highlights"].update(
+                        card_highlights
+                    )
                 else:
                     category_cards[identity] = {
                         **card,
                         "audiences": {audience},
+                        "shop_highlights": card_highlights,
                     }
             for product in await _fetch_collection_products(client, collection):
                 category_products[str(product.get("handle", ""))] = product
@@ -597,11 +620,13 @@ async def scrape_strauss_products() -> dict[str, Any]:
         for handle in COLLECTIONS:
             collection_cards = await _fetch_collection_cards(client, handle)
             for identity, card in collection_cards.items():
+                card_highlights = set(card.get("shop_highlights", []))
                 current = listings.setdefault(
                     identity,
-                    {**card, "audiences": set()},
+                    {**card, "audiences": set(), "shop_highlights": set()},
                 )
                 current["audiences"].add(handle)
+                current["shop_highlights"].update(card_highlights)
 
             for product in await _fetch_collection_products(client, handle):
                 product_handle = str(product.get("handle", ""))
@@ -612,8 +637,8 @@ async def scrape_strauss_products() -> dict[str, Any]:
                     raw_products[product_handle] = product
             await asyncio.sleep(REQUEST_DELAY_SECONDS)
 
-        top_seller_ids = set(
-            await _fetch_collection_cards(client, TOP_SELLERS_COLLECTION)
+        highlight_cards = await _fetch_collection_cards(
+            client, TOP_SELLERS_COLLECTION
         )
         (
             category_memberships,
@@ -625,9 +650,21 @@ async def scrape_strauss_products() -> dict[str, Any]:
             await _fetch_product_collection_memberships(client)
         )
         raw_products.update(category_products)
+        for identity, card in highlight_cards.items():
+            if identity in listings:
+                listings[identity].setdefault("shop_highlights", set()).update(
+                    card.get("shop_highlights", [])
+                )
+            if identity in category_cards:
+                category_cards[identity].setdefault("shop_highlights", set()).update(
+                    card.get("shop_highlights", [])
+                )
         for identity, card in category_cards.items():
             if identity in listings:
                 listings[identity]["audiences"].update(card["audiences"])
+                listings[identity].setdefault("shop_highlights", set()).update(
+                    card.get("shop_highlights", [])
+                )
             else:
                 listings[identity] = card
 
@@ -673,7 +710,7 @@ async def scrape_strauss_products() -> dict[str, Any]:
                 sorted(card["audiences"]),
                 categories,
                 collections,
-                identity in top_seller_ids,
+                sorted(card.get("shop_highlights", [])),
                 _extract_material(str(product.get("body_html", ""))),
             )
         normalized["subcategories"] = subcategories

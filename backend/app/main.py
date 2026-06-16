@@ -72,6 +72,7 @@ async def options(
     max_price: float | None = Query(default=None, ge=0),
     availability: str | None = Query(default=None, pattern="^(available|unavailable)$"),
     top_seller: str | None = Query(default=None, pattern="^(yes|no)$"),
+    shop_highlight: str | None = None,
     material: str | None = Query(default=None, pattern="^(specified|missing)$"),
 ) -> dict[str, Any]:
     if min_price is not None and max_price is not None and min_price > max_price:
@@ -92,6 +93,7 @@ async def options(
         max_price=max_price,
         availability=availability,
         top_seller=top_seller,
+        shop_highlight=shop_highlight,
         material=material,
     )
     options = build_options(products, selected_categories)
@@ -112,6 +114,7 @@ async def dashboard(
     max_price: float | None = Query(default=None, ge=0),
     availability: str | None = Query(default=None, pattern="^(available|unavailable)$"),
     top_seller: str | None = Query(default=None, pattern="^(yes|no)$"),
+    shop_highlight: str | None = None,
     material: str | None = Query(default=None, pattern="^(specified|missing)$"),
 ) -> dict[str, Any]:
     if min_price is not None and max_price is not None and min_price > max_price:
@@ -132,6 +135,7 @@ async def dashboard(
         max_price,
         availability,
         top_seller,
+        shop_highlight,
         material,
     )
     return build_dashboard(
@@ -155,6 +159,7 @@ async def products(
     max_price: float | None = Query(default=None, ge=0),
     availability: str | None = Query(default=None, pattern="^(available|unavailable)$"),
     top_seller: str | None = Query(default=None, pattern="^(yes|no)$"),
+    shop_highlight: str | None = None,
     material: str | None = Query(default=None, pattern="^(specified|missing)$"),
     limit: int = Query(default=100, ge=1, le=500),
 ) -> dict[str, Any]:
@@ -172,6 +177,7 @@ async def products(
         max_price,
         availability,
         top_seller,
+        shop_highlight,
         material,
     )
     return {"total": len(rows), "products": rows[:limit]}

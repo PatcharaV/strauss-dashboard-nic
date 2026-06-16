@@ -63,11 +63,20 @@ def _clothing_products(products: list[dict[str, Any]]) -> list[dict[str, Any]]:
         matched_categories = sorted(categories & allowed)
         if not matched_categories:
             continue
+        shop_highlights = [
+            str(highlight)
+            for highlight in product.get("shop_highlights", [])
+            if str(highlight).strip()
+        ]
+        if product.get("top_seller") and "Topseller" not in shop_highlights:
+            shop_highlights.append("Topseller")
         clothing.append(
             {
                 **product,
                 "category": matched_categories[0],
                 "categories": matched_categories,
+                "shop_highlights": shop_highlights,
+                "top_seller": "Topseller" in shop_highlights,
                 "product_functions": product.get("product_functions")
                 or extract_product_functions(
                     product.get("title", ""),
@@ -113,11 +122,20 @@ def _normalize_strauss_categories(product: dict[str, Any]) -> dict[str, Any]:
     ]
 
     categories = categories or ["Other"]
+    shop_highlights = [
+        highlight
+        for highlight in product.get("shop_highlights", [])
+        if highlight
+    ]
+    if product.get("top_seller") and "Topseller" not in shop_highlights:
+        shop_highlights.append("Topseller")
     return {
         **product,
         "category": categories[0],
         "categories": categories,
         "subcategories": subcategories,
+        "shop_highlights": shop_highlights,
+        "top_seller": "Topseller" in shop_highlights,
     }
 
 
