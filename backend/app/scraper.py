@@ -70,6 +70,18 @@ SHOP_HIGHLIGHT_LABELS = {
     "Spring Favorite": "Spring Favorite",
     "STRAUSS Pick": "STRAUSS Pick",
 }
+FEATURE_COLLECTIONS = {
+    "New Arrivals": (
+        ("new-arrivals-men", "men"),
+        ("new-arrivals-women", "women"),
+    ),
+    "Best Sellers": ((TOP_SELLERS_COLLECTION, ""),),
+    "High-Visibility": (("high-vis", "men"),),
+    "Thermal Layers": (
+        ("mens-thermal-layers", "men"),
+        ("womens-thermal-layers", "women"),
+    ),
+}
 CATEGORY_COLLECTIONS = {
     "Shirts": (
         ("shirts", "men"),
@@ -485,6 +497,36 @@ async def _fetch_subcategory_memberships(
     return memberships
 
 
+async def _fetch_feature_memberships(
+    client: httpx.AsyncClient,
+) -> tuple[dict[str, set[str]], dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+    memberships: dict[str, set[str]] = {}
+    feature_cards: dict[str, dict[str, Any]] = {}
+    feature_products: dict[str, dict[str, Any]] = {}
+    for feature, collections in FEATURE_COLLECTIONS.items():
+        for collection, audience in collections:
+            cards = await _fetch_collection_cards(client, collection)
+            for identity, card in cards.items():
+                card_highlights = set(card.get("shop_highlights", []))
+                memberships.setdefault(identity, set()).add(feature)
+                if identity in feature_cards:
+                    if audience:
+                        feature_cards[identity]["audiences"].add(audience)
+                    feature_cards[identity]["shop_highlights"].update(
+                        card_highlights
+                    )
+                else:
+                    feature_cards[identity] = {
+                        **card,
+                        "audiences": {audience} if audience else set(),
+                        "shop_highlights": card_highlights,
+                    }
+            for product in await _fetch_collection_products(client, collection):
+                feature_products[str(product.get("handle", ""))] = product
+            await asyncio.sleep(REQUEST_DELAY_SECONDS)
+    return memberships, feature_cards, feature_products
+
+
 async def _fetch_collection_products(
     client: httpx.AsyncClient, handle: str
 ) -> list[dict[str, Any]]:
@@ -588,7 +630,11 @@ def _fallback_classification(
     categories: list[str],
     subcategories: list[str],
 ) -> tuple[list[str], list[str]]:
-    categories = [category for category in categories if category != "Thermal Layers"]
+    categories = [
+        category
+        for category in categories
+        if category != "Thermal Layers" or len(categories) == 1
+    ]
     subcategories = [
         subcategory
         for subcategory in subcategories
@@ -646,10 +692,16 @@ async def scrape_strauss_products() -> dict[str, Any]:
             category_products,
         ) = await _fetch_category_memberships(client)
         subcategory_memberships = await _fetch_subcategory_memberships(client)
+        (
+            feature_memberships,
+            feature_cards,
+            feature_products,
+        ) = await _fetch_feature_memberships(client)
         product_collection_memberships = (
             await _fetch_product_collection_memberships(client)
         )
         raw_products.update(category_products)
+        raw_products.update(feature_products)
         for identity, card in highlight_cards.items():
             if identity in listings:
                 listings[identity].setdefault("shop_highlights", set()).update(
@@ -659,9 +711,21 @@ async def scrape_strauss_products() -> dict[str, Any]:
                 category_cards[identity].setdefault("shop_highlights", set()).update(
                     card.get("shop_highlights", [])
                 )
+            if identity in feature_cards:
+                feature_cards[identity].setdefault("shop_highlights", set()).update(
+                    card.get("shop_highlights", [])
+                )
         for identity, card in category_cards.items():
             if identity in listings:
                 listings[identity]["audiences"].update(card["audiences"])
+                listings[identity].setdefault("shop_highlights", set()).update(
+                    card.get("shop_highlights", [])
+                )
+            else:
+                listings[identity] = card
+        for identity, card in feature_cards.items():
+            if identity in listings:
+                listings[identity]["audiences"].update(card.get("audiences", set()))
                 listings[identity].setdefault("shop_highlights", set()).update(
                     card.get("shop_highlights", [])
                 )
@@ -689,6 +753,7 @@ async def scrape_strauss_products() -> dict[str, Any]:
             continue
         categories = sorted(category_memberships.get(identity, set()))
         subcategories = sorted(subcategory_memberships.get(identity, set()))
+        features = sorted(feature_memberships.get(identity, set()))
         product_type = str(product.get("product_type") or "Other").strip()
         if not categories:
             categories = [
@@ -700,6 +765,10 @@ async def scrape_strauss_products() -> dict[str, Any]:
             subcategories,
         )
         title = str(card.get("title") or product.get("title", ""))
+        if "Thermal Layers" in features and categories == ["Other"]:
+            categories = ["Thermal Layers"]
+            if "pant" in title.lower():
+                subcategories = ["Thermal Pants"]
         collections = sorted(product_collection_memberships.get(identity, set()))
         for collection in extract_product_collections(title):
             if collection.startswith("Strauss x ") and collection not in collections:
@@ -714,6 +783,7 @@ async def scrape_strauss_products() -> dict[str, Any]:
                 _extract_material(str(product.get("body_html", ""))),
             )
         normalized["subcategories"] = subcategories
+        normalized["features"] = features
         products.append(normalized)
     products.sort(key=lambda item: (item["title"].lower(), item["color"].lower()))
     return {

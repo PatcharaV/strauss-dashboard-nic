@@ -23,6 +23,12 @@ export const demoOptions = {
     "Strauss x LA FC",
     "Strauss x Stuntmen's Association",
   ],
+  features: [
+    "New Arrivals",
+    "Best Sellers",
+    "High-Visibility",
+    "Thermal Layers",
+  ],
   categories: [
     "Shirts",
     "Pants",

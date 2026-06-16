@@ -72,6 +72,7 @@ async function exportProductsToExcel(products) {
     Category: (product.categories || [product.category]).join(", "),
     "Sub Category": (product.subcategories || []).join(", "),
     Collection: (product.collections || []).join(", "),
+    Feature: (product.features || []).join(", "),
     Color: product.color || "Not specified",
     Material: product.material || "Not specified",
     Function: (product.product_functions || []).join(", "),
@@ -89,6 +90,7 @@ async function exportProductsToExcel(products) {
     { wch: 24 },
     { wch: 28 },
     { wch: 28 },
+    { wch: 22 },
     { wch: 22 },
     { wch: 50 },
     { wch: 34 },
@@ -116,6 +118,9 @@ function buildQuery(filters) {
   }
   if (filters.collections.length) {
     params.set("collections", filters.collections.join(","));
+  }
+  if (filters.features.length) {
+    params.set("features", filters.features.join(","));
   }
   if (filters.categories.length) {
     params.set("categories", filters.categories.join(","));
@@ -287,6 +292,7 @@ function App() {
     brands: ["strauss"],
     audiences: [],
     collections: [],
+    features: [],
     categories: [],
     subcategories: [],
     color: "",
@@ -371,6 +377,7 @@ function App() {
       brands: filters.brands,
       audiences: [],
       collections: [],
+      features: [],
       categories: [],
       subcategories: [],
       color: "",
@@ -388,6 +395,7 @@ function App() {
       brands: [brand],
       audiences: [],
       collections: [],
+      features: [],
       categories: [],
       subcategories: [],
       color: "",
@@ -433,6 +441,15 @@ function App() {
     });
   }
 
+  function toggleFeature(feature) {
+    setFilters({
+      ...filters,
+      features: filters.features.includes(feature)
+        ? filters.features.filter((item) => item !== feature)
+        : [...filters.features, feature],
+    });
+  }
+
   const selectedAudienceLabels = options.audiences
     .filter((item) => filters.audiences.includes(item.value))
     .map((item) => item.label);
@@ -443,6 +460,7 @@ function App() {
       .map((item) => item.label),
     ...selectedAudienceLabels,
     ...filters.collections,
+    ...filters.features,
     ...filters.categories,
     ...filters.subcategories,
     filters.color.trim() ? `Color: ${filters.color.trim()}` : null,
@@ -638,6 +656,30 @@ function App() {
                 {(options.collections || []).map((collection) => (
                   <option key={collection} value={collection}>
                     {collection}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              <span className="filter-title">Feature</span>
+              <select
+                value={
+                  filters.features.length === 1 ? filters.features[0] : "all"
+                }
+                onChange={(event) =>
+                  setFilters({
+                    ...filters,
+                    features:
+                      event.target.value === "all" ? [] : [event.target.value],
+                  })
+                }
+                disabled={!options.features?.length}
+              >
+                <option value="all">All features</option>
+                {(options.features || []).map((feature) => (
+                  <option key={feature} value={feature}>
+                    {feature}
                   </option>
                 ))}
               </select>
@@ -1012,6 +1054,7 @@ function App() {
                       <th>Category</th>
                       <th>Sub category</th>
                       <th>Collection</th>
+                      <th>Feature</th>
                       <th>Color</th>
                       <th>Material</th>
                       <th>Function</th>
@@ -1135,6 +1178,32 @@ function App() {
                           {(options.collections || []).map((collection) => (
                             <option key={collection} value={collection}>
                               {collection}
+                            </option>
+                          ))}
+                        </select>
+                      </th>
+                      <th>
+                        <select
+                          aria-label="Filter by feature"
+                          value={
+                            filters.features.length === 1
+                              ? filters.features[0]
+                              : "all"
+                          }
+                          onChange={(event) =>
+                            setFilters({
+                              ...filters,
+                              features:
+                                event.target.value === "all"
+                                  ? []
+                                  : [event.target.value],
+                            })
+                          }
+                        >
+                          <option value="all">All</option>
+                          {(options.features || []).map((feature) => (
+                            <option key={feature} value={feature}>
+                              {feature}
                             </option>
                           ))}
                         </select>
@@ -1327,6 +1396,22 @@ function App() {
                                 </span>
                               ))
                             : "No named collection"}
+                        </td>
+                        <td>
+                          {product.features?.length
+                            ? product.features.map((feature, index) => (
+                                <span key={feature}>
+                                  {index > 0 && ", "}
+                                  <button
+                                    className="table-filter-button"
+                                    type="button"
+                                    onClick={() => toggleFeature(feature)}
+                                  >
+                                    {feature}
+                                  </button>
+                                </span>
+                              ))
+                            : "No feature"}
                         </td>
                         <td className="color-cell">
                           {product.color || "Not specified"}

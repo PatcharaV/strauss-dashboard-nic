@@ -18,7 +18,7 @@ SUBCATEGORY_PARENTS = {
     "Jeans": "Pants",
     "Bibs, Coveralls & Overalls": "Pants",
     "Kids Pants": "Pants",
-    "Thermal Pants": "Pants",
+    "Thermal Pants": "Thermal Layers",
     "Work Shorts": "Shorts",
     "Cargo Shorts": "Shorts",
     "Women's Shorts": "Shorts",
@@ -90,6 +90,7 @@ def filter_products(
     brands: list[str] | None = None,
     audiences: list[str] | None = None,
     collections: list[str] | None = None,
+    features: list[str] | None = None,
     categories: list[str] | None = None,
     subcategories: list[str] | None = None,
     color: str | None = None,
@@ -103,6 +104,7 @@ def filter_products(
     selected_brands = set(brands or [])
     selected_audiences = set(audiences or [])
     selected_collections = set(collections or [])
+    selected_features = set(features or [])
     selected_categories = set(categories or [])
     selected_subcategories = set(subcategories or [])
     search_term = (search or "").strip().lower()
@@ -123,6 +125,7 @@ def filter_products(
                     str(product.get("color", "")),
                     " ".join(product.get("audience_labels", [])),
                     " ".join(_product_collections(product)),
+                    " ".join(product.get("features", [])),
                     " ".join(_product_functions(product)),
                 ]
             ).lower()
@@ -136,6 +139,10 @@ def filter_products(
             return False
         if selected_collections and not (
             selected_collections & set(_product_collections(product))
+        ):
+            return False
+        if selected_features and not (
+            selected_features & set(product.get("features", []))
         ):
             return False
         product_categories = set(
@@ -319,6 +326,14 @@ def build_options(
                 collection
                 for product in products
                 for collection in _product_collections(product)
+            },
+            key=str.lower,
+        ),
+        "features": sorted(
+            {
+                feature
+                for product in products
+                for feature in product.get("features", [])
             },
             key=str.lower,
         ),

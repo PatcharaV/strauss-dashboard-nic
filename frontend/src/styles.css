@@ -369,7 +369,7 @@ h2 {
 
 .primary-filter-grid {
   display: grid;
-  grid-template-columns: minmax(240px, 1.7fr) repeat(6, minmax(125px, 1fr));
+  grid-template-columns: minmax(220px, 1.6fr) repeat(7, minmax(120px, 1fr));
   gap: 12px;
 }
 

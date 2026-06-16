@@ -19,6 +19,7 @@ CLOTHING_CATEGORIES = {
         "Hoodies & Sweatshirts",
         "Shorts",
         "Leggings",
+        "Thermal Layers",
     },
     "rhone": {
         "Blazers/Jackets",
@@ -68,6 +69,11 @@ def _clothing_products(products: list[dict[str, Any]]) -> list[dict[str, Any]]:
             for highlight in product.get("shop_highlights", [])
             if str(highlight).strip()
         ]
+        features = [
+            str(feature)
+            for feature in product.get("features", [])
+            if str(feature).strip()
+        ]
         if product.get("top_seller") and "Topseller" not in shop_highlights:
             shop_highlights.append("Topseller")
         clothing.append(
@@ -75,6 +81,7 @@ def _clothing_products(products: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 **product,
                 "category": matched_categories[0],
                 "categories": matched_categories,
+                "features": features,
                 "shop_highlights": shop_highlights,
                 "top_seller": "Topseller" in shop_highlights,
                 "product_functions": product.get("product_functions")
@@ -107,13 +114,14 @@ def _normalize_strauss_categories(product: dict[str, Any]) -> dict[str, Any]:
         return product
 
     title = str(product.get("title", "")).lower()
+    raw_categories = list(
+        product.get("categories")
+        or [str(product.get("category", "Other"))]
+    )
     categories = [
         category
-        for category in (
-            product.get("categories")
-            or [str(product.get("category", "Other"))]
-        )
-        if category != "Thermal Layers"
+        for category in raw_categories
+        if category != "Thermal Layers" or len(raw_categories) == 1
     ]
     subcategories = [
         subcategory
@@ -122,6 +130,15 @@ def _normalize_strauss_categories(product: dict[str, Any]) -> dict[str, Any]:
     ]
 
     categories = categories or ["Other"]
+    features = [
+        feature
+        for feature in product.get("features", [])
+        if feature
+    ]
+    if "Thermal Layers" in features and categories == ["Other"]:
+        categories = ["Thermal Layers"]
+        if "pant" in title:
+            subcategories = ["Thermal Pants"]
     shop_highlights = [
         highlight
         for highlight in product.get("shop_highlights", [])
@@ -134,6 +151,7 @@ def _normalize_strauss_categories(product: dict[str, Any]) -> dict[str, Any]:
         "category": categories[0],
         "categories": categories,
         "subcategories": subcategories,
+        "features": features,
         "shop_highlights": shop_highlights,
         "top_seller": "Topseller" in shop_highlights,
     }
