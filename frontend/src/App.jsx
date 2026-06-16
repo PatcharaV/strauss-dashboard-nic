@@ -72,7 +72,6 @@ async function exportProductsToExcel(products) {
     Category: (product.categories || [product.category]).join(", "),
     "Sub Category": (product.subcategories || []).join(", "),
     Collection: (product.collections || []).join(", "),
-    Feature: (product.features || []).join(", "),
     Color: product.color || "Not specified",
     Material: product.material || "Not specified",
     "Shop Highlights": (product.shop_highlights || []).join(", "),
@@ -89,7 +88,6 @@ async function exportProductsToExcel(products) {
     { wch: 24 },
     { wch: 28 },
     { wch: 28 },
-    { wch: 22 },
     { wch: 22 },
     { wch: 50 },
     { wch: 12 },
@@ -1110,7 +1108,6 @@ function App() {
                       <th>Category</th>
                       <th>Sub category</th>
                       <th>Collection</th>
-                      <th>Feature</th>
                       <th>Color</th>
                       <th>Material</th>
                       <th>Shop Highlights</th>
@@ -1208,22 +1205,6 @@ function App() {
                                 </span>
                               ))
                             : "No named collection"}
-                        </td>
-                        <td>
-                          {product.features?.length
-                            ? product.features.map((feature, index) => (
-                                <span key={feature}>
-                                  {index > 0 && ", "}
-                                  <button
-                                    className="table-filter-button"
-                                    type="button"
-                                    onClick={() => toggleFeature(feature)}
-                                  >
-                                    {feature}
-                                  </button>
-                                </span>
-                              ))
-                            : "No feature"}
                         </td>
                         <td className="color-cell">
                           {product.color || "Not specified"}
