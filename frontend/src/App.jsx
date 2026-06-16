@@ -1,9 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
   ResponsiveContainer,
   Tooltip,
   Treemap,
@@ -27,8 +23,6 @@ const COLORS = [
 
 const DEFAULT_SECTIONS = {
   summary: true,
-  audience: true,
-  categoryDonut: true,
   treemap: true,
   products: true,
 };
@@ -128,69 +122,6 @@ function buildQuery(filters) {
     params.set("material", filters.material);
   }
   return params.toString();
-}
-
-function DonutChart({
-  data,
-  centerLabel,
-  centerValue,
-  onSelect,
-  selectedNames = [],
-}) {
-  const total = data.reduce((sum, item) => sum + item.value, 0);
-  return (
-    <div className="chart-shell">
-      <ResponsiveContainer width="100%" height={330}>
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="value"
-            nameKey="name"
-            cx="37%"
-            cy="50%"
-            innerRadius={68}
-            outerRadius={104}
-            paddingAngle={1}
-            onClick={(entry) => onSelect?.(entry.name)}
-            className="clickable-chart"
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={entry.name}
-                fill={COLORS[index % COLORS.length]}
-                opacity={
-                  selectedNames.length === 0 || selectedNames.includes(entry.name)
-                    ? 1
-                    : 0.28
-                }
-              />
-            ))}
-          </Pie>
-          <Tooltip
-            contentStyle={{ fontSize: 11, padding: "7px 9px" }}
-            itemStyle={{ fontSize: 11 }}
-            formatter={(value, name) => [
-              `${formatNumber.format(value)} (${total ? ((value / total) * 100).toFixed(1) : 0}%)`,
-              name,
-            ]}
-          />
-          <Legend
-            layout="vertical"
-            verticalAlign="middle"
-            align="right"
-            iconType="circle"
-            iconSize={7}
-            wrapperStyle={{ fontSize: 9, lineHeight: "14px" }}
-            onClick={(entry) => onSelect?.(entry.value)}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-      <div className="donut-center">
-        <strong>{formatNumber.format(centerValue ?? total)}</strong>
-        <span>{centerLabel}</span>
-      </div>
-    </div>
-  );
 }
 
 function TreemapContent(props) {
@@ -730,9 +661,7 @@ function App() {
                         setSections({ ...sections, [section]: !sections[section] })
                       }
                     />
-                    {section === "categoryDonut"
-                      ? "Category donut"
-                      : section.charAt(0).toUpperCase() + section.slice(1)}
+                    {section.charAt(0).toUpperCase() + section.slice(1)}
                   </label>
                 ))}
               </div>
@@ -817,65 +746,6 @@ function App() {
       )}
 
       <section className="dashboard-grid" id="charts">
-        {sections.audience && (
-          <article className="panel audience-panel">
-            <div className="panel-heading">
-              <div>
-                <p className="eyebrow">COLLECTION MIX</p>
-                <h2>Product collection</h2>
-              </div>
-              <span className="panel-tag">
-                {formatNumber.format(dashboard.summary.collection_memberships)} memberships
-              </span>
-            </div>
-            <p className="panel-help">
-              {formatNumber.format(
-                dashboard.summary.named_collection_products ?? 0,
-              )} products have a named collection. {formatNumber.format(
-                dashboard.summary.unassigned_collection_products ?? 0,
-              )} have no named collection, and {formatNumber.format(
-                dashboard.summary.multi_collection_products,
-              )} appear in more than one collection, creating{" "}
-              {formatNumber.format(dashboard.summary.overlap_memberships)} extra
-              collection memberships.
-            </p>
-            <DonutChart
-              data={dashboard.collections || []}
-              centerValue={dashboard.summary.named_collection_products ?? 0}
-              centerLabel="named products"
-              onSelect={toggleCollection}
-              selectedNames={filters.collections}
-            />
-          </article>
-        )}
-
-        {sections.categoryDonut && (
-          <article className="panel category-panel">
-            <div className="panel-heading">
-              <div>
-                <p className="eyebrow">PRODUCT MIX</p>
-                <h2>Product category</h2>
-              </div>
-              <span className="panel-tag">
-                {formatNumber.format(dashboard.summary.category_memberships)} memberships
-              </span>
-            </div>
-            <p className="panel-help">
-              {formatNumber.format(dashboard.summary.total_products)} unique
-              product cards. {formatNumber.format(
-                dashboard.summary.multi_category_products,
-              )} cards appear in more than one product category.
-            </p>
-            <DonutChart
-              data={dashboard.categories}
-              centerValue={dashboard.summary.total_products}
-              centerLabel="product cards"
-              onSelect={toggleCategory}
-              selectedNames={filters.categories}
-            />
-          </article>
-        )}
-
         {sections.treemap && (
           <article className="panel treemap-panel">
             <div className="panel-heading">
