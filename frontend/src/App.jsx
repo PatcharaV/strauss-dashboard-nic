@@ -404,6 +404,15 @@ function App() {
     });
   }
 
+  function toggleSubcategory(subcategory) {
+    setFilters({
+      ...filters,
+      subcategories: filters.subcategories.includes(subcategory)
+        ? filters.subcategories.filter((item) => item !== subcategory)
+        : [subcategory],
+    });
+  }
+
   function toggleAudienceLabel(label) {
     const option = options.audiences.find((item) => item.label === label);
     if (!option) return;
@@ -897,18 +906,7 @@ function App() {
                         ? "summary-chip active"
                         : "summary-chip"
                     }
-                    onClick={() =>
-                      setFilters({
-                        ...filters,
-                        subcategories: filters.subcategories.includes(
-                          subcategory.name,
-                        )
-                          ? filters.subcategories.filter(
-                              (item) => item !== subcategory.name,
-                            )
-                          : [subcategory.name],
-                      })
-                    }
+                    onClick={() => toggleSubcategory(subcategory.name)}
                   >
                     <span>{subcategory.name}</span>
                     <strong>{formatNumber.format(subcategory.value)}</strong>
@@ -927,21 +925,21 @@ function App() {
           <article className="panel treemap-panel">
             <div className="panel-heading">
               <div>
-                <p className="eyebrow">CATEGORY SHARE</p>
-                <h2>Product category treemap</h2>
+                <p className="eyebrow">SUB CATEGORY SHARE</p>
+                <h2>Sub category treemap</h2>
               </div>
               <span className="panel-tag">Click a block</span>
             </div>
             <ResponsiveContainer width="100%" height={410}>
               <Treemap
-                data={dashboard.categories}
+                data={dashboard.subcategories || []}
                 dataKey="value"
                 nameKey="name"
                 stroke="#fff"
                 content={
                   <TreemapContent
-                    onSelect={toggleCategory}
-                    selectedNames={filters.categories}
+                    onSelect={toggleSubcategory}
+                    selectedNames={filters.subcategories}
                   />
                 }
               >
