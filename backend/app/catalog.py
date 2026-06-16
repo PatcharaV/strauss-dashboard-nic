@@ -50,6 +50,7 @@ CLOTHING_CATEGORIES = {
         "Shirts and Tops",
         "Shorts",
         "Vests",
+        "Dresses and Skirts",
     },
 }
 

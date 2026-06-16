@@ -23,13 +23,13 @@
       "brand": "arcteryx",
       "label": "Arc'teryx",
       "url": "https://arcteryx.com/us/en",
-      "product_count": 224,
-      "scraped_at": "2026-06-16T15:55:59.616628+00:00"
+      "product_count": 228,
+      "scraped_at": "2026-06-16T16:39:14.913624+00:00"
     }
   ],
   "scrape_warnings": [],
-  "scraped_at": "2026-06-16T15:55:59.616628+00:00",
-  "product_count": 1845,
+  "scraped_at": "2026-06-16T16:39:14.913624+00:00",
+  "product_count": 1849,
   "products": [
     {
       "id": "arcteryx:X000009898",
@@ -46,6 +46,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -86,6 +89,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -126,6 +132,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -166,6 +175,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -208,6 +220,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -246,6 +261,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -284,6 +302,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -324,6 +345,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -362,6 +386,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -400,6 +427,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Resort"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -440,6 +470,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -486,6 +519,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -529,6 +565,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -571,6 +610,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -612,6 +654,11 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -656,6 +703,11 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -696,6 +748,11 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -737,6 +794,11 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -777,6 +839,10 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -819,6 +885,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -861,6 +930,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -906,6 +979,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -952,6 +1029,10 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -992,6 +1073,10 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1032,6 +1117,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -1075,6 +1163,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1115,6 +1206,10 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -1156,6 +1251,10 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1199,6 +1298,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -1241,6 +1344,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1283,6 +1390,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -1323,6 +1434,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1363,6 +1478,10 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -1403,6 +1522,10 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1429,6 +1552,49 @@
       "shop_highlights": []
     },
     {
+      "id": "arcteryx:X000010313",
+      "source_id": "X000010313",
+      "product_id": "X000010313",
+      "brand": "arcteryx",
+      "brand_label": "Arc'teryx",
+      "source": "https://arcteryx.com/us/en",
+      "title": "Carbene SL Skirt Women's",
+      "handle": "womens/carbene-sl-skirt-0313",
+      "description": "Lightweight skirt with generous tailoring",
+      "category": "Dresses and Skirts",
+      "categories": [
+        "Dresses and Skirts"
+      ],
+      "subcategories": [],
+      "collections": [
+        "Veilance"
+      ],
+      "vendor": "Arc'teryx",
+      "audiences": [
+        "women"
+      ],
+      "audience_labels": [
+        "Women"
+      ],
+      "price_min": 350.0,
+      "price_max": 350.0,
+      "available": true,
+      "variant_count": 2,
+      "color": "Dark Cocoon",
+      "tags": [],
+      "image": "https://images.arcteryx.com/details/1350x1710/S26-X000010313-Carbene-SL-Skirt-Dark-Cocoon-Women-s-Front-View.jpg",
+      "url": "https://arcteryx.com/us/en/shop/womens/carbene-sl-skirt-0313",
+      "material": "",
+      "product_functions": [
+        "Lightweight"
+      ],
+      "top_seller": false,
+      "published_at": null,
+      "updated_at": null,
+      "features": [],
+      "shop_highlights": []
+    },
+    {
       "id": "arcteryx:X000010521",
       "source_id": "X000010521",
       "product_id": "X000010521",
@@ -1443,6 +1609,12 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike",
+        "Resort",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -1486,6 +1658,12 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike",
+        "Resort",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1528,6 +1706,12 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike",
+        "Resort",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -1570,6 +1754,10 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -1608,6 +1796,10 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1646,6 +1838,10 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1685,6 +1881,10 @@
         "Vests"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1726,6 +1926,9 @@
         "Vests"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -1767,6 +1970,9 @@
         "Vests"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1793,6 +1999,47 @@
       "shop_highlights": []
     },
     {
+      "id": "arcteryx:X000010309",
+      "source_id": "X000010309",
+      "product_id": "X000010309",
+      "brand": "arcteryx",
+      "brand_label": "Arc'teryx",
+      "source": "https://arcteryx.com/us/en",
+      "title": "Cila SL Dress Women's",
+      "handle": "womens/cila-sl-dress-0309",
+      "description": "Ankle-length, contoured dress with minimal design",
+      "category": "Dresses and Skirts",
+      "categories": [
+        "Dresses and Skirts"
+      ],
+      "subcategories": [],
+      "collections": [
+        "Veilance"
+      ],
+      "vendor": "Arc'teryx",
+      "audiences": [
+        "women"
+      ],
+      "audience_labels": [
+        "Women"
+      ],
+      "price_min": 400.0,
+      "price_max": 400.0,
+      "available": true,
+      "variant_count": 3,
+      "color": "Lt Gnosis",
+      "tags": [],
+      "image": "https://images.arcteryx.com/details/1350x1710/S26-X000010309-Cila-SL-Dress-Lt-Gnosis-Women-s-Front-View.jpg",
+      "url": "https://arcteryx.com/us/en/shop/womens/cila-sl-dress-0309",
+      "material": "",
+      "product_functions": [],
+      "top_seller": false,
+      "published_at": null,
+      "updated_at": null,
+      "features": [],
+      "shop_highlights": []
+    },
+    {
       "id": "arcteryx:X000009318",
       "source_id": "X000009318",
       "product_id": "X000009318",
@@ -1807,6 +2054,11 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1851,6 +2103,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1889,6 +2145,12 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Boulder",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1932,6 +2194,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -1975,6 +2240,13 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2016,6 +2288,13 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2059,6 +2338,13 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2100,6 +2386,13 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2141,6 +2434,9 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2179,6 +2475,9 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2222,6 +2521,9 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2262,6 +2564,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2300,6 +2606,11 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2341,6 +2652,10 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2381,6 +2696,12 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2419,6 +2740,10 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2445,6 +2770,49 @@
       "shop_highlights": []
     },
     {
+      "id": "arcteryx:X000010171",
+      "source_id": "X000010171",
+      "product_id": "X000010171",
+      "brand": "arcteryx",
+      "brand_label": "Arc'teryx",
+      "source": "https://arcteryx.com/us/en",
+      "title": "Diantric SL Dress Women's",
+      "handle": "womens/diantric-sl-dress-0171",
+      "description": "Lightweight shirt dress designed for warm weather",
+      "category": "Dresses and Skirts",
+      "categories": [
+        "Dresses and Skirts"
+      ],
+      "subcategories": [],
+      "collections": [
+        "Veilance"
+      ],
+      "vendor": "Arc'teryx",
+      "audiences": [
+        "women"
+      ],
+      "audience_labels": [
+        "Women"
+      ],
+      "price_min": 450.0,
+      "price_max": 450.0,
+      "available": true,
+      "variant_count": 2,
+      "color": "Dark Cocoon",
+      "tags": [],
+      "image": "https://images.arcteryx.com/details/1350x1710/S26-X000010171-Diantric-SL-Dress-Dark-Cocoon-Women-s-Front-View.jpg",
+      "url": "https://arcteryx.com/us/en/shop/womens/diantric-sl-dress-0171",
+      "material": "",
+      "product_functions": [
+        "Lightweight"
+      ],
+      "top_seller": false,
+      "published_at": null,
+      "updated_at": null,
+      "features": [],
+      "shop_highlights": []
+    },
+    {
       "id": "arcteryx:X000009512",
       "source_id": "X000009512",
       "product_id": "X000009512",
@@ -2459,6 +2827,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2502,6 +2873,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2540,6 +2914,10 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2581,6 +2959,10 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2621,6 +3003,10 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2659,6 +3045,10 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2697,6 +3087,10 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2738,6 +3132,10 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2777,6 +3175,11 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2815,6 +3218,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2855,6 +3261,12 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike",
+        "Rock",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2895,6 +3307,11 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Rock",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -2935,6 +3352,12 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -2978,6 +3401,11 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3020,6 +3448,12 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3063,6 +3497,12 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3103,6 +3543,11 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3144,6 +3589,12 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3189,6 +3640,12 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3232,6 +3689,12 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3274,6 +3737,11 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3317,6 +3785,11 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3355,6 +3828,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3395,6 +3872,11 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3435,6 +3917,11 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3475,6 +3962,11 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3515,6 +4007,12 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3557,6 +4055,12 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3597,6 +4101,11 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3639,6 +4148,12 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3679,6 +4194,12 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3721,6 +4242,12 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3762,6 +4289,12 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3804,6 +4337,12 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Resort",
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3844,6 +4383,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Freeride"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3882,6 +4424,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Freeride"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -3922,6 +4467,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -3964,6 +4513,11 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4004,6 +4558,11 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4044,6 +4603,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4085,6 +4649,11 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4128,6 +4697,11 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4169,6 +4743,12 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Boulder",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4210,6 +4790,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -4248,6 +4833,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4286,6 +4876,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -4324,6 +4919,11 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4366,6 +4966,11 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -4408,6 +5013,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4446,6 +5056,12 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4488,6 +5104,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4526,6 +5147,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4564,6 +5190,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -4604,6 +5235,12 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4644,6 +5281,12 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4684,6 +5327,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -4724,6 +5372,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -4764,6 +5417,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4802,6 +5460,12 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4842,6 +5506,12 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -4882,6 +5552,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -4923,6 +5598,14 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Touring",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -4963,6 +5646,11 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5005,6 +5693,11 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5047,6 +5740,16 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Boulder",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Rock",
+        "Sun Protection",
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -5091,6 +5794,15 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Boulder",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Rock",
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -5135,6 +5847,15 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Boulder",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Rock",
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5179,6 +5900,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5220,6 +5945,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5260,6 +5990,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5300,6 +6033,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5338,6 +6074,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5362,6 +6101,49 @@
       "shop_highlights": []
     },
     {
+      "id": "arcteryx:X000009606",
+      "source_id": "X000009606",
+      "product_id": "X000009606",
+      "brand": "arcteryx",
+      "brand_label": "Arc'teryx",
+      "source": "https://arcteryx.com/us/en",
+      "title": "Lota Skirt Women's",
+      "handle": "womens/lota-skirt-9606",
+      "description": "Light, breathable wrap skirt",
+      "category": "Dresses and Skirts",
+      "categories": [
+        "Dresses and Skirts"
+      ],
+      "subcategories": [],
+      "collections": [
+        "Veilance"
+      ],
+      "vendor": "Arc'teryx",
+      "audiences": [
+        "women"
+      ],
+      "audience_labels": [
+        "Women"
+      ],
+      "price_min": 400.0,
+      "price_max": 400.0,
+      "available": true,
+      "variant_count": 3,
+      "color": "Lt Gnosis",
+      "tags": [],
+      "image": "https://images.arcteryx.com/details/1350x1710/S26-X000009606-Lota-Skirt-Lt-Gnosis-Women-s-Front-View.jpg",
+      "url": "https://arcteryx.com/us/en/shop/womens/lota-skirt-9606",
+      "material": "",
+      "product_functions": [
+        "Breathable"
+      ],
+      "top_seller": false,
+      "published_at": null,
+      "updated_at": null,
+      "features": [],
+      "shop_highlights": []
+    },
+    {
       "id": "arcteryx:X000010327",
       "source_id": "X000010327",
       "product_id": "X000010327",
@@ -5376,6 +6158,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5417,6 +6203,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5457,6 +6246,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5495,6 +6287,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5535,6 +6331,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -5575,6 +6375,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -5615,6 +6419,9 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -5653,6 +6460,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -5693,6 +6504,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5735,6 +6550,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5773,6 +6591,10 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -5815,6 +6637,10 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5853,6 +6679,10 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -5891,6 +6721,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -5931,6 +6765,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -5971,6 +6809,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6009,6 +6850,9 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6047,6 +6891,9 @@
         "Fleece"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6085,6 +6932,10 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6125,6 +6976,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6166,6 +7021,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6207,6 +7066,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -6247,6 +7110,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -6288,6 +7155,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -6328,6 +7199,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6368,6 +7242,12 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Resort",
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6409,6 +7289,13 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Boulder",
+        "Freeride",
+        "Resort",
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -6452,6 +7339,11 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Resort"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6495,6 +7387,11 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Rock",
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -6538,6 +7435,10 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6581,6 +7482,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6621,6 +7526,10 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6659,6 +7568,11 @@
         "Base Layer"
       ],
       "subcategories": [],
+      "collections": [
+        "Freeride",
+        "Resort",
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6699,6 +7613,14 @@
         "Base Layer"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Touring",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -6739,6 +7661,14 @@
         "Base Layer"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Touring",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -6779,6 +7709,11 @@
         "Base Layer"
       ],
       "subcategories": [],
+      "collections": [
+        "Freeride",
+        "Resort",
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6819,6 +7754,7 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -6857,6 +7793,7 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6895,6 +7832,7 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -6935,6 +7873,7 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -6975,6 +7914,7 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -7015,6 +7955,7 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7055,6 +7996,11 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7095,6 +8041,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7135,6 +8085,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -7173,6 +8126,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Touring"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7211,6 +8167,14 @@
         "Base Layer"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Touring",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7253,6 +8217,14 @@
         "Base Layer"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Touring",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7295,6 +8267,14 @@
         "Base Layer"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Touring",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7335,6 +8315,14 @@
         "Base Layer"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Touring",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7373,6 +8361,14 @@
         "Base Layer"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Touring",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7411,6 +8407,14 @@
         "Base Layer"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Freeride",
+        "Hike",
+        "Resort",
+        "Touring",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7449,6 +8453,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Freeride"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7487,6 +8494,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Freeride"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7529,6 +8539,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Freeride"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7569,6 +8582,9 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Freeride"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7611,6 +8627,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -7649,6 +8669,10 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Alpine",
+        "Rock"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -7687,6 +8711,13 @@
         "Pants"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7725,6 +8756,12 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7763,6 +8800,11 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Rock",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7801,6 +8843,12 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7839,6 +8887,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7880,6 +8932,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7921,6 +8977,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -7961,6 +9021,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8001,6 +9065,10 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8042,6 +9110,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -8080,6 +9152,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -8118,6 +9194,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -8160,6 +9240,9 @@
         "Insulated Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8202,6 +9285,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -8244,6 +9331,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8282,6 +9372,10 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8320,6 +9414,10 @@
         "Shorts"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8360,6 +9458,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8398,6 +9500,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8436,6 +9542,12 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8478,6 +9590,12 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8520,6 +9638,11 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -8562,6 +9685,11 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8604,6 +9732,11 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"
@@ -8646,6 +9779,11 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike",
+        "Rock",
+        "Sun Protection"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8688,6 +9826,10 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "System_A"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8731,6 +9873,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "System_A"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8772,6 +9918,10 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "System_A"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8813,6 +9963,12 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8854,6 +10010,13 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8895,6 +10058,12 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8936,6 +10105,12 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -8976,6 +10151,13 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -9016,6 +10198,13 @@
         "Shirts and Tops"
       ],
       "subcategories": [],
+      "collections": [
+        "Boulder",
+        "Hike",
+        "Rock",
+        "Sun Protection",
+        "Trail Run"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "women"
@@ -9057,6 +10246,9 @@
         "Shell Jackets"
       ],
       "subcategories": [],
+      "collections": [
+        "Hike"
+      ],
       "vendor": "Arc'teryx",
       "audiences": [
         "men"

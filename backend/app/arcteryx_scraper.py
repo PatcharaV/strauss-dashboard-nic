@@ -21,6 +21,19 @@ CLOTHING_CATEGORY_SLUGS = {
     "Shorts": "shorts",
     "Vests": "vests",
 }
+COLLECTION_SLUGS = {
+    "Hike": "trail/hike",
+    "Trail Run": "trail/trail-run",
+    "Rock": "climb/rock",
+    "Boulder": "climb/boulder",
+    "Alpine": "climb/alpine",
+    "Freeride": "ski-snowboard/freeride",
+    "Touring": "ski-snowboard/touring",
+    "Resort": "ski-snowboard/resort",
+    "Sun Protection": "sun-protection/wid-1jwro0gl",
+    "Veilance": "veilance",
+    "System_A": "system_a",
+}
 
 
 async def _listing(
@@ -61,8 +74,19 @@ async def _all_listing_products(
     return products
 
 
+def _extra_clothing_categories(product: dict[str, Any]) -> set[str]:
+    title = str(product.get("marketingName", "")).lower()
+    slug = str(product.get("slug", "")).lower()
+    if "dress" in title or "skirt" in title or "dress" in slug or "skirt" in slug:
+        return {"Dresses and Skirts"}
+    return set()
+
+
 def _normalize(
-    product: dict[str, Any], audiences: set[str], categories: set[str]
+    product: dict[str, Any],
+    audiences: set[str],
+    categories: set[str],
+    collections: set[str],
 ) -> dict[str, Any]:
     price = product.get("priceRange") or {}
     colours = product.get("colourOptions") or []
@@ -101,6 +125,7 @@ def _normalize(
         "category": category_list[0],
         "categories": category_list,
         "subcategories": [],
+        "collections": sorted(collections),
         "vendor": "Arc'teryx",
         "audiences": audience_list,
         "audience_labels": [audience.title() for audience in audience_list],
@@ -139,6 +164,7 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
         products_by_id: dict[str, dict[str, Any]] = {}
         audiences_by_id: dict[str, set[str]] = {}
         categories_by_id: dict[str, set[str]] = {}
+        collections_by_id: dict[str, set[str]] = {}
 
         for audience, audience_slug in AUDIENCES.items():
             for product in await _all_listing_products(client, audience_slug):
@@ -161,11 +187,30 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
                     categories_by_id.setdefault(product_id, set()).add(category)
                 await asyncio.sleep(0.2)
 
+        for audience, audience_slug in AUDIENCES.items():
+            for collection, collection_slug in COLLECTION_SLUGS.items():
+                slug = f"{audience_slug}/{collection_slug}"
+                for product in await _all_listing_products(client, slug):
+                    product_id = str(product.get("id", ""))
+                    if not product_id:
+                        continue
+                    products_by_id.setdefault(product_id, product)
+                    audiences_by_id.setdefault(product_id, set()).add(audience)
+                    collections_by_id.setdefault(product_id, set()).add(collection)
+                    extra_categories = _extra_clothing_categories(product)
+                    if extra_categories:
+                        clothing_product_ids.add(product_id)
+                        categories_by_id.setdefault(product_id, set()).update(
+                            extra_categories
+                        )
+                await asyncio.sleep(0.2)
+
     products = [
         _normalize(
             product,
             audiences_by_id.get(product_id, set()),
             categories_by_id.get(product_id, set()),
+            collections_by_id.get(product_id, set()),
         )
         for product_id, product in products_by_id.items()
         if product_id in clothing_product_ids
