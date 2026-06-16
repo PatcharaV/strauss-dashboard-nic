@@ -7,7 +7,7 @@ from typing import Any
 
 from .arcteryx_scraper import scrape_arcteryx_products
 from .rhone_scraper import scrape_rhone_products
-from .scraper import scrape_strauss_products
+from .scraper import extract_product_functions, scrape_strauss_products
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 CACHE_PATH = DATA_DIR / "products.json"
@@ -69,6 +69,13 @@ def _clothing_products(products: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 **product,
                 "category": matched_categories[0],
                 "categories": matched_categories,
+                "product_functions": product.get("product_functions")
+                or extract_product_functions(
+                    product.get("title", ""),
+                    product.get("description", ""),
+                    product.get("tags", []),
+                    product.get("material", ""),
+                ),
                 "audiences": [
                     audience
                     for audience in product.get("audiences", [])

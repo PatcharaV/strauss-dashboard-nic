@@ -114,5 +114,13 @@ export const demoDashboard = {
     { name: "Thermal Layers", value: 4 },
     { name: "Leggings", value: 3 },
   ],
+  subcategories: [
+    { name: "T-Shirts", value: 45 },
+    { name: "Polos", value: 23 },
+    { name: "High-Vis Shirts", value: 22 },
+    { name: "Long Sleeves", value: 13 },
+    { name: "Work Shirts", value: 13 },
+    { name: "Kids Shirts", value: 10 },
+  ],
   products: [],
 };

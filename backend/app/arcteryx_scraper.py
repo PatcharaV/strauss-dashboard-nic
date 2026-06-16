@@ -6,6 +6,8 @@ from urllib.parse import quote
 
 import httpx
 
+from .scraper import extract_product_functions
+
 BASE_URL = "https://arcteryx.com/us/en"
 API_URL = "https://arcteryx.com/api/catalog.getProductListingPage"
 AUDIENCES = {"men": "mens", "women": "womens"}
@@ -76,6 +78,15 @@ def _normalize(
     category_list = sorted(categories) or ["Other"]
     slug = str(product.get("slug", ""))
     image = selected.get("image") or selected.get("thumbnail") or {}
+    title = str(product.get("marketingName", "")).strip()
+    description = str(product.get("shortDescription", "")).strip()
+    tags = sorted(
+        {
+            str(badge.get("label", ""))
+            for badge in badges
+            if badge.get("label")
+        }
+    )
     return {
         "id": f"arcteryx:{product.get('id', slug)}",
         "source_id": str(product.get("id", slug)),
@@ -83,9 +94,9 @@ def _normalize(
         "brand": "arcteryx",
         "brand_label": "Arc'teryx",
         "source": BASE_URL,
-        "title": str(product.get("marketingName", "")).strip(),
+        "title": title,
         "handle": slug,
-        "description": str(product.get("shortDescription", "")).strip(),
+        "description": description,
         "category": category_list[0],
         "categories": category_list,
         "subcategories": [],
@@ -101,16 +112,11 @@ def _normalize(
         "available": True,
         "variant_count": len(colours),
         "color": str(selected.get("label", "")),
-        "tags": sorted(
-            {
-                str(badge.get("label", ""))
-                for badge in badges
-                if badge.get("label")
-            }
-        ),
+        "tags": tags,
         "image": str(image.get("url", "")),
         "url": f"{BASE_URL}/shop/{slug}",
         "material": "",
+        "product_functions": extract_product_functions(title, description, tags),
         "top_seller": any(
             badge.get("code") == "bestseller" for badge in badges
         ),

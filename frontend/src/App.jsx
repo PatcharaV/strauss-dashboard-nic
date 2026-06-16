@@ -66,6 +66,7 @@ async function exportProductsToExcel(products) {
     Collection: (product.collections || []).join(", "),
     Color: product.color || "Not specified",
     Material: product.material || "Not specified",
+    Function: (product.product_functions || []).join(", "),
     "Top Seller": product.top_seller ? "Yes" : "No",
     "Price Min": product.price_min,
     "Price Max": product.price_max,
@@ -82,6 +83,7 @@ async function exportProductsToExcel(products) {
     { wch: 28 },
     { wch: 22 },
     { wch: 50 },
+    { wch: 34 },
     { wch: 12 },
     { wch: 10 },
     { wch: 10 },
@@ -291,9 +293,20 @@ function App() {
   const [scraping, setScraping] = useState(false);
   const [message, setMessage] = useState("Connecting to Python API...");
   const [filtersOpen, setFiltersOpen] = useState(true);
+  const [productPage, setProductPage] = useState(1);
+  const [productsPerPage, setProductsPerPage] = useState(50);
 
   const query = useMemo(() => buildQuery(filters), [filters]);
   const productCategories = options.categories;
+  const totalProductPages = Math.max(
+    1,
+    Math.ceil(dashboard.products.length / productsPerPage),
+  );
+  const currentProductPage = Math.min(productPage, totalProductPages);
+  const paginatedProducts = dashboard.products.slice(
+    (currentProductPage - 1) * productsPerPage,
+    currentProductPage * productsPerPage,
+  );
 
   async function loadDashboard() {
     setLoading(true);
@@ -327,6 +340,16 @@ function App() {
     const timer = setTimeout(loadDashboard, 250);
     return () => clearTimeout(timer);
   }, [query]);
+
+  useEffect(() => {
+    setProductPage(1);
+  }, [query, productsPerPage]);
+
+  useEffect(() => {
+    if (productPage > totalProductPages) {
+      setProductPage(totalProductPages);
+    }
+  }, [productPage, totalProductPages]);
 
   async function scrapeLatest() {
     setScraping(true);
@@ -423,6 +446,9 @@ function App() {
     filters.minPrice !== "" ? `Min $${filters.minPrice}` : null,
     filters.maxPrice !== "" ? `Max $${filters.maxPrice}` : null,
   ].filter(Boolean);
+  const selectedCategoryLabel = filters.categories.length
+    ? filters.categories.join(", ")
+    : "current selection";
 
   return (
     <main>
@@ -845,6 +871,58 @@ function App() {
           </article>
         )}
 
+        {sections.categoryDonut && (
+          <article className="panel subcategory-panel">
+            <div className="panel-heading">
+              <div>
+                <p className="eyebrow">SUB CATEGORY MIX</p>
+                <h2>Sub category</h2>
+              </div>
+              <span className="panel-tag">
+                {formatNumber.format(dashboard.subcategories?.length || 0)} groups
+              </span>
+            </div>
+            <p className="panel-help">
+              Sub categories inside {selectedCategoryLabel}. Click a chip to
+              filter the whole dashboard.
+            </p>
+            <div className="subcategory-summary">
+              {dashboard.subcategories?.length ? (
+                dashboard.subcategories.map((subcategory) => (
+                  <button
+                    key={subcategory.name}
+                    type="button"
+                    className={
+                      filters.subcategories.includes(subcategory.name)
+                        ? "summary-chip active"
+                        : "summary-chip"
+                    }
+                    onClick={() =>
+                      setFilters({
+                        ...filters,
+                        subcategories: filters.subcategories.includes(
+                          subcategory.name,
+                        )
+                          ? filters.subcategories.filter(
+                              (item) => item !== subcategory.name,
+                            )
+                          : [subcategory.name],
+                      })
+                    }
+                  >
+                    <span>{subcategory.name}</span>
+                    <strong>{formatNumber.format(subcategory.value)}</strong>
+                  </button>
+                ))
+              ) : (
+                <div className="empty-mini">
+                  No sub category data for this selection.
+                </div>
+              )}
+            </div>
+          </article>
+        )}
+
         {sections.treemap && (
           <article className="panel treemap-panel">
             <div className="panel-heading">
@@ -903,22 +981,91 @@ function App() {
             </div>
           </div>
 
+          <div className="product-pagination">
+            <div>
+              Page {currentProductPage} of {totalProductPages}
+              <span>
+                Showing{" "}
+                {dashboard.products.length
+                  ? (currentProductPage - 1) * productsPerPage + 1
+                  : 0}
+                -
+                {Math.min(
+                  currentProductPage * productsPerPage,
+                  dashboard.products.length,
+                )}{" "}
+                of {dashboard.products.length}
+              </span>
+            </div>
+            <label>
+              Rows
+              <select
+                value={productsPerPage}
+                onChange={(event) =>
+                  setProductsPerPage(Number(event.target.value))
+                }
+              >
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+                <option value={250}>250</option>
+              </select>
+            </label>
+            <button
+              type="button"
+              onClick={() => setProductPage(Math.max(1, currentProductPage - 1))}
+              disabled={currentProductPage === 1}
+            >
+              Prev
+            </button>
+            <input
+              type="number"
+              min="1"
+              max={totalProductPages}
+              value={currentProductPage}
+              aria-label="Product page number"
+              onChange={(event) =>
+                setProductPage(
+                  Math.min(
+                    totalProductPages,
+                    Math.max(1, Number(event.target.value) || 1),
+                  ),
+                )
+              }
+            />
+            <button
+              type="button"
+              onClick={() =>
+                setProductPage(Math.min(totalProductPages, currentProductPage + 1))
+              }
+              disabled={currentProductPage === totalProductPages}
+            >
+              Next
+            </button>
+          </div>
+
           {dashboard.products.length ? (
             <div className="table-wrap">
                 <table>
                   <thead>
                     <tr className="table-heading-row">
+                      <th>No.</th>
                       <th>Product</th>
+                      <th>Gender</th>
                       <th>Category</th>
                       <th>Sub category</th>
                       <th>Collection</th>
                       <th>Color</th>
                       <th>Material</th>
+                      <th>Function</th>
                       <th>Top seller</th>
                       <th>Price range</th>
                       <th>Status</th>
                     </tr>
                     <tr className="table-filter-row">
+                      <th>
+                        <span className="table-filter-note">Page</span>
+                      </th>
                       <th>
                         <input
                           type="search"
@@ -929,6 +1076,32 @@ function App() {
                             setFilters({ ...filters, search: event.target.value })
                           }
                         />
+                      </th>
+                      <th>
+                        <select
+                          aria-label="Filter by gender"
+                          value={
+                            filters.audiences.length === 1
+                              ? filters.audiences[0]
+                              : "all"
+                          }
+                          onChange={(event) =>
+                            setFilters({
+                              ...filters,
+                              audiences:
+                                event.target.value === "all"
+                                  ? []
+                                  : [event.target.value],
+                            })
+                          }
+                        >
+                          <option value="all">All</option>
+                          {options.audiences.map((audience) => (
+                            <option key={audience.value} value={audience.value}>
+                              {audience.label}
+                            </option>
+                          ))}
+                        </select>
                       </th>
                       <th>
                         <select
@@ -1037,6 +1210,9 @@ function App() {
                         </select>
                       </th>
                       <th>
+                        <span className="table-filter-note">Auto</span>
+                      </th>
+                      <th>
                         <select
                           aria-label="Filter by top seller"
                           value={filters.topSeller}
@@ -1101,12 +1277,42 @@ function App() {
                     </tr>
                   </thead>
                   <tbody>
-                    {dashboard.products.map((product) => (
+                    {paginatedProducts.map((product, index) => (
                       <tr key={product.id}>
+                        <td className="number-cell">
+                          {(currentProductPage - 1) * productsPerPage + index + 1}
+                        </td>
                         <td>
                           <a href={product.url} target="_blank" rel="noreferrer">
                             {product.title}
                           </a>
+                        </td>
+                        <td>
+                          {product.audience_labels?.length
+                            ? product.audience_labels.map((label, labelIndex) => {
+                                const option = options.audiences.find(
+                                  (item) => item.label === label,
+                                );
+                                return (
+                                  <span key={label}>
+                                    {labelIndex > 0 && ", "}
+                                    <button
+                                      className="table-filter-button"
+                                      type="button"
+                                      onClick={() =>
+                                        option &&
+                                        setFilters({
+                                          ...filters,
+                                          audiences: [option.value],
+                                        })
+                                      }
+                                    >
+                                      {label}
+                                    </button>
+                                  </span>
+                                );
+                              })
+                            : "Not specified"}
                         </td>
                         <td>
                           {(product.categories || [product.category]).map(
@@ -1179,6 +1385,11 @@ function App() {
                           >
                             {product.material || "Not specified"}
                           </button>
+                        </td>
+                        <td className="function-cell">
+                          {product.product_functions?.length
+                            ? product.product_functions.join(", ")
+                            : "Not specified"}
                         </td>
                         <td>
                           <button

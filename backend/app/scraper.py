@@ -43,6 +43,25 @@ COLLABORATION_COLLECTION_PATTERNS = (
     (r"\bSTRAUSS\s+x\s+1620\b", "Strauss x 1620"),
     (r"\bLA\s+FC\b", "Strauss x LA FC"),
 )
+PRODUCT_FUNCTION_PATTERNS = (
+    (r"\bbreathable\b|\bventilat(?:ed|ion)\b", "Breathable"),
+    (r"\b4[- ]?way stretch\b|\bfour[- ]?way stretch\b", "4-way stretch"),
+    (r"\beasy care\b", "Easy care"),
+    (r"\beasy wear\b", "Easy wear"),
+    (r"\bshape retention\b|\bretains? (?:its )?shape\b", "Shape retention"),
+    (r"\bmoisture[- ]?wicking\b|\bwicks? moisture\b", "Moisture-wicking"),
+    (r"\bquick[- ]?dry(?:ing)?\b|\bdries quickly\b", "Quick-drying"),
+    (r"\bwater[- ]?repellent\b|\brepels water\b", "Water-repellent"),
+    (r"\bwaterproof\b", "Waterproof"),
+    (r"\bwindproof\b|\bwind resistant\b", "Windproof"),
+    (r"\bupf\s*\d*\+?\b|\bsun protection\b", "UPF protection"),
+    (r"\blightweight\b", "Lightweight"),
+    (r"\bdurable\b|\bdurability\b", "Durable"),
+    (r"\babrasion[- ]?resistant\b", "Abrasion-resistant"),
+    (r"\binsulat(?:ed|ion)\b", "Insulated"),
+    (r"\bthermal\b", "Thermal"),
+    (r"\bstretch\b|\belastane\b|\bspandex\b", "Stretch"),
+)
 TOP_SELLERS_COLLECTION = "top-sellers"
 CATEGORY_COLLECTIONS = {
     "Shirts": (
@@ -170,6 +189,22 @@ def extract_product_collections(title: str) -> list[str]:
     return collections
 
 
+def extract_product_functions(*values: Any) -> list[str]:
+    text = " ".join(
+        " ".join(str(item) for item in value)
+        if isinstance(value, list)
+        else str(value or "")
+        for value in values
+    )
+    functions: list[str] = []
+    for pattern, label in PRODUCT_FUNCTION_PATTERNS:
+        if re.search(pattern, text, re.I) and label not in functions:
+            functions.append(label)
+    if "4-way stretch" in functions and "Stretch" in functions:
+        functions.remove("Stretch")
+    return functions
+
+
 def _variant_color(product: dict[str, Any], variant: dict[str, Any]) -> str:
     values = [variant.get("option1"), variant.get("option2"), variant.get("option3")]
     colors: list[str] = []
@@ -209,6 +244,9 @@ def _normalize_product(
         image = product.get("image") or (images[0] if images else {})
         image_url = image.get("src", "") if isinstance(image, dict) else ""
 
+    tags = sorted(set(str(tag) for tag in product.get("tags", [])))
+    description = _plain_text(product.get("body_html"))
+    title = str(card.get("title") or product.get("title", "")).strip()
     return {
         "id": f"strauss:{variant_id or product.get('id', '')}",
         "source_id": variant_id or str(product.get("id", "")),
@@ -216,9 +254,9 @@ def _normalize_product(
         "brand": "strauss",
         "brand_label": "Strauss",
         "source": BASE_URL,
-        "title": str(card.get("title") or product.get("title", "")).strip(),
+        "title": title,
         "handle": str(product.get("handle", "")).strip(),
-        "description": _plain_text(product.get("body_html")),
+        "description": description,
         "category": categories[0],
         "categories": categories,
         "vendor": str(product.get("vendor", "")).strip(),
@@ -232,10 +270,16 @@ def _normalize_product(
         ),
         "variant_count": 1,
         "color": _variant_color(product, variant or {}),
-        "tags": sorted(set(str(tag) for tag in product.get("tags", []))),
+        "tags": tags,
         "image": image_url,
         "url": urljoin(BASE_URL, str(card.get("href", ""))),
         "material": material,
+        "product_functions": extract_product_functions(
+            title,
+            description,
+            tags,
+            material,
+        ),
         "top_seller": top_seller,
         "published_at": product.get("published_at"),
         "updated_at": product.get("updated_at"),

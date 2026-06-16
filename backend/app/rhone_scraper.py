@@ -4,7 +4,7 @@ from typing import Any
 
 import httpx
 
-from .scraper import _extract_material, _plain_text
+from .scraper import _extract_material, _plain_text, extract_product_functions
 
 BASE_URL = "https://www.rhone.com"
 CATALOG_URL = "https://rhone.myshopify.com"
@@ -89,6 +89,9 @@ def _normalize(
     category = str(product.get("product_type") or tagged_type or "Other").strip()
     handle = str(product.get("handle", ""))
     html = str(product.get("body_html", ""))
+    description = _plain_text(html)
+    title = str(product.get("title", "")).strip()
+    material = _extract_material(html)
     audience_list = sorted(audiences)
     return {
         "id": f"rhone:{product.get('id', handle)}",
@@ -97,9 +100,9 @@ def _normalize(
         "brand": "rhone",
         "brand_label": "Rhone",
         "source": BASE_URL,
-        "title": str(product.get("title", "")).strip(),
+        "title": title,
         "handle": handle,
-        "description": _plain_text(html),
+        "description": description,
         "category": category,
         "categories": [category],
         "subcategories": [],
@@ -114,7 +117,13 @@ def _normalize(
         "tags": tags,
         "image": image_url,
         "url": f"{BASE_URL}/products/{handle}",
-        "material": _extract_material(html),
+        "material": material,
+        "product_functions": extract_product_functions(
+            title,
+            description,
+            tags,
+            material,
+        ),
         "top_seller": top_seller,
         "published_at": product.get("published_at"),
         "updated_at": product.get("updated_at"),

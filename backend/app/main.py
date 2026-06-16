@@ -65,12 +65,13 @@ async def options(
     categories: str | None = None,
 ) -> dict[str, Any]:
     data = await get_data()
+    selected_categories = normalize_csv(categories)
     products = filter_products(
         data["products"],
         brands=normalize_csv(brands),
-        categories=normalize_csv(categories),
+        categories=selected_categories,
     )
-    options = build_options(products)
+    options = build_options(products, selected_categories)
     options["brands"] = build_options(data["products"])["brands"]
     return options
 
@@ -94,13 +95,14 @@ async def dashboard(
         raise HTTPException(status_code=400, detail="min_price must not exceed max_price")
 
     data = await get_data()
+    selected_categories = normalize_csv(categories)
     products = filter_products(
         data["products"],
         search,
         normalize_csv(brands),
         normalize_csv(audiences),
         normalize_csv(collections),
-        normalize_csv(categories),
+        selected_categories,
         normalize_csv(subcategories),
         color,
         min_price,
@@ -109,7 +111,12 @@ async def dashboard(
         top_seller,
         material,
     )
-    return build_dashboard(products, data["source"], data.get("scraped_at"))
+    return build_dashboard(
+        products,
+        data["source"],
+        data.get("scraped_at"),
+        selected_categories,
+    )
 
 
 @app.get("/api/products")

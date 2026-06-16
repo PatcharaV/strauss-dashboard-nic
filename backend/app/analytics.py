@@ -3,6 +3,39 @@ from statistics import mean
 from typing import Any
 
 from .scraper import extract_product_collections
+from .scraper import extract_product_functions
+
+SUBCATEGORY_PARENTS = {
+    "T-Shirts": "Shirts",
+    "Polos": "Shirts",
+    "Long Sleeves": "Shirts",
+    "Work Shirts": "Shirts",
+    "High-Vis Shirts": "Shirts",
+    "Kids Shirts": "Shirts",
+    "Work Pants": "Pants",
+    "Cargo Pants": "Pants",
+    "Double-Front Pants": "Pants",
+    "Jeans": "Pants",
+    "Bibs, Coveralls & Overalls": "Pants",
+    "Kids Pants": "Pants",
+    "Work Shorts": "Shorts",
+    "Cargo Shorts": "Shorts",
+    "Women's Shorts": "Shorts",
+    "Softshell Jackets": "Outerwear",
+    "Lightweight Jackets": "Outerwear",
+    "Winter Jackets": "Outerwear",
+    "Work Jackets": "Outerwear",
+    "Vests": "Outerwear",
+    "High-Vis Outerwear": "Outerwear",
+    "Kids Jackets": "Outerwear",
+    "Hoodies": "Hoodies & Sweatshirts",
+    "Crewnecks": "Hoodies & Sweatshirts",
+    "Full-Zip Sweatshirts": "Hoodies & Sweatshirts",
+    "Women's Hoodies & Sweatshirts": "Hoodies & Sweatshirts",
+    "Men's Thermal Layers": "Thermal Layers",
+    "Women's Thermal Layers": "Thermal Layers",
+    "Women's Leggings": "Leggings",
+}
 
 
 def _product_collections(product: dict[str, Any]) -> list[str]:
@@ -12,6 +45,18 @@ def _product_collections(product: dict[str, Any]) -> list[str]:
     if product.get("brand") == "strauss":
         return extract_product_collections(str(product.get("title", "")))
     return []
+
+
+def _product_functions(product: dict[str, Any]) -> list[str]:
+    functions = product.get("product_functions")
+    if isinstance(functions, list):
+        return [str(item) for item in functions if str(item).strip()]
+    return extract_product_functions(
+        product.get("title", ""),
+        product.get("description", ""),
+        product.get("tags", []),
+        product.get("material", ""),
+    )
 
 def filter_products(
     products: list[dict[str, Any]],
@@ -51,6 +96,7 @@ def filter_products(
                     str(product.get("color", "")),
                     " ".join(product.get("audience_labels", [])),
                     " ".join(_product_collections(product)),
+                    " ".join(_product_functions(product)),
                 ]
             ).lower()
             if search_term not in searchable_text:
@@ -109,8 +155,12 @@ def _counter_rows(counter: Counter[str]) -> list[dict[str, Any]]:
 
 
 def build_dashboard(
-    products: list[dict[str, Any]], source: Any, scraped_at: str | None
+    products: list[dict[str, Any]],
+    source: Any,
+    scraped_at: str | None,
+    selected_categories: list[str] | None = None,
 ) -> dict[str, Any]:
+    selected_category_set = set(selected_categories or [])
     brand_counts = Counter(
         product.get("brand_label", "Unknown") for product in products
     )
@@ -128,6 +178,13 @@ def build_dashboard(
     collection_counts: Counter[str] = Counter()
     for product in products:
         collection_counts.update(_product_collections(product))
+    subcategory_counts: Counter[str] = Counter()
+    for product in products:
+        for subcategory in product.get("subcategories", []):
+            parent = SUBCATEGORY_PARENTS.get(subcategory)
+            if selected_category_set and parent and parent not in selected_category_set:
+                continue
+            subcategory_counts[subcategory] += 1
 
     prices = [float(product.get("price_min", 0)) for product in products]
     available_count = sum(bool(product.get("available")) for product in products)
@@ -184,16 +241,25 @@ def build_dashboard(
         "brands": _counter_rows(brand_counts),
         "audiences": _counter_rows(audience_counts),
         "categories": _counter_rows(category_counts),
+        "subcategories": _counter_rows(subcategory_counts),
         "collections": _counter_rows(collection_counts),
         "products": [
-            {**product, "collections": _product_collections(product)}
+            {
+                **product,
+                "collections": _product_collections(product),
+                "product_functions": _product_functions(product),
+            }
             for product in products
         ],
     }
 
 
-def build_options(products: list[dict[str, Any]]) -> dict[str, Any]:
+def build_options(
+    products: list[dict[str, Any]],
+    selected_categories: list[str] | None = None,
+) -> dict[str, Any]:
     prices = [float(product.get("price_min", 0)) for product in products]
+    selected_category_set = set(selected_categories or [])
     return {
         "brands": [
             {"value": brand, "label": label}
@@ -245,6 +311,9 @@ def build_options(products: list[dict[str, Any]]) -> dict[str, Any]:
                 subcategory
                 for product in products
                 for subcategory in product.get("subcategories", [])
+                if not selected_category_set
+                or not SUBCATEGORY_PARENTS.get(subcategory)
+                or SUBCATEGORY_PARENTS[subcategory] in selected_category_set
             }
         ),
         "price": {
