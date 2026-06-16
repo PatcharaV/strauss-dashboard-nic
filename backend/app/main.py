@@ -61,15 +61,38 @@ async def health() -> dict[str, Any]:
 
 @app.get("/api/options")
 async def options(
+    search: str | None = None,
     brands: str | None = None,
+    audiences: str | None = None,
+    collections: str | None = None,
     categories: str | None = None,
+    subcategories: str | None = None,
+    color: str | None = None,
+    min_price: float | None = Query(default=None, ge=0),
+    max_price: float | None = Query(default=None, ge=0),
+    availability: str | None = Query(default=None, pattern="^(available|unavailable)$"),
+    top_seller: str | None = Query(default=None, pattern="^(yes|no)$"),
+    material: str | None = Query(default=None, pattern="^(specified|missing)$"),
 ) -> dict[str, Any]:
+    if min_price is not None and max_price is not None and min_price > max_price:
+        raise HTTPException(status_code=400, detail="min_price must not exceed max_price")
+
     data = await get_data()
     selected_categories = normalize_csv(categories)
     products = filter_products(
         data["products"],
+        search,
         brands=normalize_csv(brands),
+        audiences=normalize_csv(audiences),
+        collections=normalize_csv(collections),
         categories=selected_categories,
+        subcategories=normalize_csv(subcategories),
+        color=color,
+        min_price=min_price,
+        max_price=max_price,
+        availability=availability,
+        top_seller=top_seller,
+        material=material,
     )
     options = build_options(products, selected_categories)
     options["brands"] = build_options(data["products"])["brands"]

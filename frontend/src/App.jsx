@@ -311,16 +311,8 @@ function App() {
   async function loadDashboard() {
     setLoading(true);
     try {
-      const optionParams = new URLSearchParams();
-      if (filters.brands.length) {
-        optionParams.set("brands", filters.brands.join(","));
-      }
-      if (filters.categories.length) {
-        optionParams.set("categories", filters.categories.join(","));
-      }
-      const optionQuery = optionParams.toString();
       const [optionsResponse, dashboardResponse] = await Promise.all([
-        fetch(`/api/options${optionQuery ? `?${optionQuery}` : ""}`),
+        fetch(`/api/options${query ? `?${query}` : ""}`),
         fetch(`/api/dashboard${query ? `?${query}` : ""}`),
       ]);
       if (!optionsResponse.ok || !dashboardResponse.ok) {
