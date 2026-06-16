@@ -24,11 +24,11 @@
       "label": "Arc'teryx",
       "url": "https://arcteryx.com/us/en",
       "product_count": 224,
-      "scraped_at": "2026-06-16T15:48:17.628164+00:00"
+      "scraped_at": "2026-06-16T15:55:59.616628+00:00"
     }
   ],
   "scrape_warnings": [],
-  "scraped_at": "2026-06-16T15:48:17.628164+00:00",
+  "scraped_at": "2026-06-16T15:55:59.616628+00:00",
   "product_count": 1845,
   "products": [
     {
@@ -1681,7 +1681,8 @@
       "description": "Our warmest Cerium down vest",
       "category": "Insulated Jackets",
       "categories": [
-        "Insulated Jackets"
+        "Insulated Jackets",
+        "Vests"
       ],
       "subcategories": [],
       "vendor": "Arc'teryx",
@@ -1721,7 +1722,8 @@
       "description": "Lightweight, warm, versatile down vest",
       "category": "Insulated Jackets",
       "categories": [
-        "Insulated Jackets"
+        "Insulated Jackets",
+        "Vests"
       ],
       "subcategories": [],
       "vendor": "Arc'teryx",
@@ -1761,7 +1763,8 @@
       "description": "Warm, versatile lightweight down vest",
       "category": "Insulated Jackets",
       "categories": [
-        "Insulated Jackets"
+        "Insulated Jackets",
+        "Vests"
       ],
       "subcategories": [],
       "vendor": "Arc'teryx",

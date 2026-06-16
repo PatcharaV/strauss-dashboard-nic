@@ -49,6 +49,7 @@ CLOTHING_CATEGORIES = {
         "Fleece",
         "Shirts and Tops",
         "Shorts",
+        "Vests",
     },
 }
 

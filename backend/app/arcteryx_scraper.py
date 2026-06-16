@@ -11,7 +11,7 @@ from .scraper import extract_product_functions
 BASE_URL = "https://arcteryx.com/us/en"
 API_URL = "https://arcteryx.com/api/catalog.getProductListingPage"
 AUDIENCES = {"men": "mens", "women": "womens"}
-CATEGORY_SLUGS = {
+CLOTHING_CATEGORY_SLUGS = {
     "Shell Jackets": "shell-jackets",
     "Insulated Jackets": "insulated-jackets",
     "Base Layer": "base-layer",
@@ -19,6 +19,7 @@ CATEGORY_SLUGS = {
     "Fleece": "fleece",
     "Shirts and Tops": "shirts-and-tops",
     "Shorts": "shorts",
+    "Vests": "vests",
 }
 
 
@@ -140,14 +141,23 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
         categories_by_id: dict[str, set[str]] = {}
 
         for audience, audience_slug in AUDIENCES.items():
-            for category, category_slug in CATEGORY_SLUGS.items():
+            for product in await _all_listing_products(client, audience_slug):
+                product_id = str(product.get("id", ""))
+                if not product_id:
+                    continue
+                products_by_id.setdefault(product_id, product)
+                audiences_by_id.setdefault(product_id, set()).add(audience)
+            await asyncio.sleep(0.2)
+
+        clothing_product_ids: set[str] = set()
+        for audience, audience_slug in AUDIENCES.items():
+            for category, category_slug in CLOTHING_CATEGORY_SLUGS.items():
                 slug = f"{audience_slug}/{category_slug}"
                 for product in await _all_listing_products(client, slug):
                     product_id = str(product.get("id", ""))
                     if not product_id:
                         continue
-                    products_by_id.setdefault(product_id, product)
-                    audiences_by_id.setdefault(product_id, set()).add(audience)
+                    clothing_product_ids.add(product_id)
                     categories_by_id.setdefault(product_id, set()).add(category)
                 await asyncio.sleep(0.2)
 
@@ -158,6 +168,7 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
             categories_by_id.get(product_id, set()),
         )
         for product_id, product in products_by_id.items()
+        if product_id in clothing_product_ids
     ]
     products.sort(key=lambda item: item["title"].lower())
     return {
