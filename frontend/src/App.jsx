@@ -567,28 +567,21 @@ function App() {
           </div>
         </div>
 
-        <div className="filter-content">
-          <label className="filter-card search-card">
-            <span className="filter-card-title">Search</span>
-            <span className="filter-card-help">
-              Search product name, material, feature, or collection.
-            </span>
-            <input
-              type="search"
-              placeholder="Search products..."
-              value={filters.search}
-              onChange={(event) =>
-                setFilters({ ...filters, search: event.target.value })
-              }
-            />
-          </label>
+        <div className="filter-content streamlined-filters">
+          <div className="filter-quick-row">
+            <label className="search-filter">
+              <span className="filter-title">Search</span>
+              <input
+                type="search"
+                placeholder="Search product, material, collection..."
+                value={filters.search}
+                onChange={(event) =>
+                  setFilters({ ...filters, search: event.target.value })
+                }
+              />
+            </label>
 
-          <div className="filter-workspace">
-            <section className="filter-card audience-card">
-              <span className="filter-card-title">Who</span>
-              <span className="filter-card-help">
-                Choose the audience first. Other filters adjust automatically.
-              </span>
+            <section className="audience-filter">
               <FilterGroup
                 title="Audience"
                 options={options.audiences}
@@ -596,228 +589,195 @@ function App() {
                 onChange={(audiences) => setFilters({ ...filters, audiences })}
               />
             </section>
+          </div>
 
-            <section className="filter-card">
-              <span className="filter-card-title">Product Type</span>
-              <span className="filter-card-help">
-                Category is broad. Sub category is the specific product group.
-              </span>
-              <div className="filter-field-grid">
-                <label>
-                  <span className="filter-title">Category</span>
-                  <select
-                    value={
-                      filters.categories.length === 1
-                        ? filters.categories[0]
-                        : "all"
-                    }
-                    onChange={(event) =>
-                      setFilters({
-                        ...filters,
-                        categories:
-                          event.target.value === "all"
-                            ? []
-                            : [event.target.value],
-                        subcategories: [],
-                      })
-                    }
-                  >
-                    <option value="all">All categories</option>
-                    {productCategories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+          <div className="filter-select-grid">
+            <label>
+              <span className="filter-title">Category</span>
+              <select
+                value={
+                  filters.categories.length === 1
+                    ? filters.categories[0]
+                    : "all"
+                }
+                onChange={(event) =>
+                  setFilters({
+                    ...filters,
+                    categories:
+                      event.target.value === "all" ? [] : [event.target.value],
+                    subcategories: [],
+                  })
+                }
+              >
+                <option value="all">All categories</option>
+                {productCategories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-                <label>
-                  <span className="filter-title">Sub category</span>
-                  <select
-                    value={
-                      filters.subcategories.length === 1
-                        ? filters.subcategories[0]
-                        : "all"
-                    }
-                    onChange={(event) =>
-                      setFilters({
-                        ...filters,
-                        subcategories:
-                          event.target.value === "all"
-                            ? []
-                            : [event.target.value],
-                      })
-                    }
-                    disabled={!options.subcategories.length}
-                  >
-                    <option value="all">All sub categories</option>
-                    {options.subcategories.map((subcategory) => (
-                      <option key={subcategory} value={subcategory}>
-                        {subcategory}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+            <label>
+              <span className="filter-title">Sub category</span>
+              <select
+                value={
+                  filters.subcategories.length === 1
+                    ? filters.subcategories[0]
+                    : "all"
+                }
+                onChange={(event) =>
+                  setFilters({
+                    ...filters,
+                    subcategories:
+                      event.target.value === "all" ? [] : [event.target.value],
+                  })
+                }
+                disabled={!options.subcategories.length}
+              >
+                <option value="all">All sub categories</option>
+                {options.subcategories.map((subcategory) => (
+                  <option key={subcategory} value={subcategory}>
+                    {subcategory}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              <span className="filter-title">Collection</span>
+              <select
+                value={
+                  filters.collections.length === 1
+                    ? filters.collections[0]
+                    : "all"
+                }
+                onChange={(event) =>
+                  setFilters({
+                    ...filters,
+                    collections:
+                      event.target.value === "all" ? [] : [event.target.value],
+                  })
+                }
+                disabled={!options.collections?.length}
+              >
+                <option value="all">All collections</option>
+                {(options.collections || []).map((collection) => (
+                  <option key={collection} value={collection}>
+                    {collection}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              <span className="filter-title">Feature</span>
+              <select
+                value={
+                  filters.features.length === 1 ? filters.features[0] : "all"
+                }
+                onChange={(event) =>
+                  setFilters({
+                    ...filters,
+                    features:
+                      event.target.value === "all" ? [] : [event.target.value],
+                  })
+                }
+                disabled={!options.features?.length}
+              >
+                <option value="all">All features</option>
+                {(options.features || []).map((feature) => (
+                  <option key={feature} value={feature}>
+                    {feature}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              <span className="filter-title">Shop Highlights</span>
+              <select
+                value={filters.shopHighlight}
+                onChange={(event) =>
+                  setFilters({
+                    ...filters,
+                    shopHighlight: event.target.value,
+                  })
+                }
+              >
+                <option value="all">All products</option>
+                {SHOP_HIGHLIGHTS.map((highlight) => (
+                  <option key={highlight} value={highlight}>
+                    {highlight}
+                  </option>
+                ))}
+                <option value="none">No highlights</option>
+              </select>
+            </label>
+
+            <label>
+              <span className="filter-title">Availability</span>
+              <select
+                value={filters.availability}
+                onChange={(event) =>
+                  setFilters({
+                    ...filters,
+                    availability: event.target.value,
+                  })
+                }
+              >
+                <option value="all">All statuses</option>
+                <option value="available">Available</option>
+                <option value="unavailable">Unavailable</option>
+              </select>
+            </label>
+
+            <label>
+              <span className="filter-title">Material</span>
+              <select
+                value={filters.material}
+                onChange={(event) =>
+                  setFilters({ ...filters, material: event.target.value })
+                }
+              >
+                <option value="all">All materials</option>
+                <option value="specified">Material specified</option>
+                <option value="missing">Not specified</option>
+              </select>
+            </label>
+
+            <div className="price-control compact-price">
+              <span className="filter-title">Price range (USD)</span>
+              <div className="price-inputs">
+                <input
+                  type="number"
+                  min="0"
+                  aria-label="Minimum price"
+                  placeholder={`Min ${options.price.min}`}
+                  value={filters.minPrice}
+                  onChange={(event) =>
+                    setFilters({
+                      ...filters,
+                      minPrice: event.target.value,
+                    })
+                  }
+                />
+                <span>to</span>
+                <input
+                  type="number"
+                  min="0"
+                  aria-label="Maximum price"
+                  placeholder={`Max ${options.price.max}`}
+                  value={filters.maxPrice}
+                  onChange={(event) =>
+                    setFilters({
+                      ...filters,
+                      maxPrice: event.target.value,
+                    })
+                  }
+                />
               </div>
-            </section>
-
-            <section className="filter-card">
-              <span className="filter-card-title">Marketing</span>
-              <span className="filter-card-help">
-                Feature is a website collection. Shop Highlights are product
-                badges shown on cards.
-              </span>
-              <div className="filter-field-grid">
-                <label>
-                  <span className="filter-title">Feature</span>
-                  <select
-                    value={
-                      filters.features.length === 1
-                        ? filters.features[0]
-                        : "all"
-                    }
-                    onChange={(event) =>
-                      setFilters({
-                        ...filters,
-                        features:
-                          event.target.value === "all"
-                            ? []
-                            : [event.target.value],
-                      })
-                    }
-                    disabled={!options.features?.length}
-                  >
-                    <option value="all">All features</option>
-                    {(options.features || []).map((feature) => (
-                      <option key={feature} value={feature}>
-                        {feature}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label>
-                  <span className="filter-title">Shop Highlights</span>
-                  <select
-                    value={filters.shopHighlight}
-                    onChange={(event) =>
-                      setFilters({
-                        ...filters,
-                        shopHighlight: event.target.value,
-                      })
-                    }
-                  >
-                    <option value="all">All products</option>
-                    {SHOP_HIGHLIGHTS.map((highlight) => (
-                      <option key={highlight} value={highlight}>
-                        {highlight}
-                      </option>
-                    ))}
-                    <option value="none">No highlights</option>
-                  </select>
-                </label>
-              </div>
-            </section>
-
-            <section className="filter-card">
-              <span className="filter-card-title">Details</span>
-              <span className="filter-card-help">
-                Refine by product line, material, availability, or price.
-              </span>
-              <div className="filter-field-grid details-grid">
-                <label>
-                  <span className="filter-title">Collection</span>
-                  <select
-                    value={
-                      filters.collections.length === 1
-                        ? filters.collections[0]
-                        : "all"
-                    }
-                    onChange={(event) =>
-                      setFilters({
-                        ...filters,
-                        collections:
-                          event.target.value === "all"
-                            ? []
-                            : [event.target.value],
-                      })
-                    }
-                    disabled={!options.collections?.length}
-                  >
-                    <option value="all">All collections</option>
-                    {(options.collections || []).map((collection) => (
-                      <option key={collection} value={collection}>
-                        {collection}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-
-                <label>
-                  <span className="filter-title">Availability</span>
-                  <select
-                    value={filters.availability}
-                    onChange={(event) =>
-                      setFilters({
-                        ...filters,
-                        availability: event.target.value,
-                      })
-                    }
-                  >
-                    <option value="all">All statuses</option>
-                    <option value="available">Available</option>
-                    <option value="unavailable">Unavailable</option>
-                  </select>
-                </label>
-
-                <label>
-                  <span className="filter-title">Material</span>
-                  <select
-                    value={filters.material}
-                    onChange={(event) =>
-                      setFilters({ ...filters, material: event.target.value })
-                    }
-                  >
-                    <option value="all">All materials</option>
-                    <option value="specified">Material specified</option>
-                    <option value="missing">Not specified</option>
-                  </select>
-                </label>
-
-                <div className="price-control compact-price">
-                  <span className="filter-title">Price range (USD)</span>
-                  <div className="price-inputs">
-                    <input
-                      type="number"
-                      min="0"
-                      aria-label="Minimum price"
-                      placeholder={`Min ${options.price.min}`}
-                      value={filters.minPrice}
-                      onChange={(event) =>
-                        setFilters({
-                          ...filters,
-                          minPrice: event.target.value,
-                        })
-                      }
-                    />
-                    <span>to</span>
-                    <input
-                      type="number"
-                      min="0"
-                      aria-label="Maximum price"
-                      placeholder={`Max ${options.price.max}`}
-                      value={filters.maxPrice}
-                      onChange={(event) =>
-                        setFilters({
-                          ...filters,
-                          maxPrice: event.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
+            </div>
           </div>
 
           <details className="view-settings">

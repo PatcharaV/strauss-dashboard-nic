@@ -367,6 +367,40 @@ h2 {
   border-top: 1px solid #ebecee;
 }
 
+.streamlined-filters {
+  display: grid;
+  gap: 16px;
+}
+
+.filter-quick-row {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) auto;
+  align-items: end;
+  gap: 18px;
+  padding: 16px;
+  background: #fafafa;
+  border: 1px solid #e4e5e6;
+  border-radius: 12px;
+}
+
+.search-filter {
+  min-width: 0;
+}
+
+.audience-filter {
+  min-width: 260px;
+}
+
+.filter-select-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e4e5e6;
+  border-radius: 12px;
+}
+
 .filter-workspace {
   display: grid;
   grid-template-columns: 0.9fr repeat(3, 1fr);
@@ -429,7 +463,9 @@ h2 {
 }
 
 .filter-card input,
-.filter-card select {
+.filter-card select,
+.streamlined-filters input,
+.streamlined-filters select {
   width: 100%;
   height: 42px;
   padding: 0 11px;
@@ -441,7 +477,9 @@ h2 {
 }
 
 .filter-card input:focus,
-.filter-card select:focus {
+.filter-card select:focus,
+.streamlined-filters input:focus,
+.streamlined-filters select:focus {
   border-color: #ef3e42;
   box-shadow: 0 0 0 3px rgba(239, 62, 66, 0.1);
 }
@@ -1019,6 +1057,15 @@ footer a {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .filter-quick-row,
+  .filter-select-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .audience-filter {
+    min-width: 0;
+  }
+
   .product-pagination {
     align-items: flex-start;
     flex-wrap: wrap;
@@ -1113,7 +1160,9 @@ footer a {
   }
 
   .filter-workspace,
-  .details-grid {
+  .details-grid,
+  .filter-quick-row,
+  .filter-select-grid {
     grid-template-columns: 1fr;
   }
 
