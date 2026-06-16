@@ -880,7 +880,6 @@ function App() {
           <article className="panel treemap-panel">
             <div className="panel-heading">
               <div>
-                <p className="eyebrow">SUB CATEGORY SHARE</p>
                 <h2>Sub category treemap</h2>
               </div>
               <span className="panel-tag">Click a block</span>
