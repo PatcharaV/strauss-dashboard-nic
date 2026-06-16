@@ -306,6 +306,32 @@ h2 {
   gap: 18px;
 }
 
+.panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.export-button {
+  padding: 8px 12px;
+  color: #fff;
+  background: #151515;
+  border: 0;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.export-button:hover {
+  background: #ef3e42;
+}
+
+.export-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
 .text-button {
   padding: 9px 11px;
   color: #ef3e42;

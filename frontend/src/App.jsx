@@ -56,6 +56,45 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
+async function exportProductsToExcel(products) {
+  const XLSX = await import("xlsx");
+  const rows = products.map((product) => ({
+    Product: product.title,
+    Brand: product.brand_label,
+    Category: (product.categories || [product.category]).join(", "),
+    "Sub Category": (product.subcategories || []).join(", "),
+    Collection: (product.collections || []).join(", "),
+    Color: product.color || "Not specified",
+    Material: product.material || "Not specified",
+    "Top Seller": product.top_seller ? "Yes" : "No",
+    "Price Min": product.price_min,
+    "Price Max": product.price_max,
+    "Price Range": formatPrice(product),
+    Status: product.available ? "Available" : "Unavailable",
+    URL: product.url,
+  }));
+  const worksheet = XLSX.utils.json_to_sheet(rows);
+  worksheet["!cols"] = [
+    { wch: 42 },
+    { wch: 14 },
+    { wch: 24 },
+    { wch: 28 },
+    { wch: 28 },
+    { wch: 22 },
+    { wch: 50 },
+    { wch: 12 },
+    { wch: 10 },
+    { wch: 10 },
+    { wch: 18 },
+    { wch: 12 },
+    { wch: 64 },
+  ];
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Product Details");
+  const today = new Date().toISOString().slice(0, 10);
+  XLSX.writeFile(workbook, `brand-analysis-products-${today}.xlsx`);
+}
+
 function buildQuery(filters) {
   const params = new URLSearchParams();
   if (filters.search.trim()) params.set("search", filters.search.trim());
@@ -849,9 +888,19 @@ function App() {
                 Search the current selection or refine it with the controls below.
               </p>
             </div>
-            <span className="panel-tag">
-              Showing {dashboard.products.length} products
-            </span>
+            <div className="panel-actions">
+              <button
+                className="export-button"
+                type="button"
+                onClick={() => exportProductsToExcel(dashboard.products)}
+                disabled={!dashboard.products.length}
+              >
+                Export Excel
+              </button>
+              <span className="panel-tag">
+                Showing {dashboard.products.length} products
+              </span>
+            </div>
           </div>
 
           {dashboard.products.length ? (
