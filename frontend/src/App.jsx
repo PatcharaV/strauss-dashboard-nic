@@ -33,14 +33,6 @@ const DEFAULT_SECTIONS = {
   products: true,
 };
 
-const SHOP_HIGHLIGHTS = [
-  "Topseller",
-  "News",
-  "New Color",
-  "Spring Favorite",
-  "STRAUSS Pick",
-];
-
 const formatNumber = new Intl.NumberFormat("en-US");
 const formatMoney = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -308,6 +300,30 @@ function App() {
 
   const query = useMemo(() => buildQuery(filters), [filters]);
   const productCategories = options.categories;
+  const availableShopHighlights = options.shop_highlights || [];
+  const colorOptions = options.colors || [];
+  const hasCollectionData =
+    (dashboard.collections || []).length > 0 ||
+    dashboard.products.some((product) => product.collections?.length);
+  const hasSubcategoryData = dashboard.products.some(
+    (product) => product.subcategories?.length,
+  );
+  const hasMaterialData = dashboard.products.some((product) =>
+    Boolean(String(product.material || "").trim()),
+  );
+  const hasSubcategoryFilter =
+    (options.subcategories || []).length > 0 || filters.subcategories.length > 0;
+  const hasCollectionFilter =
+    (options.collections || []).length > 0 || filters.collections.length > 0;
+  const hasFeatureFilter =
+    (options.features || []).length > 0 || filters.features.length > 0;
+  const hasShopHighlightFilter =
+    availableShopHighlights.length > 0 || filters.shopHighlight !== "all";
+  const hasMaterialFilter =
+    filters.material !== "all" || hasMaterialData;
+  const hasUnavailableProducts = dashboard.products.some(
+    (product) => !product.available,
+  ) || filters.availability !== "all";
   const totalProductPages = Math.max(
     1,
     Math.ceil(dashboard.products.length / productsPerPage),
@@ -395,6 +411,11 @@ function App() {
       categories: [],
       subcategories: [],
       color: "",
+      minPrice: "",
+      maxPrice: "",
+      availability: "all",
+      shopHighlight: "all",
+      material: "all",
     });
   }
 
@@ -618,133 +639,164 @@ function App() {
               </select>
             </label>
 
-            <label>
-              <span className="filter-title">Sub category</span>
-              <select
-                value={
-                  filters.subcategories.length === 1
-                    ? filters.subcategories[0]
-                    : "all"
-                }
-                onChange={(event) =>
-                  setFilters({
-                    ...filters,
-                    subcategories:
-                      event.target.value === "all" ? [] : [event.target.value],
-                  })
-                }
-                disabled={!options.subcategories.length}
-              >
-                <option value="all">All sub categories</option>
-                {options.subcategories.map((subcategory) => (
-                  <option key={subcategory} value={subcategory}>
-                    {subcategory}
-                  </option>
-                ))}
-              </select>
-            </label>
+            {hasSubcategoryFilter && (
+              <label>
+                <span className="filter-title">Sub category</span>
+                <select
+                  value={
+                    filters.subcategories.length === 1
+                      ? filters.subcategories[0]
+                      : "all"
+                  }
+                  onChange={(event) =>
+                    setFilters({
+                      ...filters,
+                      subcategories:
+                        event.target.value === "all" ? [] : [event.target.value],
+                    })
+                  }
+                >
+                  <option value="all">All sub categories</option>
+                  {options.subcategories.map((subcategory) => (
+                    <option key={subcategory} value={subcategory}>
+                      {subcategory}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
 
-            <label>
-              <span className="filter-title">Collection</span>
-              <select
-                value={
-                  filters.collections.length === 1
-                    ? filters.collections[0]
-                    : "all"
-                }
-                onChange={(event) =>
-                  setFilters({
-                    ...filters,
-                    collections:
-                      event.target.value === "all" ? [] : [event.target.value],
-                  })
-                }
-                disabled={!options.collections?.length}
-              >
-                <option value="all">All collections</option>
-                {(options.collections || []).map((collection) => (
-                  <option key={collection} value={collection}>
-                    {collection}
-                  </option>
-                ))}
-              </select>
-            </label>
+            {hasCollectionFilter && (
+              <label>
+                <span className="filter-title">Collection</span>
+                <select
+                  value={
+                    filters.collections.length === 1
+                      ? filters.collections[0]
+                      : "all"
+                  }
+                  onChange={(event) =>
+                    setFilters({
+                      ...filters,
+                      collections:
+                        event.target.value === "all" ? [] : [event.target.value],
+                    })
+                  }
+                >
+                  <option value="all">All collections</option>
+                  {(options.collections || []).map((collection) => (
+                    <option key={collection} value={collection}>
+                      {collection}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
 
-            <label>
-              <span className="filter-title">Feature</span>
-              <select
-                value={
-                  filters.features.length === 1 ? filters.features[0] : "all"
-                }
-                onChange={(event) =>
-                  setFilters({
-                    ...filters,
-                    features:
-                      event.target.value === "all" ? [] : [event.target.value],
-                  })
-                }
-                disabled={!options.features?.length}
-              >
-                <option value="all">All features</option>
-                {(options.features || []).map((feature) => (
-                  <option key={feature} value={feature}>
-                    {feature}
-                  </option>
-                ))}
-              </select>
-            </label>
+            {hasFeatureFilter && (
+              <label>
+                <span className="filter-title">Feature</span>
+                <select
+                  value={
+                    filters.features.length === 1 ? filters.features[0] : "all"
+                  }
+                  onChange={(event) =>
+                    setFilters({
+                      ...filters,
+                      features:
+                        event.target.value === "all" ? [] : [event.target.value],
+                    })
+                  }
+                >
+                  <option value="all">All features</option>
+                  {(options.features || []).map((feature) => (
+                    <option key={feature} value={feature}>
+                      {feature}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
 
-            <label>
-              <span className="filter-title">Shop Highlights</span>
-              <select
-                value={filters.shopHighlight}
-                onChange={(event) =>
-                  setFilters({
-                    ...filters,
-                    shopHighlight: event.target.value,
-                  })
-                }
-              >
-                <option value="all">All products</option>
-                {SHOP_HIGHLIGHTS.map((highlight) => (
-                  <option key={highlight} value={highlight}>
-                    {highlight}
-                  </option>
-                ))}
-                <option value="none">No highlights</option>
-              </select>
-            </label>
+            {colorOptions.length > 0 && (
+              <label>
+                <span className="filter-title">Color</span>
+                <select
+                  value={filters.color || "all"}
+                  onChange={(event) =>
+                    setFilters({
+                      ...filters,
+                      color: event.target.value === "all" ? "" : event.target.value,
+                    })
+                  }
+                >
+                  <option value="all">All colors</option>
+                  {colorOptions.map((color) => (
+                    <option key={color} value={color}>
+                      {color}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
 
-            <label>
-              <span className="filter-title">Availability</span>
-              <select
-                value={filters.availability}
-                onChange={(event) =>
-                  setFilters({
-                    ...filters,
-                    availability: event.target.value,
-                  })
-                }
-              >
-                <option value="all">All statuses</option>
-                <option value="available">Available</option>
-                <option value="unavailable">Unavailable</option>
-              </select>
-            </label>
+            {hasShopHighlightFilter && (
+              <label>
+                <span className="filter-title">Shop Highlights</span>
+                <select
+                  value={filters.shopHighlight}
+                  onChange={(event) =>
+                    setFilters({
+                      ...filters,
+                      shopHighlight: event.target.value,
+                    })
+                  }
+                >
+                  <option value="all">All products</option>
+                  {availableShopHighlights.map((highlight) => (
+                    <option key={highlight} value={highlight}>
+                      {highlight}
+                    </option>
+                  ))}
+                  <option value="none">No highlights</option>
+                </select>
+              </label>
+            )}
 
-            <label>
-              <span className="filter-title">Material</span>
-              <select
-                value={filters.material}
-                onChange={(event) =>
-                  setFilters({ ...filters, material: event.target.value })
-                }
-              >
-                <option value="all">All materials</option>
-                <option value="specified">Material specified</option>
-                <option value="missing">Not specified</option>
-              </select>
-            </label>
+            {hasUnavailableProducts && (
+              <label>
+                <span className="filter-title">Availability</span>
+                <select
+                  value={filters.availability}
+                  onChange={(event) =>
+                    setFilters({
+                      ...filters,
+                      availability: event.target.value,
+                    })
+                  }
+                >
+                  <option value="all">All statuses</option>
+                  <option value="available">Available</option>
+                  <option value="unavailable">Unavailable</option>
+                </select>
+              </label>
+            )}
+
+            {hasMaterialFilter && (
+              <label>
+                <span className="filter-title">Material</span>
+                <select
+                  value={filters.material}
+                  onChange={(event) =>
+                    setFilters({ ...filters, material: event.target.value })
+                  }
+                >
+                  <option value="all">All materials</option>
+                  <option value="specified">Material specified</option>
+                  <option value="missing">Not specified</option>
+                </select>
+              </label>
+            )}
 
             <div className="price-control compact-price">
               <span className="filter-title">Price range (USD)</span>
@@ -878,7 +930,7 @@ function App() {
       )}
 
       <section className="dashboard-grid" id="charts">
-        {sections.audience && (
+        {sections.audience && hasCollectionData && (
           <article className="panel audience-panel">
             <div className="panel-heading">
               <div>
@@ -1066,10 +1118,10 @@ function App() {
                       <th>Product</th>
                       <th>Gender</th>
                       <th>Category</th>
-                      <th>Sub category</th>
-                      <th>Collection</th>
+                      {hasSubcategoryData && <th>Sub category</th>}
+                      {hasCollectionData && <th>Collection</th>}
                       <th>Color</th>
-                      <th>Material</th>
+                      {hasMaterialData && <th>Material</th>}
                       <th>Shop Highlights</th>
                       <th>Price range</th>
                       <th>Status</th>
@@ -1129,62 +1181,68 @@ function App() {
                             ),
                           )}
                         </td>
-                        <td>
-                          {product.subcategories?.length
-                            ? product.subcategories.map((subcategory, index) => (
-                                <span key={subcategory}>
-                                  {index > 0 && ", "}
-                                  <button
-                                    className="table-filter-button"
-                                    type="button"
-                                    onClick={() =>
-                                      setFilters({
-                                        ...filters,
-                                        subcategories: [subcategory],
-                                      })
-                                    }
-                                  >
-                                    {subcategory}
-                                  </button>
-                                </span>
-                              ))
-                            : "Not specified"}
-                        </td>
-                        <td className="collection-cell">
-                          {product.collections?.length
-                            ? product.collections.map((collection, index) => (
-                                <span key={collection}>
-                                  {index > 0 && ", "}
-                                  <button
-                                    className="table-filter-button"
-                                    type="button"
-                                    onClick={() => toggleCollection(collection)}
-                                  >
-                                    {collection}
-                                  </button>
-                                </span>
-                              ))
-                            : "No named collection"}
-                        </td>
+                        {hasSubcategoryData && (
+                          <td>
+                            {product.subcategories?.length
+                              ? product.subcategories.map((subcategory, index) => (
+                                  <span key={subcategory}>
+                                    {index > 0 && ", "}
+                                    <button
+                                      className="table-filter-button"
+                                      type="button"
+                                      onClick={() =>
+                                        setFilters({
+                                          ...filters,
+                                          subcategories: [subcategory],
+                                        })
+                                      }
+                                    >
+                                      {subcategory}
+                                    </button>
+                                  </span>
+                                ))
+                              : "Not specified"}
+                          </td>
+                        )}
+                        {hasCollectionData && (
+                          <td className="collection-cell">
+                            {product.collections?.length
+                              ? product.collections.map((collection, index) => (
+                                  <span key={collection}>
+                                    {index > 0 && ", "}
+                                    <button
+                                      className="table-filter-button"
+                                      type="button"
+                                      onClick={() => toggleCollection(collection)}
+                                    >
+                                      {collection}
+                                    </button>
+                                  </span>
+                                ))
+                              : "No named collection"}
+                          </td>
+                        )}
                         <td className="color-cell">
                           {product.color || "Not specified"}
                         </td>
-                        <td className="material-cell">
-                          <button
-                            className="table-filter-button material-button"
-                            type="button"
-                            onClick={() =>
-                              setFilters({
-                                ...filters,
-                                material: product.material
-                                  ? "specified"
-                                  : "missing",
-                              })
-                            }
-                          >
-                            {product.material || "Not specified"}
-                          </button>
-                        </td>
+                        {hasMaterialData && (
+                          <td className="material-cell">
+                            <button
+                              className="table-filter-button material-button"
+                              type="button"
+                              onClick={() =>
+                                setFilters({
+                                  ...filters,
+                                  material: product.material
+                                    ? "specified"
+                                    : "missing",
+                                })
+                              }
+                            >
+                              {product.material || "Not specified"}
+                            </button>
+                          </td>
+                        )}
                         <td>
                           {product.shop_highlights?.length ? (
                             product.shop_highlights.map((highlight) => (

@@ -29,6 +29,14 @@ export const demoOptions = {
     "High-Visibility",
     "Thermal Layers",
   ],
+  shop_highlights: [
+    "Topseller",
+    "News",
+    "New Color",
+    "Spring Favorite",
+    "STRAUSS Pick",
+  ],
+  colors: ["Black", "Blue", "Grey", "Red"],
   categories: [
     "Shirts",
     "Pants",

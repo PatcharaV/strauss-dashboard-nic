@@ -337,6 +337,22 @@ def build_options(
             },
             key=str.lower,
         ),
+        "shop_highlights": sorted(
+            {
+                highlight
+                for product in products
+                for highlight in product.get("shop_highlights", [])
+            },
+            key=str.lower,
+        ),
+        "colors": sorted(
+            {
+                str(product.get("color", "")).strip()
+                for product in products
+                if str(product.get("color", "")).strip()
+            },
+            key=str.lower,
+        ),
         "categories": sorted(
             {
                 category
