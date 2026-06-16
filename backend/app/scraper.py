@@ -565,36 +565,15 @@ def _fallback_classification(
     categories: list[str],
     subcategories: list[str],
 ) -> tuple[list[str], list[str]]:
-    normalized_title = title.lower()
     categories = [category for category in categories if category != "Thermal Layers"]
     subcategories = [
         subcategory
         for subcategory in subcategories
         if subcategory not in {"Men's Thermal Layers", "Women's Thermal Layers"}
     ]
-    if "thermal" in normalized_title and "pant" in normalized_title:
-        if "Pants" not in categories:
-            categories.append("Pants")
-        if "Thermal Pants" not in subcategories:
-            subcategories.append("Thermal Pants")
-    if "thermal" in normalized_title and (
-        "long sleeve" in normalized_title or "longsleeve" in normalized_title
-    ):
-        if "Shirts" not in categories:
-            categories.append("Shirts")
-        if "Long Sleeves" not in subcategories:
-            subcategories.append("Long Sleeves")
 
     if subcategories:
         return categories, subcategories
-
-    if categories == ["Other"]:
-        if "t-shirt" in normalized_title or re.search(r"\btee\b", normalized_title):
-            return ["Shirts"], ["T-Shirts"]
-        if "hooded sweatjacket" in normalized_title:
-            return ["Hoodies & Sweatshirts"], ["Full-Zip Sweatshirts"]
-        if "jacket" in normalized_title:
-            return ["Outerwear"], ["Lightweight Jackets"]
 
     if categories == ["Backpacks & Bags"]:
         return categories, ["Backpacks & Bags"]

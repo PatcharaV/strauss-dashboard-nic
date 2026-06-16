@@ -112,18 +112,7 @@ def _normalize_strauss_categories(product: dict[str, Any]) -> dict[str, Any]:
         if subcategory not in {"Men's Thermal Layers", "Women's Thermal Layers"}
     ]
 
-    if "thermal" in title and "pant" in title:
-        if "Pants" not in categories:
-            categories.append("Pants")
-        if "Thermal Pants" not in subcategories:
-            subcategories.append("Thermal Pants")
-    if "thermal" in title and ("long sleeve" in title or "longsleeve" in title):
-        if "Shirts" not in categories:
-            categories.append("Shirts")
-        if "Long Sleeves" not in subcategories:
-            subcategories.append("Long Sleeves")
-
-    categories = categories or [str(product.get("category", "Other"))]
+    categories = categories or ["Other"]
     return {
         **product,
         "category": categories[0],
