@@ -876,14 +876,6 @@ td:nth-child(2) {
   min-width: 150px;
 }
 
-.function-cell {
-  min-width: 190px;
-  max-width: 280px;
-  color: #4f5257;
-  font-weight: 650;
-  line-height: 1.45;
-}
-
 .price-cell {
   min-width: 112px;
   font-weight: 750;

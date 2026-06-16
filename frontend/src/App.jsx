@@ -75,7 +75,6 @@ async function exportProductsToExcel(products) {
     Feature: (product.features || []).join(", "),
     Color: product.color || "Not specified",
     Material: product.material || "Not specified",
-    Function: (product.product_functions || []).join(", "),
     "Shop Highlights": (product.shop_highlights || []).join(", "),
     "Price Min": product.price_min,
     "Price Max": product.price_max,
@@ -93,7 +92,6 @@ async function exportProductsToExcel(products) {
     { wch: 22 },
     { wch: 22 },
     { wch: 50 },
-    { wch: 34 },
     { wch: 12 },
     { wch: 10 },
     { wch: 10 },
@@ -1115,7 +1113,6 @@ function App() {
                       <th>Feature</th>
                       <th>Color</th>
                       <th>Material</th>
-                      <th>Function</th>
                       <th>Shop Highlights</th>
                       <th>Price range</th>
                       <th>Status</th>
@@ -1246,11 +1243,6 @@ function App() {
                           >
                             {product.material || "Not specified"}
                           </button>
-                        </td>
-                        <td className="function-cell">
-                          {product.product_functions?.length
-                            ? product.product_functions.join(", ")
-                            : "Not specified"}
                         </td>
                         <td>
                           {product.shop_highlights?.length ? (
