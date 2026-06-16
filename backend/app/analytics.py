@@ -58,6 +58,33 @@ def _product_functions(product: dict[str, Any]) -> list[str]:
         product.get("material", ""),
     )
 
+
+def _visible_categories(
+    product: dict[str, Any], selected_categories: set[str]
+) -> list[str]:
+    categories = list(
+        product.get("categories")
+        or [product.get("category", "Uncategorized")]
+    )
+    if selected_categories:
+        categories = [category for category in categories if category in selected_categories]
+    return categories or ["Uncategorized"]
+
+
+def _visible_subcategories(
+    product: dict[str, Any], selected_categories: set[str]
+) -> list[str]:
+    subcategories = list(product.get("subcategories", []))
+    if selected_categories:
+        subcategories = [
+            subcategory
+            for subcategory in subcategories
+            if not SUBCATEGORY_PARENTS.get(subcategory)
+            or SUBCATEGORY_PARENTS[subcategory] in selected_categories
+        ]
+    return subcategories
+
+
 def filter_products(
     products: list[dict[str, Any]],
     search: str | None = None,
@@ -166,10 +193,7 @@ def build_dashboard(
     )
     category_counts: Counter[str] = Counter()
     for product in products:
-        category_counts.update(
-            product.get("categories")
-            or [product.get("category", "Uncategorized")]
-        )
+        category_counts.update(_visible_categories(product, selected_category_set))
     audience_counts: Counter[str] = Counter()
     for product in products:
         labels = product.get("audience_labels", [])
@@ -180,11 +204,9 @@ def build_dashboard(
         collection_counts.update(_product_collections(product))
     subcategory_counts: Counter[str] = Counter()
     for product in products:
-        for subcategory in product.get("subcategories", []):
-            parent = SUBCATEGORY_PARENTS.get(subcategory)
-            if selected_category_set and parent and parent not in selected_category_set:
-                continue
-            subcategory_counts[subcategory] += 1
+        subcategory_counts.update(
+            _visible_subcategories(product, selected_category_set)
+        )
 
     prices = [float(product.get("price_min", 0)) for product in products]
     available_count = sum(bool(product.get("available")) for product in products)
@@ -198,18 +220,11 @@ def build_dashboard(
         len(_product_collections(product)) > 1 for product in products
     )
     category_memberships = sum(
-        len(
-            product.get("categories")
-            or [product.get("category", "Uncategorized")]
-        )
+        len(_visible_categories(product, selected_category_set))
         for product in products
     )
     multi_category_products = sum(
-        len(
-            product.get("categories")
-            or [product.get("category", "Uncategorized")]
-        )
-        > 1
+        len(_visible_categories(product, selected_category_set)) > 1
         for product in products
     )
 
@@ -246,6 +261,11 @@ def build_dashboard(
         "products": [
             {
                 **product,
+                "category": _visible_categories(product, selected_category_set)[0],
+                "categories": _visible_categories(product, selected_category_set),
+                "subcategories": _visible_subcategories(
+                    product, selected_category_set
+                ),
                 "collections": _product_collections(product),
                 "product_functions": _product_functions(product),
             }
