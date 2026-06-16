@@ -19,7 +19,6 @@ CLOTHING_CATEGORIES = {
         "Hoodies & Sweatshirts",
         "Shorts",
         "Leggings",
-        "Thermal Layers",
     },
     "rhone": {
         "Blazers/Jackets",
@@ -92,6 +91,56 @@ def _clothing_products(products: list[dict[str, Any]]) -> list[dict[str, Any]]:
             }
         )
     return clothing
+
+
+def _normalize_strauss_categories(product: dict[str, Any]) -> dict[str, Any]:
+    if product.get("brand") != "strauss":
+        return product
+
+    title = str(product.get("title", "")).lower()
+    categories = [
+        category
+        for category in (
+            product.get("categories")
+            or [str(product.get("category", "Other"))]
+        )
+        if category != "Thermal Layers"
+    ]
+    subcategories = [
+        subcategory
+        for subcategory in product.get("subcategories", [])
+        if subcategory not in {"Men's Thermal Layers", "Women's Thermal Layers"}
+    ]
+
+    if "thermal" in title and "pant" in title:
+        if "Pants" not in categories:
+            categories.append("Pants")
+        if "Thermal Pants" not in subcategories:
+            subcategories.append("Thermal Pants")
+    if "thermal" in title and ("long sleeve" in title or "longsleeve" in title):
+        if "Shirts" not in categories:
+            categories.append("Shirts")
+        if "Long Sleeves" not in subcategories:
+            subcategories.append("Long Sleeves")
+
+    categories = categories or [str(product.get("category", "Other"))]
+    return {
+        **product,
+        "category": categories[0],
+        "categories": categories,
+        "subcategories": subcategories,
+    }
+
+
+def _normalize_cached_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    products = _clothing_products(
+        [_normalize_strauss_categories(product) for product in payload.get("products", [])]
+    )
+    return {
+        **payload,
+        "products": products,
+        "product_count": len(products),
+    }
 
 
 async def scrape_products() -> dict[str, Any]:
@@ -191,7 +240,9 @@ def load_cache() -> dict[str, Any] | None:
     if not CACHE_PATH.exists():
         return None
     try:
-        return json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+        return _normalize_cached_payload(
+            json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+        )
     except (json.JSONDecodeError, OSError):
         return None
 

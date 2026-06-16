@@ -18,6 +18,7 @@ SUBCATEGORY_PARENTS = {
     "Jeans": "Pants",
     "Bibs, Coveralls & Overalls": "Pants",
     "Kids Pants": "Pants",
+    "Thermal Pants": "Pants",
     "Work Shorts": "Shorts",
     "Cargo Shorts": "Shorts",
     "Women's Shorts": "Shorts",
@@ -32,8 +33,6 @@ SUBCATEGORY_PARENTS = {
     "Crewnecks": "Hoodies & Sweatshirts",
     "Full-Zip Sweatshirts": "Hoodies & Sweatshirts",
     "Women's Hoodies & Sweatshirts": "Hoodies & Sweatshirts",
-    "Men's Thermal Layers": "Thermal Layers",
-    "Women's Thermal Layers": "Thermal Layers",
     "Women's Leggings": "Leggings",
 }
 
