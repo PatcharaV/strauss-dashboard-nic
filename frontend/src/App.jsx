@@ -455,10 +455,6 @@ function App() {
     filters.minPrice !== "" ? `Min $${filters.minPrice}` : null,
     filters.maxPrice !== "" ? `Max $${filters.maxPrice}` : null,
   ].filter(Boolean);
-  const selectedCategoryLabel = filters.categories.length
-    ? filters.categories.join(", ")
-    : "current selection";
-
   return (
     <main>
       <header className="topbar">
@@ -877,47 +873,6 @@ function App() {
               onSelect={toggleCategory}
               selectedNames={filters.categories}
             />
-          </article>
-        )}
-
-        {sections.categoryDonut && (
-          <article className="panel subcategory-panel">
-            <div className="panel-heading">
-              <div>
-                <p className="eyebrow">SUB CATEGORY MIX</p>
-                <h2>Sub category</h2>
-              </div>
-              <span className="panel-tag">
-                {formatNumber.format(dashboard.subcategories?.length || 0)} groups
-              </span>
-            </div>
-            <p className="panel-help">
-              Sub categories inside {selectedCategoryLabel}. Click a chip to
-              filter the whole dashboard.
-            </p>
-            <div className="subcategory-summary">
-              {dashboard.subcategories?.length ? (
-                dashboard.subcategories.map((subcategory) => (
-                  <button
-                    key={subcategory.name}
-                    type="button"
-                    className={
-                      filters.subcategories.includes(subcategory.name)
-                        ? "summary-chip active"
-                        : "summary-chip"
-                    }
-                    onClick={() => toggleSubcategory(subcategory.name)}
-                  >
-                    <span>{subcategory.name}</span>
-                    <strong>{formatNumber.format(subcategory.value)}</strong>
-                  </button>
-                ))
-              ) : (
-                <div className="empty-mini">
-                  No sub category data for this selection.
-                </div>
-              )}
-            </div>
           </article>
         )}
 
