@@ -1031,23 +1031,64 @@ td a:hover {
   color: #151515;
 }
 
-.pdf-panel {
+.document-panel {
   margin-top: 12px;
 }
 
-.pdf-frame-wrap {
+.document-card {
   margin-top: 18px;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px;
   border: 1px solid #e3e4e6;
   border-radius: 10px;
   background: #f7f8f8;
 }
 
-.pdf-frame {
-  display: block;
-  width: 100%;
-  min-height: 760px;
-  border: 0;
+.document-card div {
+  display: grid;
+  gap: 6px;
+}
+
+.document-card strong {
+  color: #151515;
+  font-size: 16px;
+}
+
+.document-card small {
+  color: #77746e;
+  font-size: 12px;
+}
+
+.document-type {
+  width: max-content;
+  padding: 5px 8px;
+  color: #fff;
+  background: #ef3e42;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+}
+
+.secondary-link {
+  padding: 9px 12px;
+  color: #151515;
+  background: #fff;
+  border: 1px solid #d5d7da;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.secondary-link:hover {
+  color: #fff;
+  background: #151515;
+  border-color: #151515;
 }
 
 footer {
@@ -1238,7 +1279,8 @@ footer a {
     max-height: 560px;
   }
 
-  .pdf-frame {
-    min-height: 520px;
+  .document-card {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

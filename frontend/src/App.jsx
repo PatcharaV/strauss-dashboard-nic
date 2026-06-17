@@ -1372,30 +1372,40 @@ function App() {
         </section>
       )}
 
-      <section className="panel pdf-panel" id="top-strauss">
+      <section className="panel document-panel" id="strauss-pitch">
         <div className="panel-heading">
           <div>
             <p className="eyebrow">STRAUSS REFERENCE</p>
-            <h2>Top 5 Strauss</h2>
+            <h2>NanYang Strauss Pitch</h2>
           </div>
           <a
             className="export-button"
-            href="/top-5-strauss.pdf"
+            href="/nanyang-strauss-pitch.pptx"
             target="_blank"
             rel="noreferrer"
+            download
           >
-            Open PDF
+            Download PPTX
           </a>
         </div>
         <p className="panel-help">
-          Reference file added to the dashboard for quick review.
+          PowerPoint reference deck attached to the dashboard for quick review.
         </p>
-        <div className="pdf-frame-wrap">
-          <iframe
-            title="Top 5 Strauss PDF"
-            src="/top-5-strauss.pdf"
-            className="pdf-frame"
-          />
+        <div className="document-card">
+          <div>
+            <span className="document-type">PPTX</span>
+            <strong>NanYang_Strauss_Pitch.pptx</strong>
+            <small>Open or download the presentation file for review.</small>
+          </div>
+          <a
+            className="secondary-link"
+            href="/nanyang-strauss-pitch.pptx"
+            target="_blank"
+            rel="noreferrer"
+            download
+          >
+            Download file
+          </a>
         </div>
       </section>
 
