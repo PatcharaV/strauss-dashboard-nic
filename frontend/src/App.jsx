@@ -60,6 +60,21 @@ function formatList(values, fallback = "Not specified") {
   return values?.length ? values.join(", ") : fallback;
 }
 
+function formatMultilineList(values, fallback = "Not specified") {
+  return values?.length ? values.join("\n") : fallback;
+}
+
+function DetailList({ values, fallback = "Not specified" }) {
+  if (!values?.length) return <span className="muted-detail">{fallback}</span>;
+  return (
+    <ul className="detail-list">
+      {values.map((value) => (
+        <li key={value}>{value}</li>
+      ))}
+    </ul>
+  );
+}
+
 async function exportProductsToExcel(products) {
   const XLSX = await import("xlsx");
   const rows = products.map((product) => ({
@@ -70,10 +85,13 @@ async function exportProductsToExcel(products) {
     Collection: (product.collections || []).join(", "),
     Activities: (product.activities || []).join(", "),
     Color: product.color || "Not specified",
-    Material: formatList(product.material_details, product.material || "Not specified"),
-    "Technical Features": formatList(product.technical_features),
-    "Fabric Treatment": formatList(product.fabric_treatment),
-    Construction: formatList(product.construction),
+    Material: formatMultilineList(
+      product.material_details,
+      product.material || "Not specified",
+    ),
+    "Technical Features": formatMultilineList(product.technical_features),
+    "Fabric Treatment": formatMultilineList(product.fabric_treatment),
+    Construction: formatMultilineList(product.construction),
     "Shop Highlights": (product.shop_highlights || []).join(", "),
     "Price Min": product.price_min,
     "Price Max": product.price_max,
@@ -1319,35 +1337,27 @@ function App() {
                         </td>
                         {hasMaterialData && (
                           <td className="material-cell">
-                            <button
-                              className="table-filter-button material-button"
-                              type="button"
-                              onClick={() =>
-                                setFilters({
-                                  ...filters,
-                                  material: product.material
-                                    ? "specified"
-                                    : "missing",
-                                })
+                            <DetailList
+                              values={
+                                product.material_details ||
+                                (product.material ? [product.material] : [])
                               }
-                            >
-                              {product.material || "Not specified"}
-                            </button>
+                            />
                           </td>
                         )}
                         {hasTechnicalFeatureData && (
-                          <td className="material-cell">
-                            {formatList(product.technical_features)}
+                          <td className="detail-cell">
+                            <DetailList values={product.technical_features} />
                           </td>
                         )}
                         {hasFabricTreatmentData && (
-                          <td className="material-cell">
-                            {formatList(product.fabric_treatment)}
+                          <td className="detail-cell">
+                            <DetailList values={product.fabric_treatment} />
                           </td>
                         )}
                         {hasConstructionData && (
-                          <td className="material-cell">
-                            {formatList(product.construction)}
+                          <td className="detail-cell">
+                            <DetailList values={product.construction} />
                           </td>
                         )}
                         <td>

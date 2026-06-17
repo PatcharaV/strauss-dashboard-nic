@@ -904,6 +904,31 @@ td:nth-child(2) {
   line-height: 1.45;
 }
 
+.detail-cell {
+  min-width: 240px;
+  max-width: 380px;
+  color: #5c5a55;
+  line-height: 1.45;
+}
+
+.detail-list {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.detail-list li {
+  margin: 0 0 6px;
+}
+
+.detail-list li:last-child {
+  margin-bottom: 0;
+}
+
+.muted-detail {
+  color: #96938d;
+  font-weight: 650;
+}
+
 .color-cell {
   min-width: 150px;
   color: #4f5257;
