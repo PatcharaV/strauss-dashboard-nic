@@ -56,6 +56,10 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
+function formatList(values, fallback = "Not specified") {
+  return values?.length ? values.join(", ") : fallback;
+}
+
 async function exportProductsToExcel(products) {
   const XLSX = await import("xlsx");
   const rows = products.map((product) => ({
@@ -66,7 +70,10 @@ async function exportProductsToExcel(products) {
     Collection: (product.collections || []).join(", "),
     Activities: (product.activities || []).join(", "),
     Color: product.color || "Not specified",
-    Material: product.material || "Not specified",
+    Material: formatList(product.material_details, product.material || "Not specified"),
+    "Technical Features": formatList(product.technical_features),
+    "Fabric Treatment": formatList(product.fabric_treatment),
+    Construction: formatList(product.construction),
     "Shop Highlights": (product.shop_highlights || []).join(", "),
     "Price Min": product.price_min,
     "Price Max": product.price_max,
@@ -83,6 +90,9 @@ async function exportProductsToExcel(products) {
     { wch: 28 },
     { wch: 28 },
     { wch: 22 },
+    { wch: 50 },
+    { wch: 40 },
+    { wch: 42 },
     { wch: 50 },
     { wch: 12 },
     { wch: 10 },
@@ -320,6 +330,15 @@ function App() {
   );
   const hasMaterialData = dashboard.products.some((product) =>
     Boolean(String(product.material || "").trim()),
+  );
+  const hasTechnicalFeatureData = dashboard.products.some(
+    (product) => product.technical_features?.length,
+  );
+  const hasFabricTreatmentData = dashboard.products.some(
+    (product) => product.fabric_treatment?.length,
+  );
+  const hasConstructionData = dashboard.products.some(
+    (product) => product.construction?.length,
   );
   const hasSubcategoryFilter =
     (options.subcategories || []).length > 0 || filters.subcategories.length > 0;
@@ -1174,6 +1193,9 @@ function App() {
                       {hasActivityData && <th>Activities</th>}
                       <th>Color</th>
                       {hasMaterialData && <th>Material</th>}
+                      {hasTechnicalFeatureData && <th>Technical features</th>}
+                      {hasFabricTreatmentData && <th>Fabric treatment</th>}
+                      {hasConstructionData && <th>Construction</th>}
                       <th>Shop Highlights</th>
                       <th>Price range</th>
                       <th>Status</th>
@@ -1311,6 +1333,21 @@ function App() {
                             >
                               {product.material || "Not specified"}
                             </button>
+                          </td>
+                        )}
+                        {hasTechnicalFeatureData && (
+                          <td className="material-cell">
+                            {formatList(product.technical_features)}
+                          </td>
+                        )}
+                        {hasFabricTreatmentData && (
+                          <td className="material-cell">
+                            {formatList(product.fabric_treatment)}
+                          </td>
+                        )}
+                        {hasConstructionData && (
+                          <td className="material-cell">
+                            {formatList(product.construction)}
                           </td>
                         )}
                         <td>

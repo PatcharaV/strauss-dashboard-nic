@@ -128,6 +128,10 @@ def filter_products(
                     " ".join(product.get("audience_labels", [])),
                     " ".join(_product_collections(product)),
                     " ".join(product.get("features", [])),
+                    " ".join(product.get("material_details", [])),
+                    " ".join(product.get("technical_features", [])),
+                    " ".join(product.get("fabric_treatment", [])),
+                    " ".join(product.get("construction", [])),
                     " ".join(_product_functions(product)),
                 ]
             ).lower()

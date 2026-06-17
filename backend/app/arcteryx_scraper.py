@@ -5,6 +5,7 @@ from typing import Any
 from urllib.parse import quote
 
 import httpx
+from bs4 import BeautifulSoup
 
 from .scraper import extract_product_functions
 
@@ -95,6 +96,45 @@ async def _all_listing_products(
         products.extend(page.get("productList") or [])
         await asyncio.sleep(0.2)
     return products
+
+
+def _feature_values(features: list[dict[str, Any]], label: str) -> list[str]:
+    for feature in features:
+        if str(feature.get("label", "")).strip().lower() == label.lower():
+            return [
+                str(value).strip()
+                for value in feature.get("value", [])
+                if str(value).strip()
+            ]
+    return []
+
+
+async def _product_details(
+    client: httpx.AsyncClient, slug: str
+) -> dict[str, list[str]]:
+    response = await client.get(f"{BASE_URL}/shop/{slug}")
+    response.raise_for_status()
+    soup = BeautifulSoup(response.text, "html.parser")
+    script = soup.find("script", id="__NEXT_DATA__")
+    if not script or not script.string:
+        return {}
+    data = json.loads(script.string)
+    product_json = data.get("props", {}).get("pageProps", {}).get("product")
+    if not product_json:
+        return {}
+    product = json.loads(product_json)
+    feature_groups = product.get("features") or []
+    materials = [
+        str(material).strip()
+        for material in product.get("materials", [])
+        if str(material).strip()
+    ]
+    return {
+        "material_details": materials,
+        "technical_features": _feature_values(feature_groups, "Technical features"),
+        "fabric_treatment": _feature_values(feature_groups, "Fabric treatment"),
+        "construction": _feature_values(feature_groups, "Construction"),
+    }
 
 
 def _extra_clothing_categories(product: dict[str, Any]) -> set[str]:
@@ -208,6 +248,10 @@ def _normalize(
         "image": str(image.get("url", "")),
         "url": f"{BASE_URL}/shop/{slug}",
         "material": "",
+        "material_details": [],
+        "technical_features": [],
+        "fabric_treatment": [],
+        "construction": [],
         "product_functions": extract_product_functions(title, description, tags),
         "top_seller": any(
             badge.get("code") == "bestseller" for badge in badges
@@ -339,6 +383,37 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
         for product_id, product in products_by_id.items()
         if product_id in clothing_product_ids
     ]
+    detail_semaphore = asyncio.Semaphore(8)
+
+    async def enrich_details(
+        details_client: httpx.AsyncClient, product: dict[str, Any]
+    ) -> None:
+        async with detail_semaphore:
+            try:
+                details = await _product_details(
+                    details_client, str(product.get("handle", ""))
+                )
+            except (
+                httpx.HTTPError,
+                KeyError,
+                TypeError,
+                ValueError,
+                json.JSONDecodeError,
+            ):
+                details = {}
+            for key in (
+                "material_details",
+                "technical_features",
+                "fabric_treatment",
+                "construction",
+            ):
+                product[key] = details.get(key, [])
+            product["material"] = " | ".join(product.get("material_details", []))
+
+    async with httpx.AsyncClient(headers=headers, timeout=timeout) as details_client:
+        await asyncio.gather(
+            *(enrich_details(details_client, product) for product in products)
+        )
     products.sort(key=lambda item: item["title"].lower())
     return {
         "source": BASE_URL,
