@@ -218,6 +218,7 @@ async def scrape_products() -> dict[str, Any]:
                 or cached.get("scraped_at"),
                 "product_count": len(fallback_products),
                 "products": fallback_products,
+                "collection_options": cached_source.get("collection_options", []),
                 "cached_fallback": True,
             }
         )
@@ -246,6 +247,7 @@ async def scrape_products() -> dict[str, Any]:
                 "url": result["source"],
                 "product_count": result["product_count"],
                 "scraped_at": result["scraped_at"],
+                "collection_options": result.get("collection_options", []),
             }
             for result in results
             if result.get("products")

@@ -23,8 +23,10 @@ CLOTHING_CATEGORY_SLUGS = {
 }
 COLLECTION_SLUGS = {
     "Veilance": "veilance",
-    "System_A": "system_a",
+    "Arc'teryx PRO": "professional-use",
+    "Mountain bike": "mountain-bike/wid-6j83rq6l",
 }
+STATIC_COLLECTIONS = ["Walk Gently"]
 ACTIVITY_SLUGS = {
     "Trail Run": "trail/trail-run",
     "Hike": "trail/hike",
@@ -98,9 +100,36 @@ async def _all_listing_products(
 def _extra_clothing_categories(product: dict[str, Any]) -> set[str]:
     title = str(product.get("marketingName", "")).lower()
     slug = str(product.get("slug", "")).lower()
+    blocked_terms = (
+        "pack",
+        "shoe",
+        "boot",
+        "sock",
+        "glove",
+        "cap",
+        "hat",
+        "beanie",
+        "chalk",
+        "harness",
+    )
+    if any(term in title or term in slug for term in blocked_terms):
+        return set()
+    categories: set[str] = set()
     if "dress" in title or "skirt" in title or "dress" in slug or "skirt" in slug:
-        return {"Dresses and Skirts"}
-    return set()
+        categories.add("Dresses and Skirts")
+    if "pant" in title or "bib" in title or "pant" in slug or "bib" in slug:
+        categories.add("Pants")
+    if "short" in title or "short" in slug:
+        categories.add("Shorts")
+    if "vest" in title or "vest" in slug:
+        categories.add("Vests")
+    if "jacket" in title or "shell" in title or "jacket" in slug or "shell" in slug:
+        categories.add("Shell Jackets")
+    if "hoody" in title or "hoodie" in title or "hoody" in slug or "hoodie" in slug:
+        categories.add("Insulated Jackets")
+    if "shirt" in title or "tee" in title or "tank" in title:
+        categories.add("Shirts and Tops")
+    return categories
 
 
 def _extra_clothing_subcategories(product: dict[str, Any]) -> set[str]:
@@ -315,5 +344,6 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
         "source": BASE_URL,
         "scraped_at": datetime.now(timezone.utc).isoformat(),
         "product_count": len(products),
+        "collection_options": sorted([*COLLECTION_SLUGS, *STATIC_COLLECTIONS]),
         "products": products,
     }
