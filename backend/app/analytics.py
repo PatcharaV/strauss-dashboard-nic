@@ -6,12 +6,24 @@ from .scraper import extract_product_collections
 from .scraper import extract_product_functions
 
 SUBCATEGORY_PARENTS = {
-    "T-Shirts": ["Shirts", "Shirts and Tops", "Base Layer", "Collection Only"],
-    "Polos": ["Shirts", "Shirts and Tops", "Collection Only"],
+    "T-Shirts": [
+        "Shirts",
+        "Shirts and Tops",
+        "Tees",
+        "Tees/Tanks",
+        "Base Layer",
+        "Collection Only",
+    ],
+    "Polos": ["Polos", "Shirts", "Shirts and Tops", "Sweaters", "Collection Only"],
     "Long Sleeves": ["Shirts", "Shirts and Tops", "Base Layer", "Collection Only"],
     "Overshirts": ["Shirts and Tops", "Collection Only"],
     "One Pieces": "Shirts and Tops",
-    "Shirts": ["Shirts and Tops"],
+    "Shirts": ["Shirts", "Shirts and Tops"],
+    "Button Downs": "Shirts",
+    "Button ups": "Shirts",
+    "Short Sleeve Shirts": "Shirts",
+    "Short sleeves": ["Shirts", "Tees", "Tees/Tanks"],
+    "Long sleeves": ["Shirts", "Tees", "Tees/Tanks", "Midlayers"],
     "Work Shirts": "Shirts",
     "High-Vis Shirts": "Shirts",
     "Kids Shirts": "Shirts",
@@ -42,6 +54,7 @@ SUBCATEGORY_PARENTS = {
         "Hoodies & Sweatshirts",
         "Shirts and Tops",
         "Fleece",
+        "Midlayers",
         "Base Layer",
         "Collection Only",
     ],
@@ -49,15 +62,15 @@ SUBCATEGORY_PARENTS = {
     "Full-Zip Sweatshirts": "Hoodies & Sweatshirts",
     "Women's Hoodies & Sweatshirts": "Hoodies & Sweatshirts",
     "Women's Leggings": "Leggings",
-    "Leggings": "Pants",
-    "Tank Tops": ["Shirts and Tops", "Collection Only"],
+    "Leggings": ["Pants", "Leggings/Tights"],
+    "Tank Tops": ["Shirts and Tops", "Tanks", "Tees/Tanks", "Collection Only"],
     "Base Layer Bottoms": "Base Layer",
     "Base Layers": "Base Layer",
     "Fleece": "Fleece",
     "Fleece Jackets": "Fleece",
     "Zip Necks": ["Fleece", "Base Layer"],
-    "Dresses": ["Dresses and Skirts", "Collection Only"],
-    "Skirts": ["Dresses and Skirts", "Collection Only"],
+    "Dresses": ["Dresses and Skirts", "Dresses/Jumpsuits", "Collection Only"],
+    "Skirts": ["Dresses and Skirts", "Skirts", "Collection Only"],
     "Down Insulation": "Insulated Jackets",
     "Synthetic Insulation": "Insulated Jackets",
     "Insulated Jackets": "Insulated Jackets",
@@ -66,10 +79,29 @@ SUBCATEGORY_PARENTS = {
     "Windshells": "Shell Jackets",
     "Shell Jackets": "Shell Jackets",
     "Pants": ["Pants", "Collection Only"],
+    "Lifestyle pants": "Pants",
+    "Dress pants": "Pants",
+    "Trousers": "Pants",
     "Shorts": ["Shorts", "Fleece", "Collection Only"],
+    "Lined Shorts": "Shorts",
+    "Lifestyle shorts": "Shorts",
+    "Athletic shorts": "Shorts",
+    "Pullovers": ["Midlayers", "Sweaters"],
+    "Hoodies & pullovers": ["Midlayers", "Sweaters"],
+    "Quarter Zips": "Midlayers",
+    "Midlayers": "Midlayers",
+    "Jackets": ["Blazers/Jackets", "Outerwear", "Midlayers", "Collection Only"],
+    "Jackets & vests": ["Midlayers", "Outerwear"],
+    "Blazers": "Blazers/Jackets",
+    "Outerwear": "Outerwear",
+    "Tanks": ["Tanks", "Tees/Tanks"],
+    "Sports Bras": ["Bras", "Sports bras"],
+    "Sweaters": "Sweaters",
+    "Swim": "Swim",
+    "Swimwear": "Swim",
+    "Underwear": "Underwear",
     "Down Vests": "Vests",
     "Insulated Vests": "Vests",
-    "Jackets": "Collection Only",
     "Collection Apparel": "Collection Only",
 }
 
@@ -142,6 +174,8 @@ def _visible_subcategories(
             for subcategory in subcategories
             if _subcategory_has_selected_parent(subcategory, selected_categories)
         ]
+        if not subcategories:
+            subcategories = _visible_categories(product, selected_categories)
     return subcategories
 
 
