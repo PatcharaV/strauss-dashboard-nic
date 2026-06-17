@@ -1035,31 +1035,90 @@ td a:hover {
   margin-top: 12px;
 }
 
-.document-card {
+.slide-viewer {
   margin-top: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
   padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
   border: 1px solid #e3e4e6;
   border-radius: 10px;
   background: #f7f8f8;
 }
 
-.document-card div {
+.slide-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.slide-toolbar div:first-child {
   display: grid;
   gap: 6px;
 }
 
-.document-card strong {
+.slide-toolbar strong {
   color: #151515;
   font-size: 16px;
 }
 
-.document-card small {
-  color: #77746e;
-  font-size: 12px;
+.slide-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.slide-stage {
+  overflow: hidden;
+  border: 1px solid #d5d7da;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 12px 26px rgba(16, 24, 32, 0.08);
+}
+
+.slide-stage img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.slide-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.slide-thumbnails button {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.slide-thumbnails button.active {
+  border-color: #ef3e42;
+}
+
+.slide-thumbnails img {
+  display: block;
+  width: 100%;
+}
+
+.slide-thumbnails span {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  min-width: 24px;
+  padding: 4px 6px;
+  color: #fff;
+  background: rgba(16, 24, 32, 0.84);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 850;
+  text-align: center;
 }
 
 .document-type {
@@ -1079,6 +1138,8 @@ td a:hover {
   background: #fff;
   border: 1px solid #d5d7da;
   border-radius: 7px;
+  cursor: pointer;
+  font-family: inherit;
   font-size: 11px;
   font-weight: 800;
   text-decoration: none;
@@ -1279,8 +1340,16 @@ footer a {
     max-height: 560px;
   }
 
-  .document-card {
+  .slide-toolbar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .slide-actions {
+    width: 100%;
+  }
+
+  .slide-actions .secondary-link {
+    flex: 1;
   }
 }
