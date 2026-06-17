@@ -343,6 +343,7 @@ function App() {
   const activityOptions = options.activities || [];
   const materialKeywords = options.material_keywords || [];
   const currentPitchSlide = STRAUSS_PITCH_SLIDES[pitchSlideIndex];
+  const showStraussPitch = filters.brands.includes("strauss");
   const hasCollectionData =
     (dashboard.collections || []).length > 0 ||
     dashboard.products.some((product) => product.collections?.length);
@@ -1381,84 +1382,86 @@ function App() {
         </section>
       )}
 
-      <section className="panel document-panel" id="strauss-pitch">
-        <div className="panel-heading">
-          <div>
-            <p className="eyebrow">STRAUSS REFERENCE</p>
-            <h2>NanYang Strauss Pitch</h2>
-          </div>
-          <a
-            className="export-button"
-            href="/nanyang-strauss-pitch.pptx"
-            target="_blank"
-            rel="noreferrer"
-            download
-          >
-            Download PPTX
-          </a>
-        </div>
-        <p className="panel-help">
-          Slide preview rendered from the attached PowerPoint deck.
-        </p>
-        <div className="slide-viewer">
-          <div className="slide-toolbar">
+      {showStraussPitch && (
+        <section className="panel document-panel" id="strauss-pitch">
+          <div className="panel-heading">
             <div>
-              <span className="document-type">PPTX PREVIEW</span>
-              <strong>
-                Slide {pitchSlideIndex + 1} of {STRAUSS_PITCH_SLIDES.length}
-              </strong>
+              <p className="eyebrow">STRAUSS REFERENCE</p>
+              <h2>NanYang Strauss Pitch</h2>
             </div>
-            <div className="slide-actions">
-              <button
-                type="button"
-                className="secondary-link"
-                onClick={() =>
-                  setPitchSlideIndex((index) =>
-                    index === 0 ? STRAUSS_PITCH_SLIDES.length - 1 : index - 1,
-                  )
-                }
-              >
-                Previous
-              </button>
-              <button
-                type="button"
-                className="secondary-link"
-                onClick={() =>
-                  setPitchSlideIndex((index) =>
-                    index === STRAUSS_PITCH_SLIDES.length - 1 ? 0 : index + 1,
-                  )
-                }
-              >
-                Next
-              </button>
+            <a
+              className="export-button"
+              href="/nanyang-strauss-pitch.pptx"
+              target="_blank"
+              rel="noreferrer"
+              download
+            >
+              Download PPTX
+            </a>
+          </div>
+          <p className="panel-help">
+            Slide preview rendered from the attached PowerPoint deck.
+          </p>
+          <div className="slide-viewer">
+            <div className="slide-toolbar">
+              <div>
+                <span className="document-type">PPTX PREVIEW</span>
+                <strong>
+                  Slide {pitchSlideIndex + 1} of {STRAUSS_PITCH_SLIDES.length}
+                </strong>
+              </div>
+              <div className="slide-actions">
+                <button
+                  type="button"
+                  className="secondary-link"
+                  onClick={() =>
+                    setPitchSlideIndex((index) =>
+                      index === 0 ? STRAUSS_PITCH_SLIDES.length - 1 : index - 1,
+                    )
+                  }
+                >
+                  Previous
+                </button>
+                <button
+                  type="button"
+                  className="secondary-link"
+                  onClick={() =>
+                    setPitchSlideIndex((index) =>
+                      index === STRAUSS_PITCH_SLIDES.length - 1 ? 0 : index + 1,
+                    )
+                  }
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+            <div className="slide-stage">
+              <img
+                src={currentPitchSlide}
+                alt={`NanYang Strauss Pitch slide ${pitchSlideIndex + 1}`}
+              />
+            </div>
+            <div className="slide-thumbnails" aria-label="Select pitch slide">
+              {STRAUSS_PITCH_SLIDES.map((slide, index) => (
+                <button
+                  type="button"
+                  key={slide}
+                  className={index === pitchSlideIndex ? "active" : ""}
+                  onClick={() => setPitchSlideIndex(index)}
+                  aria-label={`Show slide ${index + 1}`}
+                >
+                  <img
+                    src={slide}
+                    alt={`Pitch slide ${index + 1} thumbnail`}
+                    loading="lazy"
+                  />
+                  <span>{index + 1}</span>
+                </button>
+              ))}
             </div>
           </div>
-          <div className="slide-stage">
-            <img
-              src={currentPitchSlide}
-              alt={`NanYang Strauss Pitch slide ${pitchSlideIndex + 1}`}
-            />
-          </div>
-          <div className="slide-thumbnails" aria-label="Select pitch slide">
-            {STRAUSS_PITCH_SLIDES.map((slide, index) => (
-              <button
-                type="button"
-                key={slide}
-                className={index === pitchSlideIndex ? "active" : ""}
-                onClick={() => setPitchSlideIndex(index)}
-                aria-label={`Show slide ${index + 1}`}
-              >
-                <img
-                  src={slide}
-                  alt={`Pitch slide ${index + 1} thumbnail`}
-                  loading="lazy"
-                />
-                <span>{index + 1}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <footer>
         Public clothing catalog analysis from{" "}
