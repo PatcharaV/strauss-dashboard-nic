@@ -165,11 +165,33 @@ def _extra_clothing_categories(product: dict[str, Any]) -> set[str]:
         categories.add("Shorts")
     if "vest" in title or "vest" in slug:
         categories.add("Vests")
-    if "jacket" in title or "shell" in title or "jacket" in slug or "shell" in slug:
+    if (
+        "jacket" in title
+        or "shell" in title
+        or "blazer" in title
+        or "coat" in title
+        or "parka" in title
+        or "bomber" in title
+        or "jacket" in slug
+        or "shell" in slug
+        or "blazer" in slug
+        or "coat" in slug
+        or "parka" in slug
+        or "bomber" in slug
+    ):
         categories.add("Shell Jackets")
     if "hoody" in title or "hoodie" in title or "hoody" in slug or "hoodie" in slug:
         categories.add("Insulated Jackets")
-    if "shirt" in title or "tee" in title or "tank" in title:
+    if (
+        "shirt" in title
+        or "tee" in title
+        or "tank" in title
+        or "midlayer" in title
+        or "shirt" in slug
+        or "tee" in slug
+        or "tank" in slug
+        or "midlayer" in slug
+    ):
         categories.add("Shirts and Tops")
     return categories
 
