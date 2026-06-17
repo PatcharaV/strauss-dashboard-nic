@@ -127,7 +127,7 @@ async def _product_details(
     materials = [
         str(material).strip()
         for material in product.get("materials", [])
-        if str(material).strip()
+        if str(material).strip().lower().startswith("body:")
     ]
     return {
         "material_details": materials,
