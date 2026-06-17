@@ -81,6 +81,7 @@ async function exportProductsToExcel(products) {
     Product: product.title,
     Brand: product.brand_label,
     Category: (product.categories || [product.category]).join(", "),
+    "Sub Category": (product.subcategories || []).join(", "),
     Collection: (product.collections || []).join(", "),
     Color: product.color || "Not specified",
     Material: formatMultilineList(
@@ -102,6 +103,7 @@ async function exportProductsToExcel(products) {
     { wch: 42 },
     { wch: 14 },
     { wch: 24 },
+    { wch: 28 },
     { wch: 28 },
     { wch: 22 },
     { wch: 50 },
@@ -335,6 +337,9 @@ function App() {
   const hasCollectionData =
     (dashboard.collections || []).length > 0 ||
     dashboard.products.some((product) => product.collections?.length);
+  const hasSubcategoryData = dashboard.products.some(
+    (product) => product.subcategories?.length,
+  );
   const hasMaterialData = dashboard.products.some((product) =>
     Boolean(String(product.material || "").trim()),
   );
@@ -1165,6 +1170,7 @@ function App() {
                       <th>Product</th>
                       <th>Gender</th>
                       <th>Category</th>
+                      {hasSubcategoryData && <th>Sub category</th>}
                       {hasCollectionData && <th>Collection</th>}
                       <th>Color</th>
                       {hasMaterialData && <th>Material</th>}
@@ -1230,6 +1236,29 @@ function App() {
                             ),
                           )}
                         </td>
+                        {hasSubcategoryData && (
+                          <td>
+                            {product.subcategories?.length
+                              ? product.subcategories.map((subcategory, index) => (
+                                  <span key={subcategory}>
+                                    {index > 0 && ", "}
+                                    <button
+                                      className="table-filter-button"
+                                      type="button"
+                                      onClick={() =>
+                                        setFilters({
+                                          ...filters,
+                                          subcategories: [subcategory],
+                                        })
+                                      }
+                                    >
+                                      {subcategory}
+                                    </button>
+                                  </span>
+                                ))
+                              : "Not specified"}
+                          </td>
+                        )}
                         {hasCollectionData && (
                           <td className="collection-cell">
                             {product.collections?.length
