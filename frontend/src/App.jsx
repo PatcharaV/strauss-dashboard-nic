@@ -40,6 +40,13 @@ const STRAUSS_PITCH_SLIDES = [
   "/strauss-pitch-slides/Slide4.PNG",
 ];
 
+const ARCTERYX_COTTON_SLIDES = [
+  "/arcteryx-cotton-slides/Slide1.PNG",
+  "/arcteryx-cotton-slides/Slide2.PNG",
+  "/arcteryx-cotton-slides/Slide3.PNG",
+  "/arcteryx-cotton-slides/Slide4.PNG",
+];
+
 const formatNumber = new Intl.NumberFormat("en-US");
 const formatMoney = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -79,6 +86,97 @@ function DetailList({ values, fallback = "Not specified" }) {
         <li key={value}>{value}</li>
       ))}
     </ul>
+  );
+}
+
+function SlideDeckPanel({
+  id,
+  eyebrow,
+  title,
+  downloadHref,
+  downloadLabel = "Download PPTX",
+  slides,
+  slideIndex,
+  setSlideIndex,
+  altPrefix,
+}) {
+  const currentSlide = slides[slideIndex];
+  return (
+    <section className="panel document-panel" id={id}>
+      <div className="panel-heading">
+        <div>
+          <p className="eyebrow">{eyebrow}</p>
+          <h2>{title}</h2>
+        </div>
+        <a
+          className="export-button"
+          href={downloadHref}
+          target="_blank"
+          rel="noreferrer"
+          download
+        >
+          {downloadLabel}
+        </a>
+      </div>
+      <p className="panel-help">
+        Slide preview rendered from the attached PowerPoint deck.
+      </p>
+      <div className="slide-viewer">
+        <div className="slide-toolbar">
+          <div>
+            <span className="document-type">PPTX PREVIEW</span>
+            <strong>
+              Slide {slideIndex + 1} of {slides.length}
+            </strong>
+          </div>
+          <div className="slide-actions">
+            <button
+              type="button"
+              className="secondary-link"
+              onClick={() =>
+                setSlideIndex((index) =>
+                  index === 0 ? slides.length - 1 : index - 1,
+                )
+              }
+            >
+              Previous
+            </button>
+            <button
+              type="button"
+              className="secondary-link"
+              onClick={() =>
+                setSlideIndex((index) =>
+                  index === slides.length - 1 ? 0 : index + 1,
+                )
+              }
+            >
+              Next
+            </button>
+          </div>
+        </div>
+        <div className="slide-stage">
+          <img src={currentSlide} alt={`${altPrefix} slide ${slideIndex + 1}`} />
+        </div>
+        <div className="slide-thumbnails" aria-label={`Select ${title} slide`}>
+          {slides.map((slide, index) => (
+            <button
+              type="button"
+              key={slide}
+              className={index === slideIndex ? "active" : ""}
+              onClick={() => setSlideIndex(index)}
+              aria-label={`Show slide ${index + 1}`}
+            >
+              <img
+                src={slide}
+                alt={`${altPrefix} slide ${index + 1} thumbnail`}
+                loading="lazy"
+              />
+              <span>{index + 1}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -336,14 +434,15 @@ function App() {
   const [productPage, setProductPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(50);
   const [pitchSlideIndex, setPitchSlideIndex] = useState(0);
+  const [arcteryxSlideIndex, setArcteryxSlideIndex] = useState(0);
 
   const query = useMemo(() => buildQuery(filters), [filters]);
   const productCategories = options.categories;
   const availableShopHighlights = options.shop_highlights || [];
   const activityOptions = options.activities || [];
   const materialKeywords = options.material_keywords || [];
-  const currentPitchSlide = STRAUSS_PITCH_SLIDES[pitchSlideIndex];
   const showStraussPitch = filters.brands.includes("strauss");
+  const showArcteryxDeck = filters.brands.includes("arcteryx");
   const hasCollectionData =
     (dashboard.collections || []).length > 0 ||
     dashboard.products.some((product) => product.collections?.length);
@@ -1383,84 +1482,29 @@ function App() {
       )}
 
       {showStraussPitch && (
-        <section className="panel document-panel" id="strauss-pitch">
-          <div className="panel-heading">
-            <div>
-              <p className="eyebrow">STRAUSS REFERENCE</p>
-              <h2>NanYang Strauss Pitch</h2>
-            </div>
-            <a
-              className="export-button"
-              href="/nanyang-strauss-pitch.pptx"
-              target="_blank"
-              rel="noreferrer"
-              download
-            >
-              Download PPTX
-            </a>
-          </div>
-          <p className="panel-help">
-            Slide preview rendered from the attached PowerPoint deck.
-          </p>
-          <div className="slide-viewer">
-            <div className="slide-toolbar">
-              <div>
-                <span className="document-type">PPTX PREVIEW</span>
-                <strong>
-                  Slide {pitchSlideIndex + 1} of {STRAUSS_PITCH_SLIDES.length}
-                </strong>
-              </div>
-              <div className="slide-actions">
-                <button
-                  type="button"
-                  className="secondary-link"
-                  onClick={() =>
-                    setPitchSlideIndex((index) =>
-                      index === 0 ? STRAUSS_PITCH_SLIDES.length - 1 : index - 1,
-                    )
-                  }
-                >
-                  Previous
-                </button>
-                <button
-                  type="button"
-                  className="secondary-link"
-                  onClick={() =>
-                    setPitchSlideIndex((index) =>
-                      index === STRAUSS_PITCH_SLIDES.length - 1 ? 0 : index + 1,
-                    )
-                  }
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-            <div className="slide-stage">
-              <img
-                src={currentPitchSlide}
-                alt={`NanYang Strauss Pitch slide ${pitchSlideIndex + 1}`}
-              />
-            </div>
-            <div className="slide-thumbnails" aria-label="Select pitch slide">
-              {STRAUSS_PITCH_SLIDES.map((slide, index) => (
-                <button
-                  type="button"
-                  key={slide}
-                  className={index === pitchSlideIndex ? "active" : ""}
-                  onClick={() => setPitchSlideIndex(index)}
-                  aria-label={`Show slide ${index + 1}`}
-                >
-                  <img
-                    src={slide}
-                    alt={`Pitch slide ${index + 1} thumbnail`}
-                    loading="lazy"
-                  />
-                  <span>{index + 1}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
+        <SlideDeckPanel
+          id="strauss-pitch"
+          eyebrow="STRAUSS REFERENCE"
+          title="NanYang Strauss Pitch"
+          downloadHref="/nanyang-strauss-pitch.pptx"
+          slides={STRAUSS_PITCH_SLIDES}
+          slideIndex={pitchSlideIndex}
+          setSlideIndex={setPitchSlideIndex}
+          altPrefix="NanYang Strauss Pitch"
+        />
+      )}
+
+      {showArcteryxDeck && (
+        <SlideDeckPanel
+          id="arcteryx-cotton-groups"
+          eyebrow="ARC'TERYX REFERENCE"
+          title="NanYang Arc'teryx Cotton Groups"
+          downloadHref="/nanyang-arcteryx-cotton-groups.pptx"
+          slides={ARCTERYX_COTTON_SLIDES}
+          slideIndex={arcteryxSlideIndex}
+          setSlideIndex={setArcteryxSlideIndex}
+          altPrefix="NanYang Arc'teryx Cotton Groups"
+        />
       )}
 
       <footer>
