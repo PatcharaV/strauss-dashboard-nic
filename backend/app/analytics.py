@@ -6,9 +6,9 @@ from .scraper import extract_product_collections
 from .scraper import extract_product_functions
 
 SUBCATEGORY_PARENTS = {
-    "T-Shirts": "Shirts",
+    "T-Shirts": ["Shirts", "Shirts and Tops"],
     "Polos": "Shirts",
-    "Long Sleeves": "Shirts",
+    "Long Sleeves": ["Shirts", "Shirts and Tops"],
     "Work Shirts": "Shirts",
     "High-Vis Shirts": "Shirts",
     "Kids Shirts": "Shirts",
@@ -34,6 +34,14 @@ SUBCATEGORY_PARENTS = {
     "Full-Zip Sweatshirts": "Hoodies & Sweatshirts",
     "Women's Hoodies & Sweatshirts": "Hoodies & Sweatshirts",
     "Women's Leggings": "Leggings",
+    "Tank Tops": "Shirts and Tops",
+    "Dresses": "Dresses and Skirts",
+    "Skirts": "Dresses and Skirts",
+    "Down Insulation": ["Insulated Jackets", "Vests"],
+    "Synthetic Insulation": "Insulated Jackets",
+    "Hardshells": ["Shell Jackets", "Pants"],
+    "Softshells": ["Shell Jackets", "Insulated Jackets", "Pants", "Shorts"],
+    "Windshells": "Shell Jackets",
 }
 
 MATERIAL_KEYWORDS = [
@@ -103,10 +111,20 @@ def _visible_subcategories(
         subcategories = [
             subcategory
             for subcategory in subcategories
-            if not SUBCATEGORY_PARENTS.get(subcategory)
-            or SUBCATEGORY_PARENTS[subcategory] in selected_categories
+            if _subcategory_has_selected_parent(subcategory, selected_categories)
         ]
     return subcategories
+
+
+def _subcategory_has_selected_parent(
+    subcategory: str, selected_categories: set[str]
+) -> bool:
+    parents = SUBCATEGORY_PARENTS.get(subcategory)
+    if not parents:
+        return False
+    if isinstance(parents, str):
+        return parents in selected_categories
+    return bool(set(parents) & selected_categories)
 
 
 def filter_products(
@@ -432,8 +450,9 @@ def build_options(
                 for product in products
                 for subcategory in product.get("subcategories", [])
                 if not selected_category_set
-                or not SUBCATEGORY_PARENTS.get(subcategory)
-                or SUBCATEGORY_PARENTS[subcategory] in selected_category_set
+                or _subcategory_has_selected_parent(
+                    subcategory, selected_category_set
+                )
             }
         ),
         "price": {
