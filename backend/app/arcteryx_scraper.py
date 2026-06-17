@@ -49,6 +49,7 @@ SUBCATEGORY_FILTERS = {
 }
 FEATURE_SLUGS = {
     "New Arrivals": "new-arrivals",
+    "Bestsellers": "best-sellers/wid-dlk87r1l",
 }
 FEATURE_FILTERS = {
     "Summer Essentials": "Sun Protection",
@@ -520,12 +521,7 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
             subcategories_by_id.get(product_id, set()),
             collections_by_id.get(product_id, set()),
             activities_by_id.get(product_id, set()),
-            features_by_id.get(product_id, set())
-            | ({"Bestsellers"} if product.get("id") and any(
-                badge.get("code") == "bestseller"
-                for colour in product.get("colourOptions", [])
-                for badge in (colour.get("badges") or [])
-            ) else set()),
+            features_by_id.get(product_id, set()),
         )
         for product_id, product in products_by_id.items()
         if product_id in clothing_product_ids
