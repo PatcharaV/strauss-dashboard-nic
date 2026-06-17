@@ -204,7 +204,7 @@ def _normalize(
         for badge in (colour.get("badges") or [])
     ]
     audience_list = sorted(audiences)
-    category_list = sorted(categories) or ["Other"]
+    category_list = sorted(categories) or ["Collection Only"]
     slug = str(product.get("slug", ""))
     image = selected.get("image") or selected.get("thumbnail") or {}
     title = str(product.get("marketingName", "")).strip()

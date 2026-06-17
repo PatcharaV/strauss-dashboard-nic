@@ -51,6 +51,7 @@ CLOTHING_CATEGORIES = {
         "Shorts",
         "Vests",
         "Dresses and Skirts",
+        "Collection Only",
     },
 }
 
