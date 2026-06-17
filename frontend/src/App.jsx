@@ -1372,6 +1372,33 @@ function App() {
         </section>
       )}
 
+      <section className="panel pdf-panel" id="top-strauss">
+        <div className="panel-heading">
+          <div>
+            <p className="eyebrow">STRAUSS REFERENCE</p>
+            <h2>Top 5 Strauss</h2>
+          </div>
+          <a
+            className="export-button"
+            href="/top-5-strauss.pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open PDF
+          </a>
+        </div>
+        <p className="panel-help">
+          Reference file added to the dashboard for quick review.
+        </p>
+        <div className="pdf-frame-wrap">
+          <iframe
+            title="Top 5 Strauss PDF"
+            src="/top-5-strauss.pdf"
+            className="pdf-frame"
+          />
+        </div>
+      </section>
+
       <footer>
         Public clothing catalog analysis from{" "}
         <a href="https://us.strauss.com" target="_blank" rel="noreferrer">

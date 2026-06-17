@@ -1031,6 +1031,25 @@ td a:hover {
   color: #151515;
 }
 
+.pdf-panel {
+  margin-top: 12px;
+}
+
+.pdf-frame-wrap {
+  margin-top: 18px;
+  overflow: hidden;
+  border: 1px solid #e3e4e6;
+  border-radius: 10px;
+  background: #f7f8f8;
+}
+
+.pdf-frame {
+  display: block;
+  width: 100%;
+  min-height: 760px;
+  border: 0;
+}
+
 footer {
   padding: 26px 0 34px;
   color: #77746e;
@@ -1217,5 +1236,9 @@ footer a {
 
   .table-wrap {
     max-height: 560px;
+  }
+
+  .pdf-frame {
+    min-height: 520px;
   }
 }
