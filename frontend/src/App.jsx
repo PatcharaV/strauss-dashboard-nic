@@ -81,9 +81,7 @@ async function exportProductsToExcel(products) {
     Product: product.title,
     Brand: product.brand_label,
     Category: (product.categories || [product.category]).join(", "),
-    "Sub Category": (product.subcategories || []).join(", "),
     Collection: (product.collections || []).join(", "),
-    Activities: (product.activities || []).join(", "),
     Color: product.color || "Not specified",
     Material: formatMultilineList(
       product.material_details,
@@ -104,8 +102,6 @@ async function exportProductsToExcel(products) {
     { wch: 42 },
     { wch: 14 },
     { wch: 24 },
-    { wch: 28 },
-    { wch: 28 },
     { wch: 28 },
     { wch: 22 },
     { wch: 50 },
@@ -149,7 +145,6 @@ function buildQuery(filters) {
   if (filters.subcategories.length) {
     params.set("subcategories", filters.subcategories.join(","));
   }
-  if (filters.color.trim()) params.set("color", filters.color.trim());
   if (filters.minPrice !== "") params.set("min_price", filters.minPrice);
   if (filters.maxPrice !== "") params.set("max_price", filters.maxPrice);
   if (filters.availability !== "all") {
@@ -336,16 +331,9 @@ function App() {
   const productCategories = options.categories;
   const availableShopHighlights = options.shop_highlights || [];
   const activityOptions = options.activities || [];
-  const colorOptions = options.colors || [];
   const hasCollectionData =
     (dashboard.collections || []).length > 0 ||
     dashboard.products.some((product) => product.collections?.length);
-  const hasActivityData =
-    (dashboard.activities || []).length > 0 ||
-    dashboard.products.some((product) => product.activities?.length);
-  const hasSubcategoryData = dashboard.products.some(
-    (product) => product.subcategories?.length,
-  );
   const hasMaterialData = dashboard.products.some((product) =>
     Boolean(String(product.material || "").trim()),
   );
@@ -509,15 +497,6 @@ function App() {
     });
   }
 
-  function toggleActivity(activity) {
-    setFilters({
-      ...filters,
-      activities: filters.activities.includes(activity)
-        ? filters.activities.filter((item) => item !== activity)
-        : [...filters.activities, activity],
-    });
-  }
-
   function toggleFeature(feature) {
     setFilters({
       ...filters,
@@ -541,7 +520,6 @@ function App() {
     ...filters.features,
     ...filters.categories,
     ...filters.subcategories,
-    filters.color.trim() ? `Color: ${filters.color.trim()}` : null,
     filters.availability === "available" ? "Available only" : null,
     filters.availability === "unavailable" ? "Unavailable only" : null,
     filters.shopHighlight !== "all"
@@ -800,28 +778,6 @@ function App() {
                   {activityOptions.map((activity) => (
                     <option key={activity} value={activity}>
                       {activity}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            )}
-
-            {colorOptions.length > 0 && (
-              <label>
-                <span className="filter-title">Color</span>
-                <select
-                  value={filters.color || "all"}
-                  onChange={(event) =>
-                    setFilters({
-                      ...filters,
-                      color: event.target.value === "all" ? "" : event.target.value,
-                    })
-                  }
-                >
-                  <option value="all">All colors</option>
-                  {colorOptions.map((color) => (
-                    <option key={color} value={color}>
-                      {color}
                     </option>
                   ))}
                 </select>
@@ -1206,9 +1162,7 @@ function App() {
                       <th>Product</th>
                       <th>Gender</th>
                       <th>Category</th>
-                      {hasSubcategoryData && <th>Sub category</th>}
                       {hasCollectionData && <th>Collection</th>}
-                      {hasActivityData && <th>Activities</th>}
                       <th>Color</th>
                       {hasMaterialData && <th>Material</th>}
                       {hasTechnicalFeatureData && <th>Technical features</th>}
@@ -1273,29 +1227,6 @@ function App() {
                             ),
                           )}
                         </td>
-                        {hasSubcategoryData && (
-                          <td>
-                            {product.subcategories?.length
-                              ? product.subcategories.map((subcategory, index) => (
-                                  <span key={subcategory}>
-                                    {index > 0 && ", "}
-                                    <button
-                                      className="table-filter-button"
-                                      type="button"
-                                      onClick={() =>
-                                        setFilters({
-                                          ...filters,
-                                          subcategories: [subcategory],
-                                        })
-                                      }
-                                    >
-                                      {subcategory}
-                                    </button>
-                                  </span>
-                                ))
-                              : "Not specified"}
-                          </td>
-                        )}
                         {hasCollectionData && (
                           <td className="collection-cell">
                             {product.collections?.length
@@ -1312,24 +1243,6 @@ function App() {
                                   </span>
                                 ))
                               : "No named collection"}
-                          </td>
-                        )}
-                        {hasActivityData && (
-                          <td className="collection-cell">
-                            {product.activities?.length
-                              ? product.activities.map((activity, index) => (
-                                  <span key={activity}>
-                                    {index > 0 && ", "}
-                                    <button
-                                      className="table-filter-button"
-                                      type="button"
-                                      onClick={() => toggleActivity(activity)}
-                                    >
-                                      {activity}
-                                    </button>
-                                  </span>
-                                ))
-                              : "No named activity"}
                           </td>
                         )}
                         <td className="color-cell">
