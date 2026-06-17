@@ -331,6 +331,7 @@ function App() {
   const productCategories = options.categories;
   const availableShopHighlights = options.shop_highlights || [];
   const activityOptions = options.activities || [];
+  const materialKeywords = options.material_keywords || [];
   const hasCollectionData =
     (dashboard.collections || []).length > 0 ||
     dashboard.products.some((product) => product.collections?.length);
@@ -357,7 +358,7 @@ function App() {
   const hasShopHighlightFilter =
     availableShopHighlights.length > 0 || filters.shopHighlight !== "all";
   const hasMaterialFilter =
-    filters.material !== "all" || hasMaterialData;
+    filters.material !== "all" || materialKeywords.length > 0;
   const hasUnavailableProducts = dashboard.products.some(
     (product) => !product.available,
   ) || filters.availability !== "all";
@@ -525,8 +526,7 @@ function App() {
     filters.shopHighlight !== "all"
       ? `Shop Highlight: ${filters.shopHighlight}`
       : null,
-    filters.material === "specified" ? "Material specified" : null,
-    filters.material === "missing" ? "Material not specified" : null,
+    filters.material !== "all" ? `Material: ${filters.material}` : null,
     filters.minPrice !== "" ? `Min $${filters.minPrice}` : null,
     filters.maxPrice !== "" ? `Max $${filters.maxPrice}` : null,
   ].filter(Boolean);
@@ -836,8 +836,11 @@ function App() {
                   }
                 >
                   <option value="all">All materials</option>
-                  <option value="specified">Material specified</option>
-                  <option value="missing">Not specified</option>
+                  {materialKeywords.map((keyword) => (
+                    <option key={keyword} value={keyword}>
+                      {keyword}
+                    </option>
+                  ))}
                 </select>
               </label>
             )}

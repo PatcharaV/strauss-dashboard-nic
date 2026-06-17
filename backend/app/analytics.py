@@ -36,6 +36,22 @@ SUBCATEGORY_PARENTS = {
     "Women's Leggings": "Leggings",
 }
 
+MATERIAL_KEYWORDS = [
+    "Cotton",
+    "Nylon",
+    "Polyester",
+    "Elastane",
+    "Polyamide",
+    "Polyurethane",
+    "Wool",
+    "Merino",
+    "Down",
+    "GORE-TEX",
+    "Cellulose",
+    "Polyarylate",
+    "Leather",
+]
+
 
 def _product_collections(product: dict[str, Any]) -> list[str]:
     collections = product.get("collections")
@@ -55,6 +71,15 @@ def _product_functions(product: dict[str, Any]) -> list[str]:
         product.get("description", ""),
         product.get("tags", []),
         product.get("material", ""),
+    )
+
+
+def _material_text(product: dict[str, Any]) -> str:
+    return " ".join(
+        [
+            str(product.get("material", "")),
+            " ".join(product.get("material_details", [])),
+        ]
     )
 
 
@@ -186,9 +211,16 @@ def filter_products(
                     return False
             elif shop_highlight not in product.get("shop_highlights", []):
                 return False
-        if material == "specified" and not product.get("material"):
+        material_text = _material_text(product)
+        if material == "specified" and not material_text.strip():
             return False
-        if material == "missing" and product.get("material"):
+        if material == "missing" and material_text.strip():
+            return False
+        if (
+            material
+            and material not in {"all", "specified", "missing"}
+            and material.lower() not in material_text.lower()
+        ):
             return False
         return True
 
@@ -368,6 +400,14 @@ def build_options(
             },
             key=str.lower,
         ),
+        "material_keywords": [
+            keyword
+            for keyword in MATERIAL_KEYWORDS
+            if any(
+                keyword.lower() in _material_text(product).lower()
+                for product in products
+            )
+        ],
         "colors": sorted(
             {
                 str(product.get("color", "")).strip()

@@ -38,6 +38,7 @@ export const demoOptions = {
     "STRAUSS Pick",
   ],
   colors: ["Black", "Blue", "Grey", "Red"],
+  material_keywords: ["Cotton", "Nylon", "Polyester", "Elastane"],
   categories: [
     "Shirts",
     "Pants",

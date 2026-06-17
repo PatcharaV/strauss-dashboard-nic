@@ -75,7 +75,7 @@ async def options(
     availability: str | None = Query(default=None, pattern="^(available|unavailable)$"),
     top_seller: str | None = Query(default=None, pattern="^(yes|no)$"),
     shop_highlight: str | None = None,
-    material: str | None = Query(default=None, pattern="^(specified|missing)$"),
+    material: str | None = None,
 ) -> dict[str, Any]:
     if min_price is not None and max_price is not None and min_price > max_price:
         raise HTTPException(status_code=400, detail="min_price must not exceed max_price")
@@ -133,7 +133,7 @@ async def dashboard(
     availability: str | None = Query(default=None, pattern="^(available|unavailable)$"),
     top_seller: str | None = Query(default=None, pattern="^(yes|no)$"),
     shop_highlight: str | None = None,
-    material: str | None = Query(default=None, pattern="^(specified|missing)$"),
+    material: str | None = None,
 ) -> dict[str, Any]:
     if min_price is not None and max_price is not None and min_price > max_price:
         raise HTTPException(status_code=400, detail="min_price must not exceed max_price")
@@ -182,7 +182,7 @@ async def products(
     availability: str | None = Query(default=None, pattern="^(available|unavailable)$"),
     top_seller: str | None = Query(default=None, pattern="^(yes|no)$"),
     shop_highlight: str | None = None,
-    material: str | None = Query(default=None, pattern="^(specified|missing)$"),
+    material: str | None = None,
     limit: int = Query(default=100, ge=1, le=500),
 ) -> dict[str, Any]:
     data = await get_data()
