@@ -1,5 +1,6 @@
 import asyncio
 import json
+import re
 from datetime import datetime, timezone
 from typing import Any
 from urllib.parse import quote
@@ -183,6 +184,154 @@ def _extra_clothing_subcategories(product: dict[str, Any]) -> set[str]:
     return subcategories
 
 
+def _keyword_subcategories(
+    product: dict[str, Any], categories: set[str]
+) -> set[str]:
+    title = str(
+        product.get("marketingName") or product.get("title") or ""
+    ).lower()
+    slug = str(product.get("slug") or product.get("handle") or "").lower()
+    text = f"{title} {slug}"
+    subcategories: set[str] = set()
+
+    def has(pattern: str) -> bool:
+        return re.search(pattern, text) is not None
+
+    if "Shirts and Tops" in categories:
+        if has(r"\bover\s*shirt\b|\bovershirt\b"):
+            subcategories.add("Overshirts")
+        if has(r"\bpolo\b"):
+            subcategories.add("Polos")
+        if has(r"\btank\b|\bracerback\b"):
+            subcategories.add("Tank Tops")
+        if has(r"\bhoody\b|\bhoodie\b"):
+            subcategories.add("Hoodies")
+        if has(r"\bls\b|\blong[-\s]*sleeve\b|\bshirt[-\s]*ls\b"):
+            subcategories.add("Long Sleeves")
+        if has(r"\bss\b|\btee\b|\bt-shirt\b|\bshirt[-\s]*ss\b"):
+            subcategories.add("T-Shirts")
+        if has(r"\bone[-\s]*piece\b"):
+            subcategories.add("One Pieces")
+        if not subcategories:
+            subcategories.add("Shirts")
+
+    if "Shell Jackets" in categories:
+        if has(r"\bsoftshell\b|\bmx\b|\bgamma\b|\bpsiphon\b|\bserratus\b|\bsonii\b|\brhoam\b"):
+            subcategories.add("Softshells")
+        if has(r"\bwind\b|\bwindshell\b|\bsquamish\b|\bairshell\b|\bstowhood\b|\bsinsola\b|\bsima\b|\bnaya\b"):
+            subcategories.add("Windshells")
+        if has(r"\bhardshell\b|\balpha\b|\bbeta\b|\bsentinel\b|\btherme\b|\bgore[-\s]*tex\b"):
+            subcategories.add("Hardshells")
+        if not subcategories:
+            subcategories.add("Shell Jackets")
+
+    if "Insulated Jackets" in categories:
+        if has(r"\bdown\b|\bcerium\b|\bandessa\b|\bpatera\b|\bliatris\b|\bepsilon\b|\bsorin\b|\baltus\b|\bconduit\b|\bifora\b"):
+            subcategories.add("Down Insulation")
+        if has(r"\binsulated\b|\batom\b|\bproton\b|\belec\b|\bmionn\b|\bspere\b|\bdemlo\b|\bsolano\b"):
+            subcategories.add("Synthetic Insulation")
+        if not subcategories:
+            subcategories.add("Insulated Jackets")
+
+    if "Pants" in categories:
+        if has(r"\bbib\b"):
+            subcategories.add("Bib Pants")
+        if has(r"\blegging\b|\btight\b"):
+            subcategories.add("Leggings")
+        if has(r"\bjogger\b"):
+            subcategories.add("Joggers")
+        if has(r"\bcargo\b"):
+            subcategories.add("Cargo Pants")
+        if has(r"\bwide[-\s]*leg\b"):
+            subcategories.add("Wide Leg Pants")
+        if has(r"\balpha\b|\bbeta\b|\brush\b|\bsentinel\b|\bski[-\s]*guide\b|\bgore[-\s]*tex\b"):
+            subcategories.add("Hardshells")
+        if has(r"\bsoftshell\b|\bgamma\b|\bkonseal\b|\brhoam\b|\bpsiphon\b|\bserratus\b|\bnia\b|\bmx\b"):
+            subcategories.add("Softshells")
+        if not subcategories:
+            subcategories.add("Pants")
+
+    if "Fleece" in categories:
+        if has(r"\bhoody\b|\bhoodie\b"):
+            subcategories.add("Hoodies")
+        if has(r"\bfull[-\s]*zip\b|\bzip[-\s]*neck\b|\b1/2[-\s]*zip\b"):
+            subcategories.add("Zip Necks")
+        if has(r"\bjacket\b|\bcardigan\b"):
+            subcategories.add("Fleece Jackets")
+        if has(r"\bpullover\b|\bcrew\b"):
+            subcategories.add("Crewnecks")
+        if has(r"\bjogger\b"):
+            subcategories.add("Joggers")
+        if has(r"\bshort\b"):
+            subcategories.add("Shorts")
+        if not subcategories:
+            subcategories.add("Fleece")
+
+    if "Base Layer" in categories:
+        if has(r"\bbottom\b"):
+            subcategories.add("Base Layer Bottoms")
+        if has(r"\bzip[-\s]*neck\b"):
+            subcategories.add("Zip Necks")
+        if has(r"\bhoody\b|\bhoodie\b"):
+            subcategories.add("Hoodies")
+        if has(r"\bls\b|\blong[-\s]*sleeve\b"):
+            subcategories.add("Long Sleeves")
+        if has(r"\bss\b|\bshort[-\s]*sleeve\b"):
+            subcategories.add("T-Shirts")
+        if not subcategories:
+            subcategories.add("Base Layers")
+
+    if "Shorts" in categories:
+        if has(r"\bskort\b"):
+            subcategories.add("Skorts")
+        if has(r"\btight\b"):
+            subcategories.add("Half Tights")
+        if has(r"\bliner\b"):
+            subcategories.add("Liner Shorts")
+        if has(r"\bsoftshell\b|\bgamma\b|\brhoam\b|\bsonii\b|\bsilene\b"):
+            subcategories.add("Softshells")
+        if not subcategories:
+            subcategories.add("Shorts")
+
+    if "Vests" in categories:
+        if has(r"\bdown\b|\bcerium\b"):
+            subcategories.add("Down Vests")
+        elif has(r"\binsulated\b|\batom\b"):
+            subcategories.add("Insulated Vests")
+        else:
+            subcategories.add("Vests")
+
+    if "Collection Only" in categories:
+        if has(r"\bpant\b|\bbib\b"):
+            subcategories.add("Pants")
+        if has(r"\bshort\b|\bskort\b"):
+            subcategories.add("Shorts")
+        if has(r"\bdress\b"):
+            subcategories.add("Dresses")
+        if has(r"\bskirt\b"):
+            subcategories.add("Skirts")
+        if has(r"\bvest\b"):
+            subcategories.add("Vests")
+        if has(r"\bjacket\b|\bparka\b"):
+            subcategories.add("Jackets")
+        if has(r"\bhoody\b|\bhoodie\b"):
+            subcategories.add("Hoodies")
+        if has(r"\bover\s*shirt\b|\bovershirt\b"):
+            subcategories.add("Overshirts")
+        if has(r"\bpolo\b"):
+            subcategories.add("Polos")
+        if has(r"\btank\b"):
+            subcategories.add("Tank Tops")
+        if has(r"\bls\b|\blong[-\s]*sleeve\b|\bshirt[-\s]*ls\b"):
+            subcategories.add("Long Sleeves")
+        if has(r"\bss\b|\btee\b|\bt-shirt\b|\bshirt[-\s]*ss\b"):
+            subcategories.add("T-Shirts")
+        if not subcategories:
+            subcategories.add("Collection Apparel")
+
+    return subcategories
+
+
 def _normalize(
     product: dict[str, Any],
     audiences: set[str],
@@ -204,7 +353,11 @@ def _normalize(
         for badge in (colour.get("badges") or [])
     ]
     audience_list = sorted(audiences)
-    category_list = sorted(categories) or ["Collection Only"]
+    category_set = set(categories) or {"Collection Only"}
+    subcategory_set = set(subcategories) | _keyword_subcategories(
+        product, category_set
+    )
+    category_list = sorted(category_set)
     slug = str(product.get("slug", ""))
     image = selected.get("image") or selected.get("thumbnail") or {}
     title = str(product.get("marketingName", "")).strip()
@@ -228,7 +381,7 @@ def _normalize(
         "description": description,
         "category": category_list[0],
         "categories": category_list,
-        "subcategories": sorted(subcategories),
+        "subcategories": sorted(subcategory_set),
         "collections": sorted(collections),
         "activities": sorted(activities),
         "features": sorted(features),
