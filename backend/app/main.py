@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from .analytics import build_dashboard, build_options, filter_products
-from .catalog import load_cache, normalize_csv, scrape_products
+from .catalog import CACHE_PATH, load_cache, normalize_csv, scrape_products
 
 store: dict[str, Any] = {}
 scrape_lock = asyncio.Lock()
@@ -28,9 +28,6 @@ async def get_data(force: bool = False) -> dict[str, Any]:
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    cached = load_cache()
-    if cached:
-        store["data"] = cached
     yield
 
 
@@ -51,11 +48,10 @@ app.add_middleware(
 
 @app.get("/api/health")
 async def health() -> dict[str, Any]:
-    cached = load_cache()
     return {
         "status": "ok",
-        "cache_available": cached is not None,
-        "scraped_at": cached.get("scraped_at") if cached else None,
+        "cache_available": CACHE_PATH.exists(),
+        "data_loaded": "data" in store,
     }
 
 
