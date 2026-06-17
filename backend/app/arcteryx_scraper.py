@@ -327,12 +327,6 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
                     extra_categories = _extra_clothing_categories(product)
                     if extra_categories:
                         clothing_product_ids.add(product_id)
-                        categories_by_id.setdefault(product_id, set()).update(
-                            extra_categories
-                        )
-                        subcategories_by_id.setdefault(product_id, set()).update(
-                            _extra_clothing_subcategories(product)
-                        )
                 await asyncio.sleep(0.2)
 
         for audience, audience_slug in AUDIENCES.items():
