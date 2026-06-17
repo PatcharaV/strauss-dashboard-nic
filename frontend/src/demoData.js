@@ -23,6 +23,7 @@ export const demoOptions = {
     "Strauss x LA FC",
     "Strauss x Stuntmen's Association",
   ],
+  activities: ["Hike", "Trail Run", "Rock", "Boulder", "Alpine"],
   features: [
     "New Arrivals",
     "Best Sellers",

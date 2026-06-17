@@ -90,6 +90,7 @@ def filter_products(
     brands: list[str] | None = None,
     audiences: list[str] | None = None,
     collections: list[str] | None = None,
+    activities: list[str] | None = None,
     features: list[str] | None = None,
     categories: list[str] | None = None,
     subcategories: list[str] | None = None,
@@ -104,6 +105,7 @@ def filter_products(
     selected_brands = set(brands or [])
     selected_audiences = set(audiences or [])
     selected_collections = set(collections or [])
+    selected_activities = set(activities or [])
     selected_features = set(features or [])
     selected_categories = set(categories or [])
     selected_subcategories = set(subcategories or [])
@@ -139,6 +141,10 @@ def filter_products(
             return False
         if selected_collections and not (
             selected_collections & set(_product_collections(product))
+        ):
+            return False
+        if selected_activities and not (
+            selected_activities & set(product.get("activities", []))
         ):
             return False
         if selected_features and not (
@@ -215,6 +221,9 @@ def build_dashboard(
     collection_counts: Counter[str] = Counter()
     for product in products:
         collection_counts.update(_product_collections(product))
+    activity_counts: Counter[str] = Counter()
+    for product in products:
+        activity_counts.update(product.get("activities", []))
     subcategory_counts: Counter[str] = Counter()
     for product in products:
         subcategory_counts.update(
@@ -271,6 +280,7 @@ def build_dashboard(
         "categories": _counter_rows(category_counts),
         "subcategories": _counter_rows(subcategory_counts),
         "collections": _counter_rows(collection_counts),
+        "activities": _counter_rows(activity_counts),
         "products": [
             {
                 **product,
@@ -280,6 +290,7 @@ def build_dashboard(
                     product, selected_category_set
                 ),
                 "collections": _product_collections(product),
+                "activities": product.get("activities", []),
                 "product_functions": _product_functions(product),
             }
             for product in products
@@ -326,6 +337,14 @@ def build_options(
                 collection
                 for product in products
                 for collection in _product_collections(product)
+            },
+            key=str.lower,
+        ),
+        "activities": sorted(
+            {
+                activity
+                for product in products
+                for activity in product.get("activities", [])
             },
             key=str.lower,
         ),

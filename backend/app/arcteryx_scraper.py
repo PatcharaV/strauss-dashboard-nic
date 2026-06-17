@@ -22,28 +22,49 @@ CLOTHING_CATEGORY_SLUGS = {
     "Vests": "vests",
 }
 COLLECTION_SLUGS = {
-    "Hike": "trail/hike",
-    "Trail Run": "trail/trail-run",
-    "Rock": "climb/rock",
-    "Boulder": "climb/boulder",
-    "Alpine": "climb/alpine",
-    "Freeride": "ski-snowboard/freeride",
-    "Touring": "ski-snowboard/touring",
-    "Resort": "ski-snowboard/resort",
-    "Sun Protection": "sun-protection/wid-1jwro0gl",
     "Veilance": "veilance",
     "System_A": "system_a",
+}
+ACTIVITY_SLUGS = {
+    "Trail Run": "trail/trail-run",
+    "Hike": "trail/hike",
+    "Alpine": "climb/alpine",
+    "Rock": "climb/rock",
+    "Boulder": "climb/boulder",
+    "Ski & Snowboard": "ski-snowboard",
+}
+SUBCATEGORY_FILTERS = {
+    "Hardshells": "Hardshell",
+    "Windshells": "Windshell",
+    "Softshells": "Softshell",
+    "Down Insulation": "Down Fill",
+    "Synthetic Insulation": "Synthetic Fill",
+    "T-Shirts": "T-Shirts",
+    "Long Sleeves": "Long Sleeve",
+    "Tank Tops": "Tank Tops",
+}
+FEATURE_SLUGS = {
+    "New Arrivals": "new-arrivals",
+}
+FEATURE_FILTERS = {
+    "Summer Essentials": "Sun Protection",
+    "Light Layers": "Lightweight",
+    "Waterproof Gear": "GORE-TEX® (Waterproof)",
 }
 
 
 async def _listing(
-    client: httpx.AsyncClient, slug: str, offset: int = 0, limit: int = 100
+    client: httpx.AsyncClient,
+    slug: str,
+    offset: int = 0,
+    limit: int = 100,
+    filters: dict[str, list[str]] | None = None,
 ) -> dict[str, Any]:
     page_url = f"{BASE_URL}/c/{slug}"
     payload = {
         "browserUserId": "1",
         "country": "us",
-        "filters": {},
+        "filters": filters or {},
         "language": "en",
         "limit": limit,
         "offset": offset,
@@ -62,13 +83,13 @@ async def _listing(
 
 
 async def _all_listing_products(
-    client: httpx.AsyncClient, slug: str
+    client: httpx.AsyncClient, slug: str, filters: dict[str, list[str]] | None = None
 ) -> list[dict[str, Any]]:
-    first = await _listing(client, slug)
+    first = await _listing(client, slug, filters=filters)
     products = list(first.get("productList") or [])
     total = int(first.get("filterBar", {}).get("resultCount", len(products)))
     for offset in range(100, total, 100):
-        page = await _listing(client, slug, offset)
+        page = await _listing(client, slug, offset, filters=filters)
         products.extend(page.get("productList") or [])
         await asyncio.sleep(0.2)
     return products
@@ -82,11 +103,25 @@ def _extra_clothing_categories(product: dict[str, Any]) -> set[str]:
     return set()
 
 
+def _extra_clothing_subcategories(product: dict[str, Any]) -> set[str]:
+    title = str(product.get("marketingName", "")).lower()
+    slug = str(product.get("slug", "")).lower()
+    subcategories: set[str] = set()
+    if "dress" in title or "dress" in slug:
+        subcategories.add("Dresses")
+    if "skirt" in title or "skirt" in slug:
+        subcategories.add("Skirts")
+    return subcategories
+
+
 def _normalize(
     product: dict[str, Any],
     audiences: set[str],
     categories: set[str],
+    subcategories: set[str],
     collections: set[str],
+    activities: set[str],
+    features: set[str],
 ) -> dict[str, Any]:
     price = product.get("priceRange") or {}
     colours = product.get("colourOptions") or []
@@ -124,8 +159,10 @@ def _normalize(
         "description": description,
         "category": category_list[0],
         "categories": category_list,
-        "subcategories": [],
+        "subcategories": sorted(subcategories),
         "collections": sorted(collections),
+        "activities": sorted(activities),
+        "features": sorted(features),
         "vendor": "Arc'teryx",
         "audiences": audience_list,
         "audience_labels": [audience.title() for audience in audience_list],
@@ -164,7 +201,10 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
         products_by_id: dict[str, dict[str, Any]] = {}
         audiences_by_id: dict[str, set[str]] = {}
         categories_by_id: dict[str, set[str]] = {}
+        subcategories_by_id: dict[str, set[str]] = {}
         collections_by_id: dict[str, set[str]] = {}
+        activities_by_id: dict[str, set[str]] = {}
+        features_by_id: dict[str, set[str]] = {}
 
         for audience, audience_slug in AUDIENCES.items():
             for product in await _all_listing_products(client, audience_slug):
@@ -188,6 +228,20 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
                 await asyncio.sleep(0.2)
 
         for audience, audience_slug in AUDIENCES.items():
+            for subcategory, facet in SUBCATEGORY_FILTERS.items():
+                for product in await _all_listing_products(
+                    client, audience_slug, {"sub_categories": [facet]}
+                ):
+                    product_id = str(product.get("id", ""))
+                    if not product_id:
+                        continue
+                    if product_id in clothing_product_ids:
+                        subcategories_by_id.setdefault(product_id, set()).add(
+                            subcategory
+                        )
+                await asyncio.sleep(0.2)
+
+        for audience, audience_slug in AUDIENCES.items():
             for collection, collection_slug in COLLECTION_SLUGS.items():
                 slug = f"{audience_slug}/{collection_slug}"
                 for product in await _all_listing_products(client, slug):
@@ -203,6 +257,39 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
                         categories_by_id.setdefault(product_id, set()).update(
                             extra_categories
                         )
+                        subcategories_by_id.setdefault(product_id, set()).update(
+                            _extra_clothing_subcategories(product)
+                        )
+                await asyncio.sleep(0.2)
+
+        for audience, audience_slug in AUDIENCES.items():
+            for activity, activity_slug in ACTIVITY_SLUGS.items():
+                slug = f"{audience_slug}/{activity_slug}"
+                for product in await _all_listing_products(client, slug):
+                    product_id = str(product.get("id", ""))
+                    if not product_id or product_id not in clothing_product_ids:
+                        continue
+                    activities_by_id.setdefault(product_id, set()).add(activity)
+                await asyncio.sleep(0.2)
+
+        for audience, audience_slug in AUDIENCES.items():
+            for feature, feature_slug in FEATURE_SLUGS.items():
+                slug = f"{audience_slug}/{feature_slug}"
+                for product in await _all_listing_products(client, slug):
+                    product_id = str(product.get("id", ""))
+                    if not product_id or product_id not in clothing_product_ids:
+                        continue
+                    features_by_id.setdefault(product_id, set()).add(feature)
+                await asyncio.sleep(0.2)
+
+            for feature, facet in FEATURE_FILTERS.items():
+                for product in await _all_listing_products(
+                    client, audience_slug, {"sub_categories": [facet]}
+                ):
+                    product_id = str(product.get("id", ""))
+                    if not product_id or product_id not in clothing_product_ids:
+                        continue
+                    features_by_id.setdefault(product_id, set()).add(feature)
                 await asyncio.sleep(0.2)
 
     products = [
@@ -210,7 +297,15 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
             product,
             audiences_by_id.get(product_id, set()),
             categories_by_id.get(product_id, set()),
+            subcategories_by_id.get(product_id, set()),
             collections_by_id.get(product_id, set()),
+            activities_by_id.get(product_id, set()),
+            features_by_id.get(product_id, set())
+            | ({"Bestsellers"} if product.get("id") and any(
+                badge.get("code") == "bestseller"
+                for colour in product.get("colourOptions", [])
+                for badge in (colour.get("badges") or [])
+            ) else set()),
         )
         for product_id, product in products_by_id.items()
         if product_id in clothing_product_ids

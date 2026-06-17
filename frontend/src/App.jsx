@@ -64,6 +64,7 @@ async function exportProductsToExcel(products) {
     Category: (product.categories || [product.category]).join(", "),
     "Sub Category": (product.subcategories || []).join(", "),
     Collection: (product.collections || []).join(", "),
+    Activities: (product.activities || []).join(", "),
     Color: product.color || "Not specified",
     Material: product.material || "Not specified",
     "Shop Highlights": (product.shop_highlights || []).join(", "),
@@ -78,6 +79,7 @@ async function exportProductsToExcel(products) {
     { wch: 42 },
     { wch: 14 },
     { wch: 24 },
+    { wch: 28 },
     { wch: 28 },
     { wch: 28 },
     { wch: 22 },
@@ -106,6 +108,9 @@ function buildQuery(filters) {
   }
   if (filters.collections.length) {
     params.set("collections", filters.collections.join(","));
+  }
+  if (filters.activities.length) {
+    params.set("activities", filters.activities.join(","));
   }
   if (filters.features.length) {
     params.set("features", filters.features.join(","));
@@ -280,6 +285,7 @@ function App() {
     brands: ["strauss"],
     audiences: [],
     collections: [],
+    activities: [],
     features: [],
     categories: [],
     subcategories: [],
@@ -301,10 +307,14 @@ function App() {
   const query = useMemo(() => buildQuery(filters), [filters]);
   const productCategories = options.categories;
   const availableShopHighlights = options.shop_highlights || [];
+  const activityOptions = options.activities || [];
   const colorOptions = options.colors || [];
   const hasCollectionData =
     (dashboard.collections || []).length > 0 ||
     dashboard.products.some((product) => product.collections?.length);
+  const hasActivityData =
+    (dashboard.activities || []).length > 0 ||
+    dashboard.products.some((product) => product.activities?.length);
   const hasSubcategoryData = dashboard.products.some(
     (product) => product.subcategories?.length,
   );
@@ -315,6 +325,8 @@ function App() {
     (options.subcategories || []).length > 0 || filters.subcategories.length > 0;
   const hasCollectionFilter =
     (options.collections || []).length > 0 || filters.collections.length > 0;
+  const hasActivityFilter =
+    activityOptions.length > 0 || filters.activities.length > 0;
   const hasFeatureFilter =
     (options.features || []).length > 0 || filters.features.length > 0;
   const hasShopHighlightFilter =
@@ -389,6 +401,7 @@ function App() {
       brands: filters.brands,
       audiences: [],
       collections: [],
+      activities: [],
       features: [],
       categories: [],
       subcategories: [],
@@ -407,6 +420,7 @@ function App() {
       brands: [brand],
       audiences: [],
       collections: [],
+      activities: [],
       features: [],
       categories: [],
       subcategories: [],
@@ -458,6 +472,15 @@ function App() {
     });
   }
 
+  function toggleActivity(activity) {
+    setFilters({
+      ...filters,
+      activities: filters.activities.includes(activity)
+        ? filters.activities.filter((item) => item !== activity)
+        : [...filters.activities, activity],
+    });
+  }
+
   function toggleFeature(feature) {
     setFilters({
       ...filters,
@@ -477,6 +500,7 @@ function App() {
       .map((item) => item.label),
     ...selectedAudienceLabels,
     ...filters.collections,
+    ...filters.activities,
     ...filters.features,
     ...filters.categories,
     ...filters.subcategories,
@@ -695,7 +719,7 @@ function App() {
 
             {hasFeatureFilter && (
               <label>
-                <span className="filter-title">Feature</span>
+                <span className="filter-title">Featured</span>
                 <select
                   value={
                     filters.features.length === 1 ? filters.features[0] : "all"
@@ -712,6 +736,33 @@ function App() {
                   {(options.features || []).map((feature) => (
                     <option key={feature} value={feature}>
                       {feature}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+
+            {hasActivityFilter && (
+              <label>
+                <span className="filter-title">Activities</span>
+                <select
+                  value={
+                    filters.activities.length === 1
+                      ? filters.activities[0]
+                      : "all"
+                  }
+                  onChange={(event) =>
+                    setFilters({
+                      ...filters,
+                      activities:
+                        event.target.value === "all" ? [] : [event.target.value],
+                    })
+                  }
+                >
+                  <option value="all">All activities</option>
+                  {activityOptions.map((activity) => (
+                    <option key={activity} value={activity}>
+                      {activity}
                     </option>
                   ))}
                 </select>
@@ -1120,6 +1171,7 @@ function App() {
                       <th>Category</th>
                       {hasSubcategoryData && <th>Sub category</th>}
                       {hasCollectionData && <th>Collection</th>}
+                      {hasActivityData && <th>Activities</th>}
                       <th>Color</th>
                       {hasMaterialData && <th>Material</th>}
                       <th>Shop Highlights</th>
@@ -1220,6 +1272,24 @@ function App() {
                                   </span>
                                 ))
                               : "No named collection"}
+                          </td>
+                        )}
+                        {hasActivityData && (
+                          <td className="collection-cell">
+                            {product.activities?.length
+                              ? product.activities.map((activity, index) => (
+                                  <span key={activity}>
+                                    {index > 0 && ", "}
+                                    <button
+                                      className="table-filter-button"
+                                      type="button"
+                                      onClick={() => toggleActivity(activity)}
+                                    >
+                                      {activity}
+                                    </button>
+                                  </span>
+                                ))
+                              : "No named activity"}
                           </td>
                         )}
                         <td className="color-cell">
