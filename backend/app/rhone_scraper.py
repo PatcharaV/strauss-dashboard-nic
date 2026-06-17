@@ -99,14 +99,47 @@ def _tag_values(tags: list[str], prefix: str) -> list[str]:
 
 
 def _rhone_material(text: str) -> str:
-    match = re.search(
-        r"\bMade of\s+(.+?)(?=\s+(?:Machine|Wash|Do not|Tumble|Imported|$))",
+    text = re.sub(r"\s+", " ", text or "").strip()
+    if not text:
+        return ""
+
+    section_match = re.search(
+        r"\bFabric\s*&\s*care\s*:\s*(.+?)(?=\b(?:Model info|You may also like|Shipping|Returns)\b|$)",
         text,
         flags=re.I,
     )
+    fabric_text = section_match.group(1).strip() if section_match else text
+
+    care_pattern = (
+        r"\b(?:Machine\s+wash|Wash\s+cold|Dry\s+clean|Do\s+not|"
+        r"Tumble\s+dry|Only\s+non-chlorine|Cool\s+iron|Imported)\b"
+    )
+    fabric_text = re.split(care_pattern, fabric_text, maxsplit=1, flags=re.I)[0]
+
+    composition_pattern = (
+        r"(?:\d+(?:\.\d+)?%\s+(?:Recycled\s+)?"
+        r"(?:Polyester|Polyamide|Elastane|Nylon|Cotton|Linen|Wool|Merino\s+Wool|"
+        r"Spandex|Modal|Viscose|Rayon|Acrylic|Polyurethane|Tencel|Lyocell)"
+        r"(?:,\s*|\s+and\s+)?)+"
+    )
+
+    match = re.search(
+        r"\bMade\s+(?:of|with)\s+(.+?)$",
+        fabric_text,
+        flags=re.I,
+    )
+    if not match:
+        match = re.search(rf"\b({composition_pattern})", fabric_text, flags=re.I)
     if not match:
         return ""
-    return re.sub(r"\s+", " ", match.group(1)).strip(" .")
+
+    material = re.sub(r"\s+", " ", match.group(1)).strip(" .")
+    composition = re.search(rf"^({composition_pattern})", material, flags=re.I)
+    if composition:
+        material = composition.group(1).strip(" ,.")
+    elif not re.search(composition_pattern, material, flags=re.I):
+        return ""
+    return material
 
 
 def _rhone_collections(title: str, handle: str, tags: list[str]) -> list[str]:

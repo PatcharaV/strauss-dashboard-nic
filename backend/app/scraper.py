@@ -586,6 +586,17 @@ async def _fetch_canonical_product(
 def _extract_material(html: str) -> str:
     def clean_material(value: str) -> str:
         material = re.sub(r"\s+", " ", value).strip()
+        fiber_terms = (
+            r"cotton|polyester|nylon|polyamide|elastane|wool|linen|spandex|"
+            r"viscose|rayon|modal|lyocell|polyurethane|acrylic"
+        )
+        care_only = re.search(
+            r"\b(?:machine washable|wash cold|dry clean|tumble dry)\b",
+            material,
+            re.I,
+        )
+        if care_only and not re.search(fiber_terms, material, re.I):
+            return ""
         composition = re.search(
             r"(?i)(?:\b(?:shell|lining|padding|palm|back of hand|belt|buckle|upper|sole)\b\s*:?\s*|\d+(?:[.,]\d+)?\s*%)",
             material,
@@ -622,6 +633,14 @@ def _extract_material(html: str) -> str:
     )
     if match:
         return clean_material(match.group(1))
+
+    made_from = re.search(
+        r"\bMade\s+(?:from|of|with)\s+(.{0,90}?\b(?:cotton|polyester|nylon|polyamide|elastane|wool|linen|spandex|viscose|rayon|modal|lyocell)\b)",
+        plain_text,
+        re.I,
+    )
+    if made_from:
+        return clean_material(made_from.group(1))
     return ""
 
 

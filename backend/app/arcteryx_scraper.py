@@ -111,6 +111,43 @@ def _feature_values(features: list[dict[str, Any]], label: str) -> list[str]:
     return []
 
 
+def _material_values(product: dict[str, Any]) -> list[str]:
+    raw_materials = [
+        str(material).strip()
+        for material in product.get("materials", [])
+        if str(material).strip()
+    ]
+    body_materials = [
+        material
+        for material in raw_materials
+        if material.lower().startswith("body:")
+    ]
+    if body_materials:
+        return body_materials
+
+    self_materials = [
+        material
+        for material in raw_materials
+        if material.lower().startswith("self:")
+    ]
+    if self_materials:
+        return self_materials[:1]
+
+    skipped_prefixes = (
+        "french regulation",
+        "origin of",
+        "origin:",
+        "may release",
+        "care",
+    )
+    return [
+        material
+        for material in raw_materials
+        if re.search(r"\d+(?:\.\d+)?\s*%", material)
+        and not material.lower().startswith(skipped_prefixes)
+    ][:1]
+
+
 async def _product_details(
     client: httpx.AsyncClient, slug: str
 ) -> dict[str, list[str]]:
@@ -126,11 +163,7 @@ async def _product_details(
         return {}
     product = json.loads(product_json)
     feature_groups = product.get("features") or []
-    materials = [
-        str(material).strip()
-        for material in product.get("materials", [])
-        if str(material).strip().lower().startswith("body:")
-    ]
+    materials = _material_values(product)
     return {
         "material_details": materials,
         "technical_features": _feature_values(feature_groups, "Technical features"),
