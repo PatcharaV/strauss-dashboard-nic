@@ -57,6 +57,11 @@ FEATURE_FILTERS = {
     "Waterproof Gear": "GORE-TEX® (Waterproof)",
 }
 
+SEASON_NAMES = {
+    "S": "Spring/Summer",
+    "F": "Fall/Winter",
+}
+
 
 async def _listing(
     client: httpx.AsyncClient,
@@ -146,6 +151,33 @@ def _material_values(product: dict[str, Any]) -> list[str]:
         if re.search(r"\d+(?:\.\d+)?\s*%", material)
         and not material.lower().startswith(skipped_prefixes)
     ][:1]
+
+
+def _season_from_product(
+    product: dict[str, Any], selected: dict[str, Any]
+) -> dict[str, Any]:
+    candidates: list[str] = []
+    for image_key in ("image", "thumbnail", "hoverImage"):
+        image = selected.get(image_key)
+        if isinstance(image, dict):
+            candidates.append(str(image.get("url", "")))
+    for colour in product.get("colourOptions") or []:
+        for image_key in ("image", "thumbnail", "hoverImage"):
+            image = colour.get(image_key)
+            if isinstance(image, dict):
+                candidates.append(str(image.get("url", "")))
+
+    for candidate in candidates:
+        match = re.search(r"/([SF])(\d{2})(?:[-/])", candidate)
+        if not match:
+            continue
+        season_prefix, year_suffix = match.groups()
+        return {
+            "season_code": f"{season_prefix}{year_suffix}",
+            "season_year": 2000 + int(year_suffix),
+            "season_range": SEASON_NAMES.get(season_prefix, ""),
+        }
+    return {"season_code": "", "season_year": None, "season_range": ""}
 
 
 async def _product_details(
@@ -418,6 +450,9 @@ def _normalize(
     image = selected.get("image") or selected.get("thumbnail") or {}
     title = str(product.get("marketingName", "")).strip()
     description = str(product.get("shortDescription", "")).strip()
+    product_id = str(product.get("id", slug))
+    style_match = re.search(r"-(\d{4})$", slug)
+    season = _season_from_product(product, selected)
     tags = sorted(
         {
             str(badge.get("label", ""))
@@ -426,9 +461,12 @@ def _normalize(
         }
     )
     return {
-        "id": f"arcteryx:{product.get('id', slug)}",
-        "source_id": str(product.get("id", slug)),
-        "product_id": str(product.get("id", slug)),
+        "id": f"arcteryx:{product_id}",
+        "source_id": product_id,
+        "product_id": product_id,
+        "series_number": product_id,
+        "style_number": style_match.group(1) if style_match else "",
+        **season,
         "brand": "arcteryx",
         "brand_label": "Arc'teryx",
         "source": BASE_URL,

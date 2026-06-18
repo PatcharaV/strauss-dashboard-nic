@@ -185,6 +185,10 @@ async function exportProductsToExcel(products) {
   const rows = products.map((product) => ({
     Product: product.title,
     Brand: product.brand_label,
+    "Series Number": product.series_number || product.product_id || "",
+    "Style Number": product.style_number || "",
+    "Season Code": product.season_code || "",
+    "Season Range": product.season_range || "",
     Category: (product.categories || [product.category]).join(", "),
     "Sub Category": (product.subcategories || []).join(", "),
     Collection: (product.collections || []).join(", "),
@@ -207,6 +211,10 @@ async function exportProductsToExcel(products) {
   worksheet["!cols"] = [
     { wch: 42 },
     { wch: 14 },
+    { wch: 18 },
+    { wch: 14 },
+    { wch: 12 },
+    { wch: 18 },
     { wch: 24 },
     { wch: 28 },
     { wch: 28 },
@@ -262,6 +270,9 @@ function buildQuery(filters) {
   }
   if (filters.material !== "all") {
     params.set("material", filters.material);
+  }
+  if (filters.season !== "all") {
+    params.set("season", filters.season);
   }
   return params.toString();
 }
@@ -425,6 +436,7 @@ function App() {
     availability: "all",
     shopHighlight: "all",
     material: "all",
+    season: "all",
   });
   const [sections, setSections] = useState(DEFAULT_SECTIONS);
   const [loading, setLoading] = useState(true);
@@ -441,6 +453,7 @@ function App() {
   const availableShopHighlights = options.shop_highlights || [];
   const activityOptions = options.activities || [];
   const materialKeywords = options.material_keywords || [];
+  const seasonOptions = options.seasons || [];
   const showStraussPitch = filters.brands.includes("strauss");
   const showArcteryxDeck = filters.brands.includes("arcteryx");
   const hasCollectionData =
@@ -461,6 +474,13 @@ function App() {
   const hasConstructionData = dashboard.products.some(
     (product) => product.construction?.length,
   );
+  const hasSeriesData = dashboard.products.some(
+    (product) =>
+      product.series_number ||
+      product.style_number ||
+      product.season_code ||
+      product.season_range,
+  );
   const hasSubcategoryFilter =
     (options.subcategories || []).length > 0 || filters.subcategories.length > 0;
   const hasCollectionFilter =
@@ -473,6 +493,8 @@ function App() {
     availableShopHighlights.length > 0 || filters.shopHighlight !== "all";
   const hasMaterialFilter =
     filters.material !== "all" || materialKeywords.length > 0;
+  const hasSeasonFilter =
+    filters.season !== "all" || seasonOptions.length > 0;
   const hasUnavailableProducts = dashboard.products.some(
     (product) => !product.available,
   ) || filters.availability !== "all";
@@ -551,6 +573,7 @@ function App() {
       availability: "all",
       shopHighlight: "all",
       material: "all",
+      season: "all",
     });
   }
 
@@ -570,6 +593,7 @@ function App() {
       availability: "all",
       shopHighlight: "all",
       material: "all",
+      season: "all",
     });
   }
 
@@ -641,6 +665,7 @@ function App() {
       ? `Shop Highlight: ${filters.shopHighlight}`
       : null,
     filters.material !== "all" ? `Material: ${filters.material}` : null,
+    filters.season !== "all" ? `Season: ${filters.season}` : null,
     filters.minPrice !== "" ? `Min $${filters.minPrice}` : null,
     filters.maxPrice !== "" ? `Max $${filters.maxPrice}` : null,
   ].filter(Boolean);
@@ -953,6 +978,25 @@ function App() {
                   {materialKeywords.map((keyword) => (
                     <option key={keyword} value={keyword}>
                       {keyword}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+
+            {hasSeasonFilter && (
+              <label>
+                <span className="filter-title">Season</span>
+                <select
+                  value={filters.season}
+                  onChange={(event) =>
+                    setFilters({ ...filters, season: event.target.value })
+                  }
+                >
+                  <option value="all">All seasons</option>
+                  {seasonOptions.map((season) => (
+                    <option key={season} value={season}>
+                      {season}
                     </option>
                   ))}
                 </select>
@@ -1277,6 +1321,8 @@ function App() {
                     <tr className="table-heading-row">
                       <th>No.</th>
                       <th>Product</th>
+                      {hasSeriesData && <th>Series</th>}
+                      {hasSeriesData && <th>Season</th>}
                       <th>Gender</th>
                       <th>Category</th>
                       {hasSubcategoryData && <th>Sub category</th>}
@@ -1302,6 +1348,34 @@ function App() {
                             {product.title}
                           </a>
                         </td>
+                        {hasSeriesData && (
+                          <td className="detail-cell">
+                            <DetailList
+                              values={[
+                                product.series_number
+                                  ? `Series: ${product.series_number}`
+                                  : "",
+                                product.style_number
+                                  ? `Style: ${product.style_number}`
+                                  : "",
+                              ].filter(Boolean)}
+                            />
+                          </td>
+                        )}
+                        {hasSeriesData && (
+                          <td className="detail-cell">
+                            <DetailList
+                              values={[
+                                product.season_code
+                                  ? `Code: ${product.season_code}`
+                                  : "",
+                                product.season_range
+                                  ? product.season_range
+                                  : "",
+                              ].filter(Boolean)}
+                            />
+                          </td>
+                        )}
                         <td>
                           {product.audience_labels?.length
                             ? product.audience_labels.map((label, labelIndex) => {

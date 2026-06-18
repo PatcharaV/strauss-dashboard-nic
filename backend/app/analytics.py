@@ -152,6 +152,10 @@ def _material_text(product: dict[str, Any]) -> str:
     )
 
 
+def _season_value(product: dict[str, Any]) -> str:
+    return str(product.get("season_range") or "").strip()
+
+
 def _visible_categories(
     product: dict[str, Any], selected_categories: set[str]
 ) -> list[str]:
@@ -207,6 +211,7 @@ def filter_products(
     top_seller: str | None = None,
     shop_highlight: str | None = None,
     material: str | None = None,
+    season: str | None = None,
 ) -> list[dict[str, Any]]:
     selected_brands = set(brands or [])
     selected_audiences = set(audiences or [])
@@ -217,6 +222,7 @@ def filter_products(
     selected_subcategories = set(subcategories or [])
     search_term = (search or "").strip().lower()
     color_term = (color or "").strip().lower()
+    selected_season = (season or "").strip()
 
     def matches(product: dict[str, Any]) -> bool:
         if search_term:
@@ -231,6 +237,10 @@ def filter_products(
                     " ".join(product.get("subcategories", [])),
                     str(product.get("material", "")),
                     str(product.get("color", "")),
+                    str(product.get("series_number", "")),
+                    str(product.get("style_number", "")),
+                    str(product.get("season_code", "")),
+                    str(product.get("season_range", "")),
                     " ".join(product.get("audience_labels", [])),
                     " ".join(_product_collections(product)),
                     " ".join(product.get("features", [])),
@@ -303,6 +313,9 @@ def filter_products(
             and material.lower() not in material_text.lower()
         ):
             return False
+        if selected_season and selected_season != "all":
+            if _season_value(product) != selected_season:
+                return False
         return True
 
     return [product for product in products if matches(product)]
@@ -489,6 +502,14 @@ def build_options(
                 for product in products
             )
         ],
+        "seasons": sorted(
+            {
+                _season_value(product)
+                for product in products
+                if _season_value(product)
+            },
+            key=str.lower,
+        ),
         "colors": sorted(
             {
                 str(product.get("color", "")).strip()
