@@ -25,7 +25,6 @@ PERIOD_SEASON_MONTHS = {
     "NOV": "F",
     "DEC": "F",
 }
-PERIOD_MONTH_ORDER = list(PERIOD_SEASON_MONTHS)
 CLOTHING_CATEGORIES = {
     "strauss": {
         "Shirts",
@@ -127,32 +126,14 @@ def _clothing_products(products: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return clothing
 
 
-def _period_season_codes(scrape_period: dict[str, Any] | None) -> list[str]:
+def _period_season_code(scrape_period: dict[str, Any] | None) -> str:
     if not scrape_period:
-        return []
-    month_from = str(
-        scrape_period.get("month_from") or scrape_period.get("month") or ""
-    ).upper()
-    month_to = str(
-        scrape_period.get("month_to") or scrape_period.get("month") or month_from
-    ).upper()
+        return ""
+    month = str(scrape_period.get("month", "")).upper()
     year = scrape_period.get("year")
-    if (
-        month_from not in PERIOD_SEASON_MONTHS
-        or month_to not in PERIOD_SEASON_MONTHS
-        or not year
-    ):
-        return []
-
-    start = PERIOD_MONTH_ORDER.index(month_from)
-    end = PERIOD_MONTH_ORDER.index(month_to)
-    if start > end:
-        start, end = end, start
-    seasons = {
-        f"{PERIOD_SEASON_MONTHS[month]}{int(year) % 100:02d}"
-        for month in PERIOD_MONTH_ORDER[start : end + 1]
-    }
-    return sorted(seasons)
+    if month not in PERIOD_SEASON_MONTHS or not year:
+        return ""
+    return f"{PERIOD_SEASON_MONTHS[month]}{int(year) % 100:02d}"
 
 
 def _filter_period_products(
@@ -162,13 +143,13 @@ def _filter_period_products(
 ) -> list[dict[str, Any]]:
     if brand != "arcteryx":
         return products
-    season_codes = _period_season_codes(scrape_period)
-    if not season_codes:
+    season_code = _period_season_code(scrape_period)
+    if not season_code:
         return products
     return [
         product
         for product in products
-        if product.get("season_code") in season_codes
+        if product.get("season_code") == season_code
     ]
 
 

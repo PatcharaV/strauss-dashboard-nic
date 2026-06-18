@@ -230,26 +230,13 @@ async def products(
 @app.post("/api/scrape")
 async def scrape(
     month: str = Query(default="JAN", pattern="^(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)$"),
-    month_from: str | None = Query(default=None, pattern="^(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)$"),
-    month_to: str | None = Query(default=None, pattern="^(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)$"),
     year: int = Query(default=2026, ge=2020, le=2100),
 ) -> dict[str, Any]:
-    selected_month_from = month_from or month
-    selected_month_to = month_to or selected_month_from
-    label = (
-        f"{selected_month_from} {year}"
-        if selected_month_from == selected_month_to
-        else f"{selected_month_from}-{selected_month_to} {year}"
-    )
     scrape_period = {
-        "month": selected_month_from,
-        "month_from": selected_month_from,
-        "month_to": selected_month_to,
-        "month_label": MONTH_LABELS[selected_month_from],
-        "month_from_label": MONTH_LABELS[selected_month_from],
-        "month_to_label": MONTH_LABELS[selected_month_to],
+        "month": month,
+        "month_label": MONTH_LABELS[month],
         "year": year,
-        "label": label,
+        "label": f"{month} {year}",
     }
     try:
         data = await get_data(force=True, scrape_period=scrape_period)
