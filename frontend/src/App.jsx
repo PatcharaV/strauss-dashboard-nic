@@ -747,6 +747,10 @@ function App() {
                 ))}
               </select>
             </label>
+            <small>
+              Arc&apos;teryx period uses catalog season code. Other brands scrape
+              current catalog.
+            </small>
           </div>
           <button
             className="primary-button"
@@ -754,7 +758,7 @@ function App() {
             onClick={scrapeLatest}
             disabled={scraping}
           >
-            {scraping ? "Scraping..." : "Scrape latest data"}
+            {scraping ? "Scraping..." : "Scrape selected period"}
           </button>
         </div>
       </header>

@@ -61,6 +61,20 @@ SEASON_NAMES = {
     "S": "Spring/Summer",
     "F": "Fall/Winter",
 }
+SEASON_MONTHS = {
+    "JAN": "S",
+    "FEB": "S",
+    "MAR": "S",
+    "APR": "S",
+    "MAY": "S",
+    "JUN": "S",
+    "JUL": "F",
+    "AUG": "F",
+    "SEP": "F",
+    "OCT": "F",
+    "NOV": "F",
+    "DEC": "F",
+}
 
 
 async def _listing(
@@ -178,6 +192,16 @@ def _season_from_product(
             "season_range": SEASON_NAMES.get(season_prefix, ""),
         }
     return {"season_code": "", "season_year": None, "season_range": ""}
+
+
+def _season_code_from_period(scrape_period: dict[str, Any] | None) -> str:
+    if not scrape_period:
+        return ""
+    month = str(scrape_period.get("month", "")).upper()
+    year = scrape_period.get("year")
+    if month not in SEASON_MONTHS or not year:
+        return ""
+    return f"{SEASON_MONTHS[month]}{int(year) % 100:02d}"
 
 
 async def _product_details(
@@ -508,7 +532,9 @@ def _normalize(
     }
 
 
-async def scrape_arcteryx_products() -> dict[str, Any]:
+async def scrape_arcteryx_products(
+    scrape_period: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     headers = {
         "User-Agent": "MultiBrandCatalogDashboard/1.0 (+public product analytics)",
         "Accept": "application/json,text/plain,*/*",
@@ -619,6 +645,13 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
         for product_id, product in products_by_id.items()
         if product_id in clothing_product_ids
     ]
+    period_season_code = _season_code_from_period(scrape_period)
+    if period_season_code:
+        products = [
+            product
+            for product in products
+            if product.get("season_code") == period_season_code
+        ]
     detail_semaphore = asyncio.Semaphore(8)
 
     async def enrich_details(
@@ -656,5 +689,11 @@ async def scrape_arcteryx_products() -> dict[str, Any]:
         "scraped_at": datetime.now(timezone.utc).isoformat(),
         "product_count": len(products),
         "collection_options": sorted([*COLLECTION_SLUGS, *STATIC_COLLECTIONS]),
+        "period_filter": {
+            "season_code": period_season_code,
+            "source": "Arc'teryx catalog image season code",
+        }
+        if period_season_code
+        else {},
         "products": products,
     }

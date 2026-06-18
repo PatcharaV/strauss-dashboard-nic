@@ -11,6 +11,20 @@ from .scraper import extract_product_functions, scrape_strauss_products
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 CACHE_PATH = DATA_DIR / "products.json"
+PERIOD_SEASON_MONTHS = {
+    "JAN": "S",
+    "FEB": "S",
+    "MAR": "S",
+    "APR": "S",
+    "MAY": "S",
+    "JUN": "S",
+    "JUL": "F",
+    "AUG": "F",
+    "SEP": "F",
+    "OCT": "F",
+    "NOV": "F",
+    "DEC": "F",
+}
 CLOTHING_CATEGORIES = {
     "strauss": {
         "Shirts",
@@ -112,6 +126,33 @@ def _clothing_products(products: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return clothing
 
 
+def _period_season_code(scrape_period: dict[str, Any] | None) -> str:
+    if not scrape_period:
+        return ""
+    month = str(scrape_period.get("month", "")).upper()
+    year = scrape_period.get("year")
+    if month not in PERIOD_SEASON_MONTHS or not year:
+        return ""
+    return f"{PERIOD_SEASON_MONTHS[month]}{int(year) % 100:02d}"
+
+
+def _filter_period_products(
+    products: list[dict[str, Any]],
+    brand: str,
+    scrape_period: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    if brand != "arcteryx":
+        return products
+    season_code = _period_season_code(scrape_period)
+    if not season_code:
+        return products
+    return [
+        product
+        for product in products
+        if product.get("season_code") == season_code
+    ]
+
+
 def _normalize_strauss_categories(product: dict[str, Any]) -> dict[str, Any]:
     if product.get("brand") != "strauss":
         return product
@@ -182,7 +223,7 @@ async def scrape_products(scrape_period: dict[str, Any] | None = None) -> dict[s
     scraped_results = await asyncio.gather(
         scrape_strauss_products(),
         scrape_rhone_products(),
-        scrape_arcteryx_products(),
+        scrape_arcteryx_products(scrape_period=scrape_period),
         return_exceptions=True,
     )
     brand_sources = (
@@ -207,6 +248,9 @@ async def scrape_products(scrape_period: dict[str, Any] | None = None) -> dict[s
                 for product in cached_products
                 if product.get("brand") == brand
             ]
+        )
+        fallback_products = _filter_period_products(
+            fallback_products, brand, scrape_period
         )
         if not fallback_products:
             errors.append(f"{label}: {result}")
@@ -249,6 +293,7 @@ async def scrape_products(scrape_period: dict[str, Any] | None = None) -> dict[s
                 "product_count": result["product_count"],
                 "scraped_at": result["scraped_at"],
                 "collection_options": result.get("collection_options", []),
+                "period_filter": result.get("period_filter", {}),
             }
             for result in results
             if result.get("products")
