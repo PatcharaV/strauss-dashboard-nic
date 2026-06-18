@@ -463,7 +463,8 @@ function App() {
   const [productsPerPage, setProductsPerPage] = useState(50);
   const [pitchSlideIndex, setPitchSlideIndex] = useState(0);
   const [arcteryxSlideIndex, setArcteryxSlideIndex] = useState(0);
-  const [scrapeMonth, setScrapeMonth] = useState("JAN");
+  const [scrapeMonthFrom, setScrapeMonthFrom] = useState("JAN");
+  const [scrapeMonthTo, setScrapeMonthTo] = useState("JUN");
   const [scrapeYear, setScrapeYear] = useState(2026);
 
   const query = useMemo(() => buildQuery(filters), [filters]);
@@ -563,10 +564,15 @@ function App() {
 
   async function scrapeLatest() {
     setScraping(true);
-    setMessage(`Scraping ${scrapeMonth} ${scrapeYear} clothing catalog...`);
+    const periodLabel =
+      scrapeMonthFrom === scrapeMonthTo
+        ? `${scrapeMonthFrom} ${scrapeYear}`
+        : `${scrapeMonthFrom}-${scrapeMonthTo} ${scrapeYear}`;
+    setMessage(`Scraping ${periodLabel} clothing catalog...`);
     try {
       const params = new URLSearchParams({
-        month: scrapeMonth,
+        month_from: scrapeMonthFrom,
+        month_to: scrapeMonthTo,
         year: String(scrapeYear),
       });
       const response = await fetch(`/api/scrape?${params.toString()}`, {
@@ -720,10 +726,24 @@ function App() {
           </div>
           <div className="scrape-scheduler" aria-label="Select scrape period">
             <label>
-              Month
+              From
               <select
-                value={scrapeMonth}
-                onChange={(event) => setScrapeMonth(event.target.value)}
+                value={scrapeMonthFrom}
+                onChange={(event) => setScrapeMonthFrom(event.target.value)}
+                disabled={scraping}
+              >
+                {SCRAPE_MONTHS.map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              To
+              <select
+                value={scrapeMonthTo}
+                onChange={(event) => setScrapeMonthTo(event.target.value)}
                 disabled={scraping}
               >
                 {SCRAPE_MONTHS.map((month) => (

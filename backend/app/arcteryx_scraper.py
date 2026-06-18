@@ -75,6 +75,7 @@ SEASON_MONTHS = {
     "NOV": "F",
     "DEC": "F",
 }
+MONTH_ORDER = list(SEASON_MONTHS)
 
 
 async def _listing(
@@ -194,14 +195,28 @@ def _season_from_product(
     return {"season_code": "", "season_year": None, "season_range": ""}
 
 
-def _season_code_from_period(scrape_period: dict[str, Any] | None) -> str:
+def _season_codes_from_period(scrape_period: dict[str, Any] | None) -> list[str]:
     if not scrape_period:
-        return ""
-    month = str(scrape_period.get("month", "")).upper()
+        return []
+    month_from = str(
+        scrape_period.get("month_from") or scrape_period.get("month") or ""
+    ).upper()
+    month_to = str(
+        scrape_period.get("month_to") or scrape_period.get("month") or month_from
+    ).upper()
     year = scrape_period.get("year")
-    if month not in SEASON_MONTHS or not year:
-        return ""
-    return f"{SEASON_MONTHS[month]}{int(year) % 100:02d}"
+    if month_from not in SEASON_MONTHS or month_to not in SEASON_MONTHS or not year:
+        return []
+
+    start = MONTH_ORDER.index(month_from)
+    end = MONTH_ORDER.index(month_to)
+    if start > end:
+        start, end = end, start
+    seasons = {
+        f"{SEASON_MONTHS[month]}{int(year) % 100:02d}"
+        for month in MONTH_ORDER[start : end + 1]
+    }
+    return sorted(seasons)
 
 
 async def _product_details(
@@ -645,12 +660,12 @@ async def scrape_arcteryx_products(
         for product_id, product in products_by_id.items()
         if product_id in clothing_product_ids
     ]
-    period_season_code = _season_code_from_period(scrape_period)
-    if period_season_code:
+    period_season_codes = _season_codes_from_period(scrape_period)
+    if period_season_codes:
         products = [
             product
             for product in products
-            if product.get("season_code") == period_season_code
+            if product.get("season_code") in period_season_codes
         ]
     detail_semaphore = asyncio.Semaphore(8)
 
@@ -690,10 +705,10 @@ async def scrape_arcteryx_products(
         "product_count": len(products),
         "collection_options": sorted([*COLLECTION_SLUGS, *STATIC_COLLECTIONS]),
         "period_filter": {
-            "season_code": period_season_code,
+            "season_codes": period_season_codes,
             "source": "Arc'teryx catalog image season code",
         }
-        if period_season_code
+        if period_season_codes
         else {},
         "products": products,
     }
