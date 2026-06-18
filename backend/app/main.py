@@ -10,17 +10,34 @@ from fastapi.staticfiles import StaticFiles
 from .analytics import build_dashboard, build_options, filter_products
 from .catalog import CACHE_PATH, load_cache, normalize_csv, scrape_products
 
+MONTH_LABELS = {
+    "JAN": "January",
+    "FEB": "February",
+    "MAR": "March",
+    "APR": "April",
+    "MAY": "May",
+    "JUN": "June",
+    "JUL": "July",
+    "AUG": "August",
+    "SEP": "September",
+    "OCT": "October",
+    "NOV": "November",
+    "DEC": "December",
+}
+
 store: dict[str, Any] = {}
 scrape_lock = asyncio.Lock()
 
 
-async def get_data(force: bool = False) -> dict[str, Any]:
+async def get_data(
+    force: bool = False, scrape_period: dict[str, Any] | None = None
+) -> dict[str, Any]:
     if not force and "data" in store:
         return store["data"]
 
     async with scrape_lock:
         if force:
-            store["data"] = await scrape_products()
+            store["data"] = await scrape_products(scrape_period=scrape_period)
         elif "data" not in store:
             store["data"] = load_cache() or await scrape_products()
     return store["data"]
@@ -162,6 +179,7 @@ async def dashboard(
         products,
         data["source"],
         data.get("scraped_at"),
+        data.get("scrape_period"),
         selected_categories,
     )
 
@@ -210,15 +228,25 @@ async def products(
 
 
 @app.post("/api/scrape")
-async def scrape() -> dict[str, Any]:
+async def scrape(
+    month: str = Query(default="JAN", pattern="^(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)$"),
+    year: int = Query(default=2026, ge=2020, le=2100),
+) -> dict[str, Any]:
+    scrape_period = {
+        "month": month,
+        "month_label": MONTH_LABELS[month],
+        "year": year,
+        "label": f"{month} {year}",
+    }
     try:
-        data = await get_data(force=True)
+        data = await get_data(force=True, scrape_period=scrape_period)
     except Exception as exc:
         raise HTTPException(status_code=502, detail=f"Scraping failed: {exc}") from exc
     return {
         "status": "completed",
         "product_count": data["product_count"],
         "scraped_at": data["scraped_at"],
+        "scrape_period": data.get("scrape_period", scrape_period),
     }
 
 

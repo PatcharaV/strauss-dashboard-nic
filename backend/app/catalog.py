@@ -171,7 +171,7 @@ def _normalize_cached_payload(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-async def scrape_products() -> dict[str, Any]:
+async def scrape_products(scrape_period: dict[str, Any] | None = None) -> dict[str, Any]:
     cached = load_cache() or {}
     cached_products = cached.get("products", [])
     cached_sources = {
@@ -255,6 +255,7 @@ async def scrape_products() -> dict[str, Any]:
         ],
         "scrape_warnings": errors,
         "scraped_at": datetime.now(timezone.utc).isoformat(),
+        "scrape_period": scrape_period or {},
         "product_count": len(products),
         "products": products,
     }

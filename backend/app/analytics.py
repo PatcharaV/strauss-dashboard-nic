@@ -334,6 +334,7 @@ def build_dashboard(
     products: list[dict[str, Any]],
     source: Any,
     scraped_at: str | None,
+    scrape_period: dict[str, Any] | None = None,
     selected_categories: list[str] | None = None,
 ) -> dict[str, Any]:
     selected_category_set = set(selected_categories or [])
@@ -383,6 +384,7 @@ def build_dashboard(
     return {
         "source": source,
         "scraped_at": scraped_at,
+        "scrape_period": scrape_period or {},
         "summary": {
             "total_products": len(products),
             "brands": len(brand_counts),

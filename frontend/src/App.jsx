@@ -47,6 +47,22 @@ const ARCTERYX_COTTON_SLIDES = [
   "/arcteryx-cotton-slides/Slide4.PNG",
 ];
 
+const SCRAPE_MONTHS = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DEC",
+];
+const SCRAPE_YEARS = [2026, 2027, 2028, 2029, 2030];
+
 const formatNumber = new Intl.NumberFormat("en-US");
 const formatMoney = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -447,6 +463,8 @@ function App() {
   const [productsPerPage, setProductsPerPage] = useState(50);
   const [pitchSlideIndex, setPitchSlideIndex] = useState(0);
   const [arcteryxSlideIndex, setArcteryxSlideIndex] = useState(0);
+  const [scrapeMonth, setScrapeMonth] = useState("JAN");
+  const [scrapeYear, setScrapeYear] = useState(2026);
 
   const query = useMemo(() => buildQuery(filters), [filters]);
   const productCategories = options.categories;
@@ -545,9 +563,15 @@ function App() {
 
   async function scrapeLatest() {
     setScraping(true);
-    setMessage("Scraping the latest clothing catalog...");
+    setMessage(`Scraping ${scrapeMonth} ${scrapeYear} clothing catalog...`);
     try {
-      const response = await fetch("/api/scrape", { method: "POST" });
+      const params = new URLSearchParams({
+        month: scrapeMonth,
+        year: String(scrapeYear),
+      });
+      const response = await fetch(`/api/scrape?${params.toString()}`, {
+        method: "POST",
+      });
       if (!response.ok) throw new Error("Scrape failed");
       await loadDashboard();
     } catch {
@@ -689,7 +713,40 @@ function App() {
             <div>
               <strong>{message}</strong>
               <small>Updated {formatDate(dashboard.scraped_at)}</small>
+              {dashboard.scrape_period?.label && (
+                <small>Scrape period {dashboard.scrape_period.label}</small>
+              )}
             </div>
+          </div>
+          <div className="scrape-scheduler" aria-label="Select scrape period">
+            <label>
+              Month
+              <select
+                value={scrapeMonth}
+                onChange={(event) => setScrapeMonth(event.target.value)}
+                disabled={scraping}
+              >
+                {SCRAPE_MONTHS.map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Year
+              <select
+                value={scrapeYear}
+                onChange={(event) => setScrapeYear(Number(event.target.value))}
+                disabled={scraping}
+              >
+                {SCRAPE_YEARS.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </label>
           </div>
           <button
             className="primary-button"
