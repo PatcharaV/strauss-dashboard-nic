@@ -454,7 +454,7 @@ function App() {
     material: "all",
     season: "all",
   });
-  const [sections, setSections] = useState(DEFAULT_SECTIONS);
+  const sections = DEFAULT_SECTIONS;
   const [loading, setLoading] = useState(true);
   const [scraping, setScraping] = useState(false);
   const [message, setMessage] = useState("Connecting to Python API...");
@@ -770,7 +770,7 @@ function App() {
         </div>
       </section>
 
-      <nav className="page-nav" aria-label="Dashboard sections">
+      <nav className="page-nav" aria-label="Page navigation">
         <a href="#overview">Overview</a>
         <a href="#charts">Charts</a>
         <a href="#products">Product details</a>
@@ -1075,25 +1075,6 @@ function App() {
             </div>
           </div>
 
-          <details className="view-settings">
-            <summary>Dashboard sections</summary>
-            <div className="toggle-list">
-              {Object.keys(sections).map((section) => (
-                <label key={section}>
-                  <input
-                    type="checkbox"
-                    checked={sections[section]}
-                    onChange={() =>
-                      setSections({ ...sections, [section]: !sections[section] })
-                    }
-                  />
-                  {section === "categoryDonut"
-                    ? "Category donut"
-                    : section.charAt(0).toUpperCase() + section.slice(1)}
-                </label>
-              ))}
-            </div>
-          </details>
         </div>
       </section>
 

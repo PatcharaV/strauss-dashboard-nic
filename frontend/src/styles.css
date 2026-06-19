@@ -538,8 +538,7 @@ h2 {
   text-transform: uppercase;
 }
 
-.chip-list,
-.toggle-list {
+.chip-list {
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
@@ -579,43 +578,6 @@ h2 {
 .price-inputs span {
   color: #88857f;
   font-size: 12px;
-}
-
-.toggle-list label {
-  padding: 8px 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: #f4f5f5;
-  border: 1px solid #e5e6e7;
-  border-radius: 7px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.toggle-list input {
-  accent-color: #ef3e42;
-}
-
-.view-settings {
-  margin-top: 14px;
-  padding: 12px 14px;
-  background: #f7f8f8;
-  border: 1px solid #e3e4e6;
-  border-radius: 10px;
-}
-
-.view-settings summary {
-  cursor: pointer;
-  color: #5c5a55;
-  font-size: 11px;
-  font-weight: 850;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.view-settings .toggle-list {
-  margin-top: 12px;
 }
 
 .loading-bar {
