@@ -218,7 +218,7 @@ def extract_product_functions(*values: Any) -> list[str]:
     return functions
 
 
-def _variant_color(product: dict[str, Any], variant: dict[str, Any]) -> str:
+def _variant_color_values(product: dict[str, Any], variant: dict[str, Any]) -> list[str]:
     values = [variant.get("option1"), variant.get("option2"), variant.get("option3")]
     colors: list[str] = []
     for index, option in enumerate(product.get("options", [])):
@@ -226,7 +226,42 @@ def _variant_color(product: dict[str, Any], variant: dict[str, Any]) -> str:
             value = values[index] if index < len(values) else None
             if value and str(value) not in colors:
                 colors.append(str(value))
-    return " / ".join(colors)
+    return colors
+
+
+def _variant_color(product: dict[str, Any], variant: dict[str, Any]) -> str:
+    return " / ".join(_variant_color_values(product, variant))
+
+
+def _product_color_availability(
+    product: dict[str, Any],
+) -> tuple[list[str], list[str]]:
+    color_status: dict[str, bool] = {}
+    color_order: list[str] = []
+
+    for option in product.get("options", []):
+        if str(option.get("name", "")).lower() not in {"color", "colour", "farbe"}:
+            continue
+        for value in option.get("values", []):
+            color = str(value).strip()
+            if color and color not in color_order:
+                color_order.append(color)
+
+    for variant in product.get("variants", []) or []:
+        for color in _variant_color_values(product, variant):
+            if color not in color_order:
+                color_order.append(color)
+            color_status[color] = color_status.get(color, False) or bool(
+                variant.get("available")
+            )
+
+    available_colors = [color for color in color_order if color_status.get(color)]
+    unavailable_colors = [
+        color
+        for color in color_order
+        if color in color_status and not color_status.get(color)
+    ]
+    return available_colors, unavailable_colors
 
 
 def _normalize_product(
@@ -260,6 +295,12 @@ def _normalize_product(
     tags = sorted(set(str(tag) for tag in product.get("tags", [])))
     description = _plain_text(product.get("body_html"))
     title = str(card.get("title") or product.get("title", "")).strip()
+    available_colors, unavailable_colors = _product_color_availability(product)
+    selected_color = _variant_color(product, variant or {})
+    display_color = " / ".join(available_colors) or selected_color or " / ".join(
+        unavailable_colors
+    )
+    has_available_variant = any(bool(item.get("available")) for item in variants)
     return {
         "id": f"strauss:{variant_id or product.get('id', '')}",
         "source_id": variant_id or str(product.get("id", "")),
@@ -278,11 +319,12 @@ def _normalize_product(
         "collections": collections,
         "price_min": min(prices, default=0),
         "price_max": max(prices, default=0),
-        "available": bool(variant.get("available")) if variant else any(
-            bool(item.get("available")) for item in variants
-        ),
-        "variant_count": 1,
-        "color": _variant_color(product, variant or {}),
+        "available": bool(available_colors) or has_available_variant,
+        "variant_count": len(variants) or 1,
+        "color": display_color,
+        "available_colors": available_colors,
+        "unavailable_colors": unavailable_colors,
+        "all_colors": available_colors + unavailable_colors,
         "tags": tags,
         "image": image_url,
         "url": urljoin(BASE_URL, str(card.get("href", ""))),

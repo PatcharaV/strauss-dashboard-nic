@@ -176,6 +176,29 @@ def _product_functions(product: dict[str, Any]) -> list[str]:
     )
 
 
+def _product_colors(product: dict[str, Any]) -> list[str]:
+    colors = product.get("available_colors")
+    if isinstance(colors, list) and colors:
+        return [str(color) for color in colors if str(color).strip()]
+    color = str(product.get("color", "")).strip()
+    return [color] if color else []
+
+
+def _product_all_colors(product: dict[str, Any]) -> list[str]:
+    colors: list[str] = []
+    for key in ("available_colors", "unavailable_colors"):
+        values = product.get(key)
+        if not isinstance(values, list):
+            continue
+        for value in values:
+            color = str(value).strip()
+            if color and color not in colors:
+                colors.append(color)
+    if colors:
+        return colors
+    return _product_colors(product)
+
+
 def _material_text(product: dict[str, Any]) -> str:
     return " ".join(
         [
@@ -269,7 +292,7 @@ def filter_products(
                     ),
                     " ".join(product.get("subcategories", [])),
                     str(product.get("material", "")),
-                    str(product.get("color", "")),
+                    " ".join(_product_all_colors(product)),
                     str(product.get("series_number", "")),
                     str(product.get("style_number", "")),
                     str(product.get("season_code", "")),
@@ -314,7 +337,7 @@ def filter_products(
             selected_subcategories & set(product.get("subcategories", []))
         ):
             return False
-        if color_term and color_term not in str(product.get("color", "")).lower():
+        if color_term and color_term not in " ".join(_product_all_colors(product)).lower():
             return False
         price = float(product.get("price_min", 0))
         if min_price is not None and price < min_price:
@@ -549,9 +572,10 @@ def build_options(
         ),
         "colors": sorted(
             {
-                str(product.get("color", "")).strip()
+                color.strip()
                 for product in products
-                if str(product.get("color", "")).strip()
+                for color in _product_colors(product)
+                if color.strip()
             },
             key=str.lower,
         ),

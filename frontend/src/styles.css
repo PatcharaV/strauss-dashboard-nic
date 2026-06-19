@@ -897,6 +897,22 @@ td:nth-child(2) {
   font-weight: 650;
 }
 
+.color-cell .detail-list {
+  margin-bottom: 8px;
+}
+
+.unavailable-colors {
+  color: #8a8178;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.unavailable-colors span {
+  color: #9a3235;
+  font-weight: 800;
+}
+
 .collection-cell {
   min-width: 150px;
 }

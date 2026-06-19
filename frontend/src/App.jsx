@@ -208,7 +208,8 @@ async function exportProductsToExcel(products) {
     Category: (product.categories || [product.category]).join(", "),
     "Sub Category": (product.subcategories || []).join(", "),
     Collection: (product.collections || []).join(", "),
-    Color: product.color || "Not specified",
+    "Available Colors": (product.available_colors || []).join(", ") || "None",
+    "Unavailable Colors": (product.unavailable_colors || []).join(", "),
     Material: formatMultilineList(
       product.material_details,
       product.material || "Not specified",
@@ -234,7 +235,8 @@ async function exportProductsToExcel(products) {
     { wch: 24 },
     { wch: 28 },
     { wch: 28 },
-    { wch: 22 },
+    { wch: 32 },
+    { wch: 32 },
     { wch: 50 },
     { wch: 40 },
     { wch: 42 },
@@ -1426,7 +1428,19 @@ function App() {
                           </td>
                         )}
                         <td className="color-cell">
-                          {product.color || "Not specified"}
+                          <DetailList
+                            values={
+                              product.available_colors ||
+                              (product.color ? [product.color] : [])
+                            }
+                            fallback="No available colors"
+                          />
+                          {product.unavailable_colors?.length ? (
+                            <div className="unavailable-colors">
+                              <span>Unavailable:</span>{" "}
+                              {product.unavailable_colors.join(", ")}
+                            </div>
+                          ) : null}
                         </td>
                         {hasMaterialData && (
                           <td className="material-cell">
