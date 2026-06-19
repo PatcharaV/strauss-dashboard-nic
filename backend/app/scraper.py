@@ -369,8 +369,15 @@ async def _robots_allows(client: httpx.AsyncClient) -> None:
 async def _get(
     client: httpx.AsyncClient, url: str, **kwargs: Any
 ) -> httpx.Response:
+    response: httpx.Response | None = None
+    last_error: httpx.RequestError | None = None
     for attempt in range(MAX_RETRIES):
-        response = await client.get(url, **kwargs)
+        try:
+            response = await client.get(url, **kwargs)
+        except httpx.RequestError as error:
+            last_error = error
+            await asyncio.sleep(min(2 ** (attempt + 1), 16))
+            continue
         if response.status_code not in {429, 500, 502, 503, 504}:
             response.raise_for_status()
             return response
@@ -381,6 +388,10 @@ async def _get(
             else min(2 ** (attempt + 1), 16)
         )
         await asyncio.sleep(wait_seconds)
+    if response is None:
+        if last_error:
+            raise last_error
+        raise RuntimeError(f"Request failed without response: {url}")
     response.raise_for_status()
     return response
 
@@ -720,6 +731,49 @@ def _fallback_classification(
 
     if categories == ["Backpacks & Bags"]:
         return categories, ["Backpacks & Bags"]
+    lowered = title.lower()
+    if "Shirts" in categories:
+        if re.search(r"\b(t-?shirt|tee)\b", lowered):
+            return categories, ["T-Shirts"]
+        if "polo" in lowered:
+            return categories, ["Polos"]
+        if "long sleeve" in lowered or "longsleeve" in lowered:
+            return categories, ["Long Sleeves"]
+        if "high-vis" in lowered or "high vis" in lowered:
+            return categories, ["High-Vis Shirts"]
+        if "work shirt" in lowered:
+            return categories, ["Work Shirts"]
+    if "Pants" in categories:
+        if "thermal pant" in lowered:
+            return categories, ["Thermal Pants"]
+        if "cargo" in lowered:
+            return categories, ["Cargo Pants"]
+        if "double front" in lowered or "double-front" in lowered:
+            return categories, ["Double-Front Pants"]
+        if "jean" in lowered:
+            return categories, ["Jeans"]
+        if "bib" in lowered or "overall" in lowered or "coverall" in lowered:
+            return categories, ["Bibs, Coveralls & Overalls"]
+        if "pant" in lowered:
+            return categories, ["Work Pants"]
+    if "Outerwear" in categories:
+        if "softshell" in lowered:
+            return categories, ["Softshell Jackets"]
+        if "lightweight" in lowered:
+            return categories, ["Lightweight Jackets"]
+        if "winter" in lowered or "snow" in lowered:
+            return categories, ["Winter Jackets"]
+        if "vest" in lowered:
+            return categories, ["Vests"]
+        if "jacket" in lowered:
+            return categories, ["Work Jackets"]
+    if "Hoodies & Sweatshirts" in categories:
+        if "sweatjacket" in lowered or "full-zip" in lowered or "full zip" in lowered:
+            return categories, ["Full-Zip Sweatshirts"]
+        if "crew" in lowered:
+            return categories, ["Crewnecks"]
+        if "hood" in lowered:
+            return categories, ["Hoodies"]
     return categories, subcategories
 
 
@@ -831,7 +885,7 @@ async def scrape_strauss_products() -> dict[str, Any]:
         product_type = str(product.get("product_type") or "Other").strip()
         if not categories:
             categories = [
-                product_type if product_type not in mapped_categories else "Other"
+                product_type if product_type in mapped_categories else "Other"
             ]
         categories, subcategories = _fallback_classification(
             str(card.get("title") or product.get("title", "")),
