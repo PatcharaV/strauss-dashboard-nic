@@ -295,12 +295,25 @@ def _normalize_product(
     tags = sorted(set(str(tag) for tag in product.get("tags", [])))
     description = _plain_text(product.get("body_html"))
     title = str(card.get("title") or product.get("title", "")).strip()
-    available_colors, unavailable_colors = _product_color_availability(product)
     selected_color = _variant_color(product, variant or {})
-    display_color = " / ".join(available_colors) or selected_color or " / ".join(
-        unavailable_colors
-    )
-    has_available_variant = any(bool(item.get("available")) for item in variants)
+    if selected_color:
+        selected_variants = [
+            item
+            for item in variants
+            if selected_color in _variant_color_values(product, item)
+        ] or selected_variants
+        selected_available = any(
+            bool(item.get("available")) for item in selected_variants
+        )
+        available_colors = [selected_color] if selected_available else []
+        unavailable_colors = [] if selected_available else [selected_color]
+        display_color = selected_color
+    else:
+        available_colors, unavailable_colors = _product_color_availability(product)
+        selected_available = any(bool(item.get("available")) for item in variants)
+        display_color = " / ".join(available_colors) or " / ".join(
+            unavailable_colors
+        )
     return {
         "id": f"strauss:{variant_id or product.get('id', '')}",
         "source_id": variant_id or str(product.get("id", "")),
@@ -319,8 +332,8 @@ def _normalize_product(
         "collections": collections,
         "price_min": min(prices, default=0),
         "price_max": max(prices, default=0),
-        "available": bool(available_colors) or has_available_variant,
-        "variant_count": len(variants) or 1,
+        "available": selected_available,
+        "variant_count": len(selected_variants) or 1,
         "color": display_color,
         "available_colors": available_colors,
         "unavailable_colors": unavailable_colors,
