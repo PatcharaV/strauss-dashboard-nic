@@ -670,30 +670,6 @@ function App() {
     });
   }
 
-  const selectedAudienceLabels = options.audiences
-    .filter((item) => filters.audiences.includes(item.value))
-    .map((item) => item.label);
-  const activeFilterLabels = [
-    filters.search.trim() ? `Search: ${filters.search.trim()}` : null,
-    ...options.brands
-      .filter((item) => filters.brands.includes(item.value))
-      .map((item) => item.label),
-    ...selectedAudienceLabels,
-    ...filters.collections,
-    ...filters.activities,
-    ...filters.features,
-    ...filters.categories,
-    ...filters.subcategories,
-    filters.availability === "available" ? "Available only" : null,
-    filters.availability === "unavailable" ? "Unavailable only" : null,
-    filters.shopHighlight !== "all"
-      ? `Shop Highlight: ${filters.shopHighlight}`
-      : null,
-    filters.material !== "all" ? `Material: ${filters.material}` : null,
-    filters.season !== "all" ? `Season: ${filters.season}` : null,
-    filters.minPrice !== "" ? `Min $${filters.minPrice}` : null,
-    filters.maxPrice !== "" ? `Max $${filters.maxPrice}` : null,
-  ].filter(Boolean);
   return (
     <main>
       <header className="topbar">
@@ -1122,18 +1098,6 @@ function App() {
       </section>
 
       <div className={loading ? "loading-bar active" : "loading-bar"} />
-
-      {activeFilterLabels.length > 0 && (
-        <section className="active-filter-bar">
-          <div>
-            <span>Active dashboard filters</span>
-            <strong>{activeFilterLabels.join(" / ")}</strong>
-          </div>
-          <button type="button" onClick={resetFilters}>
-            Clear all
-          </button>
-        </section>
-      )}
 
       {sections.summary && (
         <section className="kpi-grid" id="overview">
