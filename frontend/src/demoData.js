@@ -24,13 +24,10 @@ export const demoOptions = {
     "Strauss x Stuntmen's Association",
   ],
   activities: ["Hike", "Trail Run", "Rock", "Boulder", "Alpine"],
-  features: [
-    "New Arrivals",
-    "Best Sellers",
-    "High-Visibility",
-    "Thermal Layers",
-  ],
+  features: [],
   shop_highlights: [
+    "Best Sellers",
+    "New Arrivals",
     "Topseller",
     "News",
     "New Color",

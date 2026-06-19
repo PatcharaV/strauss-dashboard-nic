@@ -267,9 +267,6 @@ function buildQuery(filters) {
   if (filters.activities.length) {
     params.set("activities", filters.activities.join(","));
   }
-  if (filters.features.length) {
-    params.set("features", filters.features.join(","));
-  }
   if (filters.categories.length) {
     params.set("categories", filters.categories.join(","));
   }
@@ -443,7 +440,6 @@ function App() {
     audiences: [],
     collections: [],
     activities: [],
-    features: [],
     categories: [],
     subcategories: [],
     color: "",
@@ -505,8 +501,6 @@ function App() {
     (options.collections || []).length > 0 || filters.collections.length > 0;
   const hasActivityFilter =
     activityOptions.length > 0 || filters.activities.length > 0;
-  const hasFeatureFilter =
-    (options.features || []).length > 0 || filters.features.length > 0;
   const hasShopHighlightFilter =
     availableShopHighlights.length > 0 || filters.shopHighlight !== "all";
   const hasMaterialFilter =
@@ -589,7 +583,6 @@ function App() {
       audiences: [],
       collections: [],
       activities: [],
-      features: [],
       categories: [],
       subcategories: [],
       color: "",
@@ -609,7 +602,6 @@ function App() {
       audiences: [],
       collections: [],
       activities: [],
-      features: [],
       categories: [],
       subcategories: [],
       color: "",
@@ -658,15 +650,6 @@ function App() {
       collections: filters.collections.includes(collection)
         ? filters.collections.filter((item) => item !== collection)
         : [...filters.collections, collection],
-    });
-  }
-
-  function toggleFeature(feature) {
-    setFilters({
-      ...filters,
-      features: filters.features.includes(feature)
-        ? filters.features.filter((item) => item !== feature)
-        : [...filters.features, feature],
     });
   }
 
@@ -903,31 +886,6 @@ function App() {
                   {(options.collections || []).map((collection) => (
                     <option key={collection} value={collection}>
                       {collection}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            )}
-
-            {hasFeatureFilter && (
-              <label>
-                <span className="filter-title">Featured</span>
-                <select
-                  value={
-                    filters.features.length === 1 ? filters.features[0] : "all"
-                  }
-                  onChange={(event) =>
-                    setFilters({
-                      ...filters,
-                      features:
-                        event.target.value === "all" ? [] : [event.target.value],
-                    })
-                  }
-                >
-                  <option value="all">All features</option>
-                  {(options.features || []).map((feature) => (
-                    <option key={feature} value={feature}>
-                      {feature}
                     </option>
                   ))}
                 </select>

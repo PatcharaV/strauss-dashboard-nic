@@ -121,6 +121,39 @@ MATERIAL_KEYWORDS = [
     "Leather",
 ]
 
+FEATURE_HIGHLIGHT_LABELS = {
+    "best sellers": "Best Sellers",
+    "bestsellers": "Best Sellers",
+    "best seller": "Best Sellers",
+    "new arrivals": "New Arrivals",
+    "new arrival": "New Arrivals",
+}
+
+
+def _product_shop_highlights(product: dict[str, Any]) -> list[str]:
+    highlights: list[str] = []
+    seen: set[str] = set()
+
+    for highlight in product.get("shop_highlights", []):
+        label = str(highlight).strip()
+        if not label:
+            continue
+        key = label.lower()
+        if key not in seen:
+            seen.add(key)
+            highlights.append(label)
+
+    for feature in product.get("features", []):
+        label = FEATURE_HIGHLIGHT_LABELS.get(str(feature).strip().lower())
+        if not label:
+            continue
+        key = label.lower()
+        if key not in seen:
+            seen.add(key)
+            highlights.append(label)
+
+    return highlights
+
 
 def _product_collections(product: dict[str, Any]) -> list[str]:
     collections = product.get("collections")
@@ -297,10 +330,11 @@ def filter_products(
         if top_seller == "no" and product.get("top_seller"):
             return False
         if shop_highlight and shop_highlight != "all":
+            product_highlights = _product_shop_highlights(product)
             if shop_highlight == "none":
-                if product.get("shop_highlights", []):
+                if product_highlights:
                     return False
-            elif shop_highlight not in product.get("shop_highlights", []):
+            elif shop_highlight not in product_highlights:
                 return False
         material_text = _material_text(product)
         if material == "specified" and not material_text.strip():
@@ -424,6 +458,7 @@ def build_dashboard(
                 "collections": _product_collections(product),
                 "activities": product.get("activities", []),
                 "product_functions": _product_functions(product),
+                "shop_highlights": _product_shop_highlights(product),
             }
             for product in products
         ],
@@ -492,7 +527,7 @@ def build_options(
             {
                 highlight
                 for product in products
-                for highlight in product.get("shop_highlights", [])
+                for highlight in _product_shop_highlights(product)
             },
             key=str.lower,
         ),
