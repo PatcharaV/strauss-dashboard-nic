@@ -1537,26 +1537,26 @@ function App() {
       {showStraussPitch && (
         <SlideDeckPanel
           id="strauss-pitch"
-          eyebrow="STRAUSS REFERENCE"
-          title="NanYang Strauss Pitch"
+          eyebrow="NAN YANG TEXTILE"
+          title="NANYANG STRAUSS PITCH"
           downloadHref="/nanyang-strauss-pitch.pptx"
           slides={STRAUSS_PITCH_SLIDES}
           slideIndex={pitchSlideIndex}
           setSlideIndex={setPitchSlideIndex}
-          altPrefix="NanYang Strauss Pitch"
+          altPrefix="NANYANG STRAUSS PITCH"
         />
       )}
 
       {showArcteryxDeck && (
         <SlideDeckPanel
           id="arcteryx-cotton-groups"
-          eyebrow="ARC'TERYX REFERENCE"
-          title="NanYang Arc'teryx Cotton Groups"
+          eyebrow="NAN YANG TEXTILE"
+          title="NANYANG ARC'TERYX COTTON GROUPS"
           downloadHref="/nanyang-arcteryx-cotton-groups.pptx"
           slides={ARCTERYX_COTTON_SLIDES}
           slideIndex={arcteryxSlideIndex}
           setSlideIndex={setArcteryxSlideIndex}
-          altPrefix="NanYang Arc'teryx Cotton Groups"
+          altPrefix="NANYANG ARC'TERYX COTTON GROUPS"
         />
       )}
 
