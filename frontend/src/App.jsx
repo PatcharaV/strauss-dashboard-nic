@@ -1313,19 +1313,34 @@ function App() {
                         </td>
                         {showStraussPitch && (
                           <td className="product-image-cell">
-                            {product.image ? (
-                              <a
-                                href={product.url}
-                                target="_blank"
-                                rel="noreferrer"
-                                aria-label={`Open ${product.title}`}
-                              >
-                                <img
-                                  src={product.image}
-                                  alt={product.title}
-                                  loading="lazy"
-                                  decoding="async"
-                                />
+                            {product.color_variants?.length ? (
+                              <div className="product-image-gallery">
+                                {product.color_variants.map((variant) => (
+                                  <a
+                                    key={`${variant.color}-${variant.url}`}
+                                    href={variant.url || product.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    aria-label={`Open ${product.title} in ${variant.color}`}
+                                    title={`${variant.color}${
+                                      variant.available
+                                        ? " - Available"
+                                        : " - Unavailable"
+                                    }`}
+                                  >
+                                    <img
+                                      src={variant.image || product.image}
+                                      alt={`${product.title} - ${variant.color}`}
+                                      loading="lazy"
+                                      decoding="async"
+                                    />
+                                    <span>{variant.color}</span>
+                                  </a>
+                                ))}
+                              </div>
+                            ) : product.image ? (
+                              <a href={product.url} target="_blank" rel="noreferrer">
+                                <img src={product.image} alt={product.title} />
                               </a>
                             ) : (
                               <span className="product-image-placeholder">

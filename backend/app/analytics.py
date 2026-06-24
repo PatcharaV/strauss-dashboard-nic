@@ -387,6 +387,116 @@ def _counter_rows(counter: Counter[str]) -> list[dict[str, Any]]:
     ]
 
 
+def _append_unique(target: list[Any], values: Any) -> None:
+    if not isinstance(values, list):
+        return
+    for value in values:
+        if value not in target:
+            target.append(value)
+
+
+def _strauss_product_key(product: dict[str, Any]) -> str:
+    return str(
+        product.get("product_id")
+        or product.get("handle")
+        or product.get("title")
+        or product.get("id")
+    )
+
+
+def _merge_strauss_variants(
+    products: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    merged: dict[str, dict[str, Any]] = {}
+    order: list[str] = []
+
+    for product in products:
+        if product.get("brand") != "strauss":
+            key = f"row:{product.get('id')}"
+            merged[key] = product
+            order.append(key)
+            continue
+
+        key = f"strauss:{_strauss_product_key(product)}"
+        color = str(product.get("color", "")).strip()
+        image = str(product.get("image", "")).strip()
+        variant = {
+            "color": color,
+            "image": image,
+            "url": str(product.get("url", "")).strip(),
+            "available": bool(product.get("available")),
+        }
+
+        if key not in merged:
+            merged[key] = {
+                **product,
+                "id": key,
+                "source_id": str(product.get("product_id") or product.get("source_id", "")),
+                "available_colors": [],
+                "unavailable_colors": [],
+                "all_colors": [],
+                "color_variants": [],
+                "variant_count": 0,
+            }
+            order.append(key)
+
+        row = merged[key]
+        for field in (
+            "categories",
+            "subcategories",
+            "collections",
+            "audiences",
+            "audience_labels",
+            "features",
+            "shop_highlights",
+            "activities",
+            "material_details",
+            "technical_features",
+            "fabric_treatment",
+            "construction",
+            "product_functions",
+        ):
+            _append_unique(row.setdefault(field, []), product.get(field))
+
+        _append_unique(row["available_colors"], product.get("available_colors"))
+        _append_unique(row["unavailable_colors"], product.get("unavailable_colors"))
+        _append_unique(row["all_colors"], _product_all_colors(product))
+
+        if color and not any(
+            item.get("color") == color for item in row["color_variants"]
+        ):
+            row["color_variants"].append(variant)
+
+        row["available"] = bool(row.get("available")) or bool(product.get("available"))
+        row["top_seller"] = bool(row.get("top_seller")) or bool(
+            product.get("top_seller")
+        )
+        row["price_min"] = min(
+            float(row.get("price_min", 0)),
+            float(product.get("price_min", 0)),
+        )
+        row["price_max"] = max(
+            float(row.get("price_max", 0)),
+            float(product.get("price_max", 0)),
+        )
+        row["variant_count"] = int(row.get("variant_count", 0)) + int(
+            product.get("variant_count", 0)
+        )
+
+    for row in merged.values():
+        if row.get("brand") != "strauss":
+            continue
+        available = set(row.get("available_colors", []))
+        row["unavailable_colors"] = [
+            color
+            for color in row.get("unavailable_colors", [])
+            if color not in available
+        ]
+        row["color"] = " / ".join(row.get("all_colors", []))
+
+    return [merged[key] for key in order]
+
+
 def build_dashboard(
     products: list[dict[str, Any]],
     source: Any,
@@ -394,6 +504,7 @@ def build_dashboard(
     scrape_period: dict[str, Any] | None = None,
     selected_categories: list[str] | None = None,
 ) -> dict[str, Any]:
+    products = _merge_strauss_variants(products)
     selected_category_set = set(selected_categories or [])
     brand_counts = Counter(
         product.get("brand_label", "Unknown") for product in products
