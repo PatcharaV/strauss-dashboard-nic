@@ -1287,6 +1287,7 @@ function App() {
                   <thead>
                     <tr className="table-heading-row">
                       <th>No.</th>
+                      {showStraussPitch && <th>Image</th>}
                       <th>Product</th>
                       {hasSeriesData && <th>Series</th>}
                       {hasSeriesData && <th>Season</th>}
@@ -1310,7 +1311,30 @@ function App() {
                         <td className="number-cell">
                           {(currentProductPage - 1) * productsPerPage + index + 1}
                         </td>
-                        <td>
+                        {showStraussPitch && (
+                          <td className="product-image-cell">
+                            {product.image ? (
+                              <a
+                                href={product.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                aria-label={`Open ${product.title}`}
+                              >
+                                <img
+                                  src={product.image}
+                                  alt={product.title}
+                                  loading="lazy"
+                                  decoding="async"
+                                />
+                              </a>
+                            ) : (
+                              <span className="product-image-placeholder">
+                                No image
+                              </span>
+                            )}
+                          </td>
+                        )}
+                        <td className="product-title-cell">
                           <a href={product.url} target="_blank" rel="noreferrer">
                             {product.title}
                           </a>
