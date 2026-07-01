@@ -1,5 +1,6 @@
 import unittest
 
+from app.catalog import _apply_lululemon_detail_cache
 from app.lululemon_scraper import (
     _apply_pdp_details,
     _apply_schema_details,
@@ -141,6 +142,48 @@ class LululemonScraperTests(unittest.TestCase):
         self.assertEqual(product["price_min"], 58)
         self.assertEqual(product["price_max"], 58)
         self.assertTrue(product["price_known"])
+
+    def test_applies_browser_detail_cache(self):
+        product = _normalize(
+            "https://shop.lululemon.com/p/men-ss-tops/"
+            "Zeroed-In-Short-Sleeve-Shirt/_/prod11680098",
+            "2026-06-30",
+        )
+        details = {
+            "prod11680098": {
+                "color_variants": [
+                    {
+                        "color": "Black",
+                        "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_0001_1",
+                        "url": product["url"],
+                        "available": True,
+                    },
+                    {
+                        "color": "Lavender Frost",
+                        "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_064615_1",
+                        "url": product["url"],
+                        "available": False,
+                    },
+                ],
+                "available_colors": ["Black"],
+                "unavailable_colors": ["Lavender Frost"],
+                "material_details": [
+                    "Body: 61% Organic Cotton, 32% Polyester (recycled), 7% Elastane"
+                ],
+                "innovations": ["Four-way stretch", "Sweat-wicking"],
+            }
+        }
+
+        enriched = _apply_lululemon_detail_cache([product], details)[0]
+
+        self.assertEqual(enriched["available_colors"], ["Black"])
+        self.assertEqual(enriched["unavailable_colors"], ["Lavender Frost"])
+        self.assertEqual(enriched["style_number"], "LM3GFNS")
+        self.assertEqual(
+            enriched["material"],
+            "Body: 61% Organic Cotton, 32% Polyester (recycled), 7% Elastane",
+        )
+        self.assertEqual(enriched["innovations"], ["Four-way stretch", "Sweat-wicking"])
 
 
 if __name__ == "__main__":

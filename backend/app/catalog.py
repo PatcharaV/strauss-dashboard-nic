@@ -12,6 +12,7 @@ from .scraper import extract_product_functions, scrape_strauss_products
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 CACHE_PATH = DATA_DIR / "products.json"
+LULULEMON_DETAIL_PATH = DATA_DIR / "lululemon_details.json"
 HISTORY_DIR = DATA_DIR / "history"
 MONTH_CODES = [
     "JAN",
@@ -297,9 +298,172 @@ def _normalize_strauss_categories(product: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _dedupe_strings(values: Any) -> list[str]:
+    deduped: list[str] = []
+    items = values if isinstance(values, list) else [values]
+    for item in items:
+        value = (
+            str(item or "")
+            .replace("โข", "TM")
+            .replace("™", "TM")
+            .strip()
+        )
+        if value and value not in deduped:
+            deduped.append(value)
+    return deduped
+
+
+def _lululemon_product_id_from_url(url: str) -> str:
+    match = re.search(r"/_/([^/?#]+)", str(url))
+    return match.group(1) if match else ""
+
+
+def _lululemon_style_number(color_variants: list[dict[str, Any]]) -> str:
+    for variant in color_variants:
+        image = str(variant.get("image") or "")
+        match = re.search(r"/([^/?]+)_\d+_", image)
+        if match:
+            return match.group(1)
+    return ""
+
+
+def load_lululemon_detail_cache(
+    path: Path = LULULEMON_DETAIL_PATH,
+) -> dict[str, dict[str, Any]]:
+    if not path.exists():
+        return {}
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+    rows = raw.get("products") if isinstance(raw, dict) else raw
+    if not isinstance(rows, list):
+        return {}
+
+    details: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        keys = _dedupe_strings(
+            [
+                row.get("product_id"),
+                _lululemon_product_id_from_url(str(row.get("url") or "")),
+                _lululemon_product_id_from_url(str(row.get("requested_url") or "")),
+                row.get("url"),
+                row.get("requested_url"),
+            ]
+        )
+        if not keys:
+            continue
+        cleaned_variants = []
+        for variant in row.get("color_variants") or []:
+            if not isinstance(variant, dict):
+                continue
+            color = str(variant.get("color") or "").strip()
+            if not color:
+                continue
+            cleaned_variants.append(
+                {
+                    "color": color,
+                    "image": str(variant.get("image") or "").strip(),
+                    "url": str(
+                        variant.get("url")
+                        or row.get("url")
+                        or row.get("requested_url")
+                        or ""
+                    ).strip(),
+                    "available": bool(variant.get("available")),
+                    "sizes": _dedupe_strings(variant.get("sizes") or []),
+                }
+            )
+        detail = {
+            "color_variants": cleaned_variants,
+            "available_colors": _dedupe_strings(row.get("available_colors") or []),
+            "unavailable_colors": _dedupe_strings(row.get("unavailable_colors") or []),
+            "material_details": _dedupe_strings(
+                row.get("body_materials") or row.get("material_details") or []
+            ),
+            "innovations": _dedupe_strings(row.get("innovations") or []),
+        }
+        for key in keys:
+            details[key] = detail
+    return details
+
+
+def _apply_lululemon_detail_cache(
+    products: list[dict[str, Any]],
+    details: dict[str, dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    if details is None:
+        details = load_lululemon_detail_cache()
+    if not details:
+        return products
+
+    enriched: list[dict[str, Any]] = []
+    for product in products:
+        if product.get("brand") != "lululemon":
+            enriched.append(product)
+            continue
+        detail = (
+            details.get(str(product.get("product_id") or ""))
+            or details.get(str(product.get("source_id") or ""))
+            or details.get(str(product.get("url") or ""))
+        )
+        if not detail:
+            enriched.append(product)
+            continue
+
+        color_variants = detail.get("color_variants") or []
+        available_colors = detail.get("available_colors") or [
+            variant["color"] for variant in color_variants if variant.get("available")
+        ]
+        unavailable_colors = detail.get("unavailable_colors") or [
+            variant["color"] for variant in color_variants if not variant.get("available")
+        ]
+        all_colors = _dedupe_strings(available_colors + unavailable_colors)
+        image = product.get("image", "")
+        for variant in color_variants:
+            if variant.get("image"):
+                image = variant["image"]
+                break
+        material_details = detail.get("material_details") or product.get(
+            "material_details", []
+        )
+        innovations = detail.get("innovations") or product.get("innovations", [])
+        style_number = product.get("style_number") or _lululemon_style_number(
+            color_variants
+        )
+        enriched.append(
+            {
+                **product,
+                "style_number": style_number,
+                "image": image,
+                "color_variants": color_variants or product.get("color_variants", []),
+                "available_colors": available_colors,
+                "unavailable_colors": unavailable_colors,
+                "all_colors": all_colors,
+                "color": " / ".join(available_colors or all_colors),
+                "available": bool(available_colors) if all_colors else product.get("available", True),
+                "variant_count": max(
+                    1,
+                    len(color_variants) or product.get("variant_count", 1),
+                ),
+                "material_details": material_details,
+                "material": " | ".join(material_details),
+                "innovations": innovations,
+            }
+        )
+    return enriched
+
+
 def _normalize_cached_payload(payload: dict[str, Any]) -> dict[str, Any]:
-    products = _clothing_products(
-        [_normalize_strauss_categories(product) for product in payload.get("products", [])]
+    products = _apply_lululemon_detail_cache(
+        _clothing_products(
+            [
+                _normalize_strauss_categories(product)
+                for product in payload.get("products", [])
+            ]
+        )
     )
     return {
         **payload,
@@ -357,17 +521,21 @@ async def scrape_products(scrape_period: dict[str, Any] | None = None) -> dict[s
         brand_sources, scraped_results
     ):
         if not isinstance(result, Exception):
-            result["products"] = _clothing_products(result.get("products", []))
+            result["products"] = _apply_lululemon_detail_cache(
+                _clothing_products(result.get("products", []))
+            )
             result["product_count"] = len(result["products"])
             results.append(result)
             continue
 
-        fallback_products = _clothing_products(
-            [
-                product
-                for product in cached_products
-                if product.get("brand") == brand
-            ]
+        fallback_products = _apply_lululemon_detail_cache(
+            _clothing_products(
+                [
+                    product
+                    for product in cached_products
+                    if product.get("brand") == brand
+                ]
+            )
         )
         fallback_products = _filter_period_products(
             fallback_products, brand, scrape_period

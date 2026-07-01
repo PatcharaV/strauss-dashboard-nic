@@ -1,0 +1,2759 @@
+[
+  {
+    "product_id": "prod20002014",
+    "requested_url": "https://shop.lululemon.com/p/skirts-and-dresses-dresses/2-in-1-Maxi-Dress-MD/_/prod20002014",
+    "url": "https://shop.lululemon.com/p/skirts-and-dresses-dresses/2-in-1-Maxi-Dress-MD/_/prod20002014",
+    "title": "2-in-1 Maxi Dress",
+    "status": "captured",
+    "color_count": 3,
+    "available_colors": [
+      "Willow Leaf",
+      "Cherry Ember"
+    ],
+    "unavailable_colors": [
+      "Raceway Green"
+    ],
+    "color_variants": [
+      {
+        "color": "Raceway Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LW1FFRS_062468_1",
+        "available": false,
+        "sizes": [
+          "XXXS",
+          "XS",
+          "XXS",
+          "L",
+          "XL",
+          "M",
+          "S"
+        ]
+      },
+      {
+        "color": "Willow Leaf",
+        "image": "https://images.lululemon.com/is/image/lululemon/LW1FFRS_072763_1",
+        "available": true,
+        "sizes": [
+          "XL",
+          "M",
+          "XXXS",
+          "XS",
+          "S",
+          "XXS",
+          "L"
+        ]
+      },
+      {
+        "color": "Cherry Ember",
+        "image": "https://images.lululemon.com/is/image/lululemon/LW1FFRS_075671_1",
+        "available": true,
+        "sizes": [
+          "L",
+          "S",
+          "XL",
+          "XXS",
+          "M",
+          "XS"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 79% Nylon, 21% Lycra Elastane"
+    ],
+    "innovations": [
+      "Soft Sweat-Wicking Fabric",
+      "Bodice is made from an ultra-soft, lightweight version of our NuluTM fabric that's brushed for a luxurious feel and an elevated look. It's four-way stretch, sweat wicking, and quick-drying to keep you comfortable all day long",
+      "Soft, silk-blend modal skirt fabric is four-way stretch, sweat-wicking, quick-drying, and naturally breathable",
+      "Fabric is derived from wood-based materials from well-managed forests",
+      "Contours your body",
+      "Falls from the ankle to the floor"
+    ],
+    "pdp_color_attributes": 3,
+    "pdp_carousel_colors": 3,
+    "schema_variants": 20
+  },
+  {
+    "product_id": "prod20004906",
+    "requested_url": "https://shop.lululemon.com/p/women-shorts/3D-Jacquard-Diamond-Train-High-Rise-Short-6-MD/_/prod20004906",
+    "url": "https://shop.lululemon.com/p/women-shorts/3D-Jacquard-Diamond-Train-High-Rise-Short-6-MD/_/prod20004906",
+    "title": "",
+    "status": "missing-detail",
+    "color_count": 0,
+    "available_colors": [],
+    "unavailable_colors": [],
+    "color_variants": [],
+    "body_materials": [],
+    "innovations": [],
+    "pdp_color_attributes": 0,
+    "pdp_carousel_colors": 0,
+    "schema_variants": 0
+  },
+  {
+    "product_id": "prod20001750",
+    "requested_url": "https://shop.lululemon.com/p/mens-jackets-and-hoodies-hoodies/3D-Waffle-Knit-Jacquard-Pullover-MD/_/prod20001750",
+    "url": "https://shop.lululemon.com/p/mens-jackets-and-hoodies-hoodies/3D-Waffle-Knit-Jacquard-Pullover-MD/_/prod20001750",
+    "title": "3D Waffle-Knit Jacquard Pullover",
+    "status": "captured",
+    "color_count": 2,
+    "available_colors": [],
+    "unavailable_colors": [
+      "Atmospheric Purple/Atmospheric Purple",
+      "Solar Grey/Solar Grey"
+    ],
+    "color_variants": [
+      {
+        "color": "Atmospheric Purple/Atmospheric Purple",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3FYXS_072673_1",
+        "available": false,
+        "sizes": [
+          "M"
+        ]
+      },
+      {
+        "color": "Solar Grey/Solar Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3FYXS_039270_1",
+        "available": false,
+        "sizes": [
+          "XL"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 72% Polyester (recycled), 23% Nylon, 5% Elastane"
+    ],
+    "innovations": [
+      "Sweat-Wicking, Waffle-Knit Fabric",
+      "Sweat-wicking",
+      "Quick-drying",
+      "Soft waffle-knit texture",
+      "Open-knit ventilation",
+      "100% of the polyester in this product is recycled (excluding trims)",
+      "Zippered hand pockets with hidden phone sleeves",
+      "Reflective details",
+      "Ribbed collar",
+      "Designed to fit loosely with extra room in the chest and at the waist"
+    ],
+    "pdp_color_attributes": 2,
+    "pdp_carousel_colors": 2,
+    "schema_variants": 2
+  },
+  {
+    "product_id": "prod20005374",
+    "requested_url": "https://shop.lululemon.com/p/mens-jackets-and-outerwear/3D-Waffle-Knit-Jacquard-Vest-MD/_/prod20005374",
+    "url": "https://shop.lululemon.com/p/mens-jackets-and-outerwear/3D-Waffle-Knit-Jacquard-Vest-MD/_/prod20005374",
+    "title": "",
+    "status": "missing-detail",
+    "color_count": 0,
+    "available_colors": [],
+    "unavailable_colors": [],
+    "color_variants": [],
+    "body_materials": [],
+    "innovations": [],
+    "pdp_color_attributes": 0,
+    "pdp_carousel_colors": 0,
+    "schema_variants": 0
+  },
+  {
+    "product_id": "prod11800821",
+    "requested_url": "https://shop.lululemon.com/p/men-pants/ABC-Cargo-Pant-Warpstreme-MD/_/prod11800821",
+    "url": "https://shop.lululemon.com/p/men-pants/ABC-Cargo-Pant-Warpstreme-MD/_/prod11800821",
+    "title": "ABC Warpsteme Cargo Pant *Regular",
+    "status": "captured",
+    "color_count": 2,
+    "available_colors": [
+      "Black",
+      "Army Green"
+    ],
+    "unavailable_colors": [],
+    "color_variants": [
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5BD0S_0001_1",
+        "available": true,
+        "sizes": []
+      },
+      {
+        "color": "Army Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5BD0S_045739_1",
+        "available": true,
+        "sizes": []
+      }
+    ],
+    "body_materials": [
+      "Body: 53% Elastomultiester, 47% Polyester (recycled)"
+    ],
+    "innovations": [
+      "Everyday Performance, WarpstremeTM Fabric",
+      "Everyday performance",
+      "Shape retention",
+      "Quick-drying",
+      "Four-way stretch",
+      "Breathable",
+      "Wrinkle-resistant",
+      "Feels smooth, falls softly away from body",
+      "Hand pockets with hidden phone sleeve",
+      "Discreet zippered pocket",
+      "Back welt pockets with hidden snaps",
+      "Flip up the cuffs to reveal reflective details",
+      "Streamlined fit that gives glutes and thighs breathing room",
+      "Our ABCTM (Anti-Ball-Crushing) technology uses an ergonomic gusset to remove tension from the crotch of our pants so you can move in comfort",
+      "Intended to sit at ankle"
+    ],
+    "pdp_color_attributes": 2,
+    "pdp_carousel_colors": 2,
+    "schema_variants": 0
+  },
+  {
+    "product_id": "prod11680030",
+    "requested_url": "https://shop.lululemon.com/p/men-shorts/ABC-Classic-Fit-Golf-Short-7/_/prod11680030",
+    "url": "https://shop.lululemon.com/p/men-shorts/ABC-Classic-Fit-Golf-Short-7/_/prod11680030",
+    "title": "ABC Classic-Fit Golf Short 7\"",
+    "status": "captured",
+    "color_count": 10,
+    "available_colors": [
+      "Black",
+      "White",
+      "Club Blue",
+      "Light Ivory",
+      "Wacky Khaki",
+      "Oil Grey",
+      "Sand",
+      "True Navy",
+      "Rainforest Green",
+      "Seafoam"
+    ],
+    "unavailable_colors": [],
+    "color_variants": [
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHDS_0001_1",
+        "available": true,
+        "sizes": [
+          "34",
+          "36",
+          "33",
+          "38",
+          "32",
+          "31",
+          "30",
+          "28",
+          "40"
+        ]
+      },
+      {
+        "color": "White",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHDS_0002_1",
+        "available": true,
+        "sizes": [
+          "34",
+          "38",
+          "40",
+          "36",
+          "33",
+          "32",
+          "30",
+          "31",
+          "28"
+        ]
+      },
+      {
+        "color": "Club Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHDS_068578_1",
+        "available": true,
+        "sizes": [
+          "36",
+          "34",
+          "38",
+          "31",
+          "32",
+          "30",
+          "40",
+          "28",
+          "33"
+        ]
+      },
+      {
+        "color": "Light Ivory",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHDS_033454_1",
+        "available": true,
+        "sizes": [
+          "34",
+          "38",
+          "36",
+          "33",
+          "28",
+          "30",
+          "32",
+          "31",
+          "40"
+        ]
+      },
+      {
+        "color": "Wacky Khaki",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHDS_019222_1",
+        "available": true,
+        "sizes": [
+          "36",
+          "38",
+          "28",
+          "40",
+          "32",
+          "30",
+          "33",
+          "31",
+          "34"
+        ]
+      },
+      {
+        "color": "Oil Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHDS_033123_1",
+        "available": true,
+        "sizes": [
+          "36",
+          "34",
+          "38",
+          "31",
+          "30",
+          "40",
+          "28",
+          "33",
+          "32"
+        ]
+      },
+      {
+        "color": "Sand",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHDS_0312_1",
+        "available": true,
+        "sizes": [
+          "34",
+          "36",
+          "38",
+          "40",
+          "33",
+          "32",
+          "28",
+          "31",
+          "30"
+        ]
+      },
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHDS_031382_1",
+        "available": true,
+        "sizes": [
+          "31",
+          "32",
+          "30",
+          "38",
+          "36",
+          "34",
+          "33",
+          "40",
+          "28"
+        ]
+      },
+      {
+        "color": "Rainforest Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHDS_049106_1",
+        "available": true,
+        "sizes": [
+          "34",
+          "36",
+          "38",
+          "40",
+          "31",
+          "32",
+          "28",
+          "33",
+          "30"
+        ]
+      },
+      {
+        "color": "Seafoam",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHDS_0284_1",
+        "available": true,
+        "sizes": [
+          "30",
+          "32",
+          "31",
+          "36",
+          "40",
+          "38",
+          "33",
+          "28",
+          "34"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 95% Nylon, 5% Elastane"
+    ],
+    "innovations": [
+      "Water-Resistant Stretch Fabric",
+      "Water-resistant",
+      "Abrasion-resistant",
+      "UV protective",
+      "UPF 40+ provides very good UV protection to only covered areas. This item’s protection may be reduced with use, or if it gets stretched or wet. Sun exposure causes skin damage",
+      "Front pockets; one with a hidden phone sleeve",
+      "Small drop-in pocket on the right-hand side for golf tees",
+      "Back pockets with snap closures fit a phone and score cards",
+      "Stretch elastic panels on the waistband",
+      "Streamlined fit that gives glutes and thighs breathing room"
+    ],
+    "pdp_color_attributes": 10,
+    "pdp_carousel_colors": 10,
+    "schema_variants": 90
+  },
+  {
+    "product_id": "prod11680084",
+    "requested_url": "https://shop.lululemon.com/p/men-shorts/ABC-Classic-Fit-Golf-Short-9/_/prod11680084",
+    "url": "https://shop.lululemon.com/p/men-shorts/ABC-Classic-Fit-Golf-Short-9/_/prod11680084",
+    "title": "ABC Classic-Fit Golf Short 9\"",
+    "status": "captured",
+    "color_count": 7,
+    "available_colors": [
+      "Black",
+      "Light Ivory",
+      "White",
+      "Club Blue",
+      "Wacky Khaki",
+      "Oil Grey",
+      "True Navy"
+    ],
+    "unavailable_colors": [],
+    "color_variants": [
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHES_0001_1",
+        "available": true,
+        "sizes": [
+          "38",
+          "32",
+          "33",
+          "28",
+          "30",
+          "31",
+          "34",
+          "36",
+          "40"
+        ]
+      },
+      {
+        "color": "Light Ivory",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHES_033454_1",
+        "available": true,
+        "sizes": [
+          "38",
+          "34",
+          "28",
+          "31",
+          "32",
+          "33",
+          "30",
+          "36",
+          "40"
+        ]
+      },
+      {
+        "color": "White",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHES_0002_1",
+        "available": true,
+        "sizes": [
+          "34",
+          "36",
+          "33",
+          "30",
+          "32",
+          "28",
+          "29",
+          "38",
+          "31",
+          "40"
+        ]
+      },
+      {
+        "color": "Club Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHES_068578_1",
+        "available": true,
+        "sizes": [
+          "32",
+          "33",
+          "28",
+          "31",
+          "30",
+          "40",
+          "38",
+          "36",
+          "34"
+        ]
+      },
+      {
+        "color": "Wacky Khaki",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHES_019222_1",
+        "available": true,
+        "sizes": [
+          "38",
+          "32",
+          "30",
+          "36",
+          "34",
+          "31",
+          "28",
+          "33",
+          "40"
+        ]
+      },
+      {
+        "color": "Oil Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHES_033123_1",
+        "available": true,
+        "sizes": [
+          "33",
+          "31",
+          "34",
+          "30",
+          "32",
+          "36",
+          "28",
+          "38",
+          "40"
+        ]
+      },
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BHES_031382_1",
+        "available": true,
+        "sizes": [
+          "28",
+          "40",
+          "31",
+          "30",
+          "38",
+          "32",
+          "36",
+          "34",
+          "33"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 95% Nylon, 5% Elastane"
+    ],
+    "innovations": [
+      "Water-Resistant Stretch Fabric",
+      "Water-resistant",
+      "Abrasion-resistant",
+      "UV protective",
+      "UPF 40+ provides very good UV protection to only covered areas. This item’s protection may be reduced with use, or if it gets stretched or wet. Sun exposure causes skin damage",
+      "Front pockets; one with a hidden phone sleeve",
+      "Small drop-in pocket on the right-hand side for golf tees",
+      "Back pockets with snap closures fit a phone and score cards",
+      "Stretch elastic panels on the waistband",
+      "Streamlined fit that gives glutes and thighs breathing room"
+    ],
+    "pdp_color_attributes": 7,
+    "pdp_carousel_colors": 7,
+    "schema_variants": 64
+  },
+  {
+    "product_id": "prod11772624",
+    "requested_url": "https://shop.lululemon.com/p/men-shorts/ABC-Classic-Fit-Short-7-WovenAir-MD/_/prod11772624",
+    "url": "https://shop.lululemon.com/p/men-shorts/ABC-Classic-Fit-Short-7-WovenAir-MD/_/prod11772624",
+    "title": "ABC Classic-Fit Short 7\" *WovenAir",
+    "status": "captured",
+    "color_count": 8,
+    "available_colors": [
+      "Steel Blue"
+    ],
+    "unavailable_colors": [
+      "Sheer Oak",
+      "Vapor",
+      "Bone",
+      "Grey Sage",
+      "Rainforest Green",
+      "Solar Grey",
+      "Olive Brown"
+    ],
+    "color_variants": [
+      {
+        "color": "Sheer Oak",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGUS_068684_1",
+        "available": false,
+        "sizes": [
+          "33",
+          "40",
+          "34",
+          "36",
+          "38",
+          "30",
+          "32",
+          "31",
+          "28"
+        ]
+      },
+      {
+        "color": "Vapor",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGUS_032894_1",
+        "available": false,
+        "sizes": [
+          "30",
+          "28",
+          "36",
+          "34",
+          "33",
+          "38",
+          "40",
+          "29",
+          "31",
+          "32"
+        ]
+      },
+      {
+        "color": "Bone",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGUS_027597_1",
+        "available": false,
+        "sizes": [
+          "40",
+          "30",
+          "33",
+          "28",
+          "32",
+          "38",
+          "36",
+          "34",
+          "31"
+        ]
+      },
+      {
+        "color": "Grey Sage",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGUS_036763_1",
+        "available": false,
+        "sizes": [
+          "33",
+          "30",
+          "28",
+          "31",
+          "32",
+          "34",
+          "40",
+          "36",
+          "38"
+        ]
+      },
+      {
+        "color": "Rainforest Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGUS_049106_1",
+        "available": false,
+        "sizes": [
+          "31",
+          "32",
+          "33",
+          "30",
+          "36",
+          "40",
+          "28",
+          "34",
+          "38"
+        ]
+      },
+      {
+        "color": "Solar Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGUS_038426_1",
+        "available": false,
+        "sizes": [
+          "34",
+          "30",
+          "40",
+          "31",
+          "28",
+          "32",
+          "33",
+          "36",
+          "38"
+        ]
+      },
+      {
+        "color": "Olive Brown",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGUS_071148_1",
+        "available": false,
+        "sizes": [
+          "38",
+          "31",
+          "34",
+          "40",
+          "30",
+          "36",
+          "28",
+          "33",
+          "32"
+        ]
+      },
+      {
+        "color": "Steel Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGUS_1179_1",
+        "available": true,
+        "sizes": [
+          "33",
+          "31",
+          "40",
+          "32",
+          "36",
+          "28",
+          "30",
+          "38",
+          "34"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 53% Polyester (recycled), 43% Elastomultiester, 4% Elastane"
+    ],
+    "innovations": [
+      "Naturally Breathable WovenAirTM Fabric",
+      "Naturally breathable",
+      "Four-way stretch",
+      "Sweat-wicking",
+      "Quick-drying",
+      "100% of the polyester in this product is recycled (excluding trims)",
+      "Hand pockets with hidden phone sleeve",
+      "Discreet zippered seam pocket",
+      "Hidden snaps mean the back pockets won't gape",
+      "Streamlined fit that gives glutes and thighs breathing room",
+      "Our ABCTM (Anti-Ball-Crushing) technology uses an ergonomic gusset to remove tension from the crotch of our shorts so you can move in comfort"
+    ],
+    "pdp_color_attributes": 8,
+    "pdp_carousel_colors": 8,
+    "schema_variants": 73
+  },
+  {
+    "product_id": "prod11680058",
+    "requested_url": "https://shop.lululemon.com/p/men-shorts/ABC-Classic-Fit-Short-9-WovenAir/_/prod11680058",
+    "url": "https://shop.lululemon.com/p/men-shorts/ABC-Classic-Fit-Short-9-WovenAir/_/prod11680058",
+    "title": "ABC Classic-Fit Short 9\" *WovenAir",
+    "status": "captured",
+    "color_count": 8,
+    "available_colors": [
+      "Army Green",
+      "Wacky Khaki",
+      "True Navy",
+      "Light Ivory",
+      "Black",
+      "White",
+      "Steel Blue",
+      "Oil Grey"
+    ],
+    "unavailable_colors": [],
+    "color_variants": [
+      {
+        "color": "Army Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_045739_1",
+        "available": true,
+        "sizes": [
+          "30",
+          "28",
+          "34",
+          "36",
+          "31",
+          "32",
+          "33",
+          "38",
+          "40"
+        ]
+      },
+      {
+        "color": "Wacky Khaki",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_019222_1",
+        "available": true,
+        "sizes": [
+          "33",
+          "32",
+          "28",
+          "38",
+          "30",
+          "40",
+          "31",
+          "34",
+          "36"
+        ]
+      },
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_031382_1",
+        "available": true,
+        "sizes": [
+          "32",
+          "34",
+          "30",
+          "31",
+          "33",
+          "38",
+          "40",
+          "28",
+          "36"
+        ]
+      },
+      {
+        "color": "Light Ivory",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_033454_1",
+        "available": true,
+        "sizes": [
+          "31",
+          "30",
+          "28",
+          "38",
+          "40",
+          "32",
+          "34",
+          "33",
+          "36"
+        ]
+      },
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_0001_1",
+        "available": true,
+        "sizes": [
+          "30",
+          "38",
+          "31",
+          "33",
+          "36",
+          "32",
+          "29",
+          "28",
+          "34",
+          "40"
+        ]
+      },
+      {
+        "color": "White",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_0002_1",
+        "available": true,
+        "sizes": [
+          "32",
+          "28",
+          "38",
+          "30",
+          "36",
+          "40",
+          "33",
+          "34",
+          "31"
+        ]
+      },
+      {
+        "color": "Steel Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_1179_1",
+        "available": true,
+        "sizes": [
+          "28",
+          "38",
+          "32",
+          "40",
+          "36",
+          "34",
+          "31",
+          "33",
+          "30"
+        ]
+      },
+      {
+        "color": "Oil Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_033123_1",
+        "available": true,
+        "sizes": [
+          "33",
+          "34",
+          "28",
+          "30",
+          "38",
+          "31",
+          "32",
+          "36",
+          "40"
+        ]
+      }
+    ],
+    "body_materials": [],
+    "innovations": [],
+    "pdp_color_attributes": 0,
+    "pdp_carousel_colors": 0,
+    "schema_variants": 73
+  },
+  {
+    "product_id": "prod11772625",
+    "requested_url": "https://shop.lululemon.com/p/men-shorts/ABC-Classic-Fit-Short-9-WovenAir-MD/_/prod11772625",
+    "url": "https://shop.lululemon.com/p/men-shorts/ABC-Classic-Fit-Short-9-WovenAir-MD/_/prod11772625",
+    "title": "ABC Classic-Fit Short 9\" *WovenAir",
+    "status": "captured",
+    "color_count": 10,
+    "available_colors": [],
+    "unavailable_colors": [
+      "Belgian Blue",
+      "Rover",
+      "Lavender Frost",
+      "Warm Ash Grey",
+      "Bone",
+      "Raw Linen",
+      "Sheer Oak",
+      "Rainforest Green",
+      "Olive Brown",
+      "Washed Denim"
+    ],
+    "color_variants": [
+      {
+        "color": "Belgian Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_034282_1",
+        "available": false,
+        "sizes": [
+          "29",
+          "40",
+          "34",
+          "33",
+          "32",
+          "36",
+          "30",
+          "28",
+          "38",
+          "31"
+        ]
+      },
+      {
+        "color": "Rover",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_046696_1",
+        "available": false,
+        "sizes": [
+          "40",
+          "38",
+          "34",
+          "28",
+          "31",
+          "30",
+          "32",
+          "36",
+          "33"
+        ]
+      },
+      {
+        "color": "Lavender Frost",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_0641_1",
+        "available": false,
+        "sizes": [
+          "30",
+          "31",
+          "28",
+          "32",
+          "33",
+          "38",
+          "36",
+          "40",
+          "34"
+        ]
+      },
+      {
+        "color": "Warm Ash Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_070108_1",
+        "available": false,
+        "sizes": [
+          "40",
+          "28",
+          "33",
+          "34",
+          "36",
+          "31",
+          "38",
+          "30",
+          "32"
+        ]
+      },
+      {
+        "color": "Bone",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_027597_1",
+        "available": false,
+        "sizes": [
+          "28",
+          "29",
+          "40",
+          "36",
+          "33",
+          "34",
+          "38",
+          "30",
+          "31",
+          "32"
+        ]
+      },
+      {
+        "color": "Raw Linen",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_048432_1",
+        "available": false,
+        "sizes": [
+          "30",
+          "28",
+          "36",
+          "34",
+          "33",
+          "32",
+          "31"
+        ]
+      },
+      {
+        "color": "Sheer Oak",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_068684_1",
+        "available": false,
+        "sizes": [
+          "28",
+          "40",
+          "31",
+          "36",
+          "33",
+          "30",
+          "32",
+          "34",
+          "38"
+        ]
+      },
+      {
+        "color": "Rainforest Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_049106_1",
+        "available": false,
+        "sizes": [
+          "33",
+          "32",
+          "30",
+          "38",
+          "31",
+          "28",
+          "34",
+          "40",
+          "36"
+        ]
+      },
+      {
+        "color": "Olive Brown",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_071148_1",
+        "available": false,
+        "sizes": [
+          "31",
+          "36",
+          "30",
+          "38",
+          "40",
+          "28",
+          "33",
+          "34",
+          "32"
+        ]
+      },
+      {
+        "color": "Washed Denim",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM7BGVS_069122_1",
+        "available": false,
+        "sizes": [
+          "40",
+          "36",
+          "31",
+          "28",
+          "32",
+          "38",
+          "30",
+          "33",
+          "34"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 53% Polyester (recycled), 43% Elastomultiester, 4% Elastane"
+    ],
+    "innovations": [
+      "Naturally Breathable WovenAirTM Fabric",
+      "Naturally breathable",
+      "Four-way stretch",
+      "Sweat-wicking",
+      "Quick-drying",
+      "100% of the polyester in this product is recycled (excluding trims)",
+      "Hand pockets with hidden phone sleeve",
+      "Discreet zippered seam pocket",
+      "Hidden snaps mean the back pockets won't gape",
+      "Streamlined fit that gives glutes and thighs breathing room",
+      "Our ABCTM (Anti-Ball-Crushing) technology uses an ergonomic gusset to remove tension from the crotch of our shorts so you can move in comfort"
+    ],
+    "pdp_color_attributes": 10,
+    "pdp_carousel_colors": 10,
+    "schema_variants": 90
+  },
+  {
+    "product_id": "prod11500066",
+    "requested_url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-28-Warpstreme/_/prod11500066",
+    "url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-28-Warpstreme/_/prod11500066",
+    "title": "ABC Classic-Fit Trouser 28L *Warpstreme",
+    "status": "captured",
+    "color_count": 8,
+    "available_colors": [
+      "Silver Drop",
+      "Obsidian",
+      "Oil Grey",
+      "Wacky Khaki",
+      "True Navy",
+      "Black",
+      "Steel Blue"
+    ],
+    "unavailable_colors": [
+      "Nomad"
+    ],
+    "color_variants": [
+      {
+        "color": "Silver Drop",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR1S_033928_1",
+        "available": true,
+        "sizes": [
+          "35",
+          "40",
+          "36",
+          "31",
+          "38",
+          "33",
+          "34",
+          "29",
+          "28",
+          "30",
+          "32"
+        ]
+      },
+      {
+        "color": "Obsidian",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR1S_032476_1",
+        "available": true,
+        "sizes": [
+          "40",
+          "33",
+          "34",
+          "32",
+          "36",
+          "35",
+          "38",
+          "31",
+          "29",
+          "30",
+          "28"
+        ]
+      },
+      {
+        "color": "Oil Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR1S_033123_1",
+        "available": true,
+        "sizes": [
+          "36",
+          "35",
+          "40",
+          "33",
+          "31",
+          "32",
+          "38",
+          "29",
+          "30",
+          "34",
+          "28"
+        ]
+      },
+      {
+        "color": "Wacky Khaki",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR1S_019222_1",
+        "available": true,
+        "sizes": [
+          "30",
+          "34",
+          "32",
+          "33",
+          "38",
+          "31",
+          "36",
+          "40",
+          "35",
+          "29",
+          "28"
+        ]
+      },
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR1S_031382_1",
+        "available": true,
+        "sizes": [
+          "38",
+          "34",
+          "32",
+          "35",
+          "31",
+          "40",
+          "30",
+          "28",
+          "33",
+          "29",
+          "36"
+        ]
+      },
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR1S_0001_1",
+        "available": true,
+        "sizes": [
+          "38",
+          "35",
+          "33",
+          "32",
+          "34",
+          "36",
+          "40",
+          "31",
+          "28",
+          "30",
+          "29"
+        ]
+      },
+      {
+        "color": "Nomad",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR1S_035955_1",
+        "available": false,
+        "sizes": [
+          "33",
+          "38",
+          "30",
+          "31",
+          "28",
+          "29",
+          "32",
+          "36",
+          "40",
+          "35",
+          "34"
+        ]
+      },
+      {
+        "color": "Steel Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR1S_1179_1",
+        "available": true,
+        "sizes": [
+          "28",
+          "30",
+          "40",
+          "32",
+          "38",
+          "33",
+          "36",
+          "29",
+          "31",
+          "35",
+          "34"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 53% Elastomultiester, 47% Polyester (recycled)"
+    ],
+    "innovations": [
+      "Everyday Performance WarpstremeTM Fabric",
+      "Everyday performance",
+      "Shape retention",
+      "Quick-drying",
+      "Four-way stretch",
+      "Breathable",
+      "Wrinkle-resistant",
+      "Feels smooth, falls softly away from body",
+      "100% of the polyester in this product is recycled (excluding trims)",
+      "Discreet zippered pocket on side seam",
+      "Back welt pockets with hidden snaps",
+      "Flip up the cuffs to reveal reflective details",
+      "Streamlined fit that gives glutes and thighs breathing room",
+      "Tapers from thigh to hem",
+      "Our ABCTM (Anti-Ball-Crushing) technology uses an ergonomic gusset to remove tension from the crotch of our pants so you can move in comfort"
+    ],
+    "pdp_color_attributes": 8,
+    "pdp_carousel_colors": 8,
+    "schema_variants": 88
+  },
+  {
+    "product_id": "prod11500067",
+    "requested_url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-30-Warpstreme/_/prod11500067",
+    "url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-30-Warpstreme/_/prod11500067",
+    "title": "ABC Classic-Fit Trouser 30L *Warpstreme",
+    "status": "captured",
+    "color_count": 13,
+    "available_colors": [
+      "Oil Grey",
+      "Silver Drop",
+      "Black",
+      "Solar Grey",
+      "Obsidian",
+      "Wacky Khaki",
+      "Warm Ash Grey",
+      "True Navy",
+      "Nomad",
+      "Willow Leaf",
+      "Steel Blue",
+      "Olive Brown",
+      "Oakwood Tan"
+    ],
+    "unavailable_colors": [],
+    "color_variants": [
+      {
+        "color": "Oil Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_033123_1",
+        "available": true,
+        "sizes": [
+          "31",
+          "34",
+          "35",
+          "36",
+          "32",
+          "40",
+          "28",
+          "38",
+          "33",
+          "29",
+          "30"
+        ]
+      },
+      {
+        "color": "Silver Drop",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_033928_1",
+        "available": true,
+        "sizes": [
+          "36",
+          "40",
+          "34",
+          "33",
+          "32",
+          "35",
+          "31",
+          "29",
+          "30",
+          "28",
+          "38"
+        ]
+      },
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_0001_1",
+        "available": true,
+        "sizes": [
+          "40",
+          "35",
+          "32",
+          "36",
+          "34",
+          "31",
+          "29",
+          "28",
+          "33",
+          "30",
+          "38"
+        ]
+      },
+      {
+        "color": "Solar Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_038426_1",
+        "available": true,
+        "sizes": [
+          "32",
+          "33",
+          "31",
+          "35",
+          "28",
+          "36",
+          "34",
+          "40",
+          "38",
+          "29",
+          "30"
+        ]
+      },
+      {
+        "color": "Obsidian",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_032476_1",
+        "available": true,
+        "sizes": [
+          "40",
+          "28",
+          "35",
+          "36",
+          "34",
+          "32",
+          "31",
+          "33",
+          "38",
+          "30",
+          "29"
+        ]
+      },
+      {
+        "color": "Wacky Khaki",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_019222_1",
+        "available": true,
+        "sizes": [
+          "40",
+          "34",
+          "38",
+          "36",
+          "35",
+          "31",
+          "28",
+          "29",
+          "32",
+          "30",
+          "33"
+        ]
+      },
+      {
+        "color": "Warm Ash Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_070108_1",
+        "available": true,
+        "sizes": [
+          "35",
+          "34",
+          "36",
+          "40",
+          "28",
+          "31",
+          "30",
+          "32",
+          "38",
+          "33",
+          "29"
+        ]
+      },
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_031382_1",
+        "available": true,
+        "sizes": [
+          "40",
+          "35",
+          "32",
+          "34",
+          "29",
+          "28",
+          "33",
+          "38",
+          "36",
+          "31",
+          "30"
+        ]
+      },
+      {
+        "color": "Nomad",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_035955_1",
+        "available": true,
+        "sizes": [
+          "35",
+          "28",
+          "40",
+          "36",
+          "34",
+          "30",
+          "32",
+          "38",
+          "31",
+          "33",
+          "29"
+        ]
+      },
+      {
+        "color": "Willow Leaf",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_072763_1",
+        "available": true,
+        "sizes": [
+          "35",
+          "36",
+          "32",
+          "28",
+          "34",
+          "40",
+          "30",
+          "38",
+          "31",
+          "29",
+          "33"
+        ]
+      },
+      {
+        "color": "Steel Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_1179_1",
+        "available": true,
+        "sizes": [
+          "30",
+          "32",
+          "33",
+          "40",
+          "34",
+          "38",
+          "29",
+          "28",
+          "36",
+          "35",
+          "31"
+        ]
+      },
+      {
+        "color": "Olive Brown",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_071148_1",
+        "available": true,
+        "sizes": [
+          "31",
+          "36",
+          "34",
+          "32",
+          "33",
+          "38",
+          "30",
+          "40",
+          "35",
+          "28",
+          "29"
+        ]
+      },
+      {
+        "color": "Oakwood Tan",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_075675_1",
+        "available": true,
+        "sizes": [
+          "34",
+          "31",
+          "29",
+          "35",
+          "30",
+          "40",
+          "32",
+          "28",
+          "33",
+          "38",
+          "36"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 53% Elastomultiester, 47% Polyester (recycled)"
+    ],
+    "innovations": [
+      "Everyday Performance WarpstremeTM Fabric",
+      "Everyday performance",
+      "Shape retention",
+      "Quick-drying",
+      "Four-way stretch",
+      "Breathable",
+      "Wrinkle-resistant",
+      "Feels smooth, falls softly away from body",
+      "100% of the polyester in this product is recycled (excluding trims)",
+      "Discreet zippered pocket on side seam",
+      "Back welt pockets with hidden snaps",
+      "Flip up the cuffs to reveal reflective details",
+      "Streamlined fit that gives glutes and thighs breathing room",
+      "Tapers from thigh to hem",
+      "Our ABCTM (Anti-Ball-Crushing) technology uses an ergonomic gusset to remove tension from the crotch of our pants so you can move in comfort"
+    ],
+    "pdp_color_attributes": 13,
+    "pdp_carousel_colors": 13,
+    "schema_variants": 143
+  },
+  {
+    "product_id": "prod11660053",
+    "requested_url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-30-Warpstreme-MD/_/prod11660053",
+    "url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-30-Warpstreme-MD/_/prod11660053",
+    "title": "ABC Classic-Fit Trouser 30L *Warpstreme",
+    "status": "captured",
+    "color_count": 8,
+    "available_colors": [
+      "Trench",
+      "Iron Blue",
+      "Gator Green",
+      "Artifact",
+      "Dark Olive",
+      "Asphalt Grey",
+      "Raw Linen",
+      "Taupetastic"
+    ],
+    "unavailable_colors": [],
+    "color_variants": [
+      {
+        "color": "Trench",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_043731_1",
+        "available": true,
+        "sizes": []
+      },
+      {
+        "color": "Iron Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_026865_1",
+        "available": true,
+        "sizes": []
+      },
+      {
+        "color": "Gator Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_018615_1",
+        "available": true,
+        "sizes": []
+      },
+      {
+        "color": "Artifact",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_029283_1",
+        "available": true,
+        "sizes": []
+      },
+      {
+        "color": "Dark Olive",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_026083_1",
+        "available": true,
+        "sizes": []
+      },
+      {
+        "color": "Asphalt Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_035956_1",
+        "available": true,
+        "sizes": []
+      },
+      {
+        "color": "Raw Linen",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_048432_1",
+        "available": true,
+        "sizes": []
+      },
+      {
+        "color": "Taupetastic",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AR2S_064820_1",
+        "available": true,
+        "sizes": []
+      }
+    ],
+    "body_materials": [
+      "Body: 53% Elastomultiester, 47% Polyester (recycled)"
+    ],
+    "innovations": [
+      "Everyday Performance WarpstremeTM Fabric",
+      "Everyday performance",
+      "Shape retention",
+      "Quick-drying",
+      "Four-way stretch",
+      "Breathable",
+      "Wrinkle-resistant",
+      "Feels smooth, falls softly away from body",
+      "100% of the polyester in this product is recycled (excluding trims)",
+      "Discreet zippered pocket on side seam",
+      "Back welt pockets with hidden snaps",
+      "Flip up the cuffs to reveal reflective details",
+      "Streamlined fit that gives glutes and thighs breathing room",
+      "Tapers from thigh to hem",
+      "Our ABCTM (Anti-Ball-Crushing) technology uses an ergonomic gusset to remove tension from the crotch of our pants so you can move in comfort"
+    ],
+    "pdp_color_attributes": 8,
+    "pdp_carousel_colors": 8,
+    "schema_variants": 0
+  },
+  {
+    "product_id": "prod11790019",
+    "requested_url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-30L-Twill-MD/_/prod11790019",
+    "url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-30L-Twill-MD/_/prod11790019",
+    "title": "ABC Classic-Fit Trouser 30L *Smooth Twill",
+    "status": "captured",
+    "color_count": 4,
+    "available_colors": [],
+    "unavailable_colors": [
+      "Dark Olive",
+      "Army Green",
+      "True Navy",
+      "Sheer Oak"
+    ],
+    "color_variants": [
+      {
+        "color": "Dark Olive",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B70S_026083_1",
+        "available": false,
+        "sizes": [
+          "31",
+          "29",
+          "32",
+          "34",
+          "30",
+          "35",
+          "28",
+          "40",
+          "38",
+          "36",
+          "33"
+        ]
+      },
+      {
+        "color": "Army Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B70S_045739_1",
+        "available": false,
+        "sizes": [
+          "30",
+          "29",
+          "32",
+          "38",
+          "35",
+          "28",
+          "33",
+          "36",
+          "34",
+          "31",
+          "40"
+        ]
+      },
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B70S_031382_1",
+        "available": false,
+        "sizes": [
+          "30",
+          "29",
+          "35",
+          "36",
+          "33",
+          "38",
+          "31",
+          "28",
+          "32",
+          "34",
+          "40"
+        ]
+      },
+      {
+        "color": "Sheer Oak",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B70S_068684_1",
+        "available": false,
+        "sizes": [
+          "30",
+          "29",
+          "31",
+          "32",
+          "35",
+          "33",
+          "36",
+          "38",
+          "28",
+          "40",
+          "34"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 55% Polyester, 45% Elastomultiester"
+    ],
+    "innovations": [
+      "Structured, Smooth Twill Fabric",
+      "Structured feel",
+      "Refined, slightly sueded texture",
+      "Discreet zippered pocket on side seam",
+      "Back welt pockets with hidden snaps",
+      "Flip up the cuffs to reveal reflective details",
+      "Streamlined fit that gives glutes and thighs breathing room",
+      "Our ABCTM (Anti-Ball-Crushing) technology uses an ergonomic gusset to remove tension from the crotch of our pants so you can move in comfort"
+    ],
+    "pdp_color_attributes": 4,
+    "pdp_carousel_colors": 4,
+    "schema_variants": 44
+  },
+  {
+    "product_id": "prod11740032",
+    "requested_url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-30L-VersaTwill-MD/_/prod11740032",
+    "url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-30L-VersaTwill-MD/_/prod11740032",
+    "title": "ABC Classic-Fit Trouser 30L *Stretch Cotton VersaTwill",
+    "status": "captured",
+    "color_count": 9,
+    "available_colors": [
+      "Black"
+    ],
+    "unavailable_colors": [
+      "Nomad",
+      "Dark Olive",
+      "Sheer Oak",
+      "Army Green",
+      "Warm Ash Grey",
+      "Light Ivory",
+      "True Navy",
+      "Rover"
+    ],
+    "color_variants": [
+      {
+        "color": "Nomad",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B66S_035955_1",
+        "available": false,
+        "sizes": [
+          "30",
+          "35",
+          "38",
+          "33",
+          "29",
+          "28",
+          "32",
+          "34",
+          "36",
+          "40",
+          "31"
+        ]
+      },
+      {
+        "color": "Dark Olive",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B66S_026083_1",
+        "available": false,
+        "sizes": [
+          "28",
+          "35",
+          "30",
+          "36",
+          "29",
+          "38",
+          "33",
+          "40",
+          "32",
+          "31",
+          "34"
+        ]
+      },
+      {
+        "color": "Sheer Oak",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B66S_068684_1",
+        "available": false,
+        "sizes": [
+          "28",
+          "30",
+          "38",
+          "35",
+          "36",
+          "31",
+          "32",
+          "29",
+          "33",
+          "40",
+          "34"
+        ]
+      },
+      {
+        "color": "Army Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5BJZS_045739_1",
+        "available": false,
+        "sizes": [
+          "35",
+          "29",
+          "36",
+          "30",
+          "38",
+          "40",
+          "33",
+          "31",
+          "28",
+          "34",
+          "32"
+        ]
+      },
+      {
+        "color": "Warm Ash Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B66S_070108_1",
+        "available": false,
+        "sizes": [
+          "30",
+          "33",
+          "29",
+          "35",
+          "31",
+          "38",
+          "40",
+          "34",
+          "28",
+          "32",
+          "36"
+        ]
+      },
+      {
+        "color": "Light Ivory",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B66S_033454_1",
+        "available": false,
+        "sizes": [
+          "28",
+          "33",
+          "34",
+          "32",
+          "30",
+          "36",
+          "35",
+          "31",
+          "40",
+          "38",
+          "29"
+        ]
+      },
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B66S_031382_1",
+        "available": false,
+        "sizes": [
+          "31",
+          "30",
+          "28",
+          "29",
+          "34",
+          "40",
+          "32",
+          "33",
+          "38",
+          "35",
+          "36"
+        ]
+      },
+      {
+        "color": "Rover",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B66S_046696_1",
+        "available": false,
+        "sizes": [
+          "34",
+          "33",
+          "35",
+          "30",
+          "31",
+          "28",
+          "38",
+          "36",
+          "40",
+          "29",
+          "32"
+        ]
+      },
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B66S_0001_1",
+        "available": true,
+        "sizes": [
+          "33",
+          "31",
+          "35",
+          "30",
+          "34",
+          "38",
+          "29",
+          "36",
+          "40",
+          "32"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 58% Cotton, 29% Nylon, 13% Elastane"
+    ],
+    "innovations": [
+      "Cotton-Blend VersaTwillTM Fabric",
+      "Four-way stretch",
+      "Sweat-wicking",
+      "Quick-drying",
+      "Discreet zippered pocket on side seam",
+      "Back welt pockets with hidden snaps",
+      "Flip up the cuffs to reveal reflective details",
+      "Streamlined fit that gives glutes and thighs breathing room",
+      "Tapers from thigh to hem",
+      "Our ABCTM (Anti-Ball-Crushing) technology uses an ergonomic gusset to remove tension from the crotch of our pants so you can move in comfort",
+      "Cotton-Blend, VersaTwillTM Fabric"
+    ],
+    "pdp_color_attributes": 9,
+    "pdp_carousel_colors": 9,
+    "schema_variants": 98
+  },
+  {
+    "product_id": "prod11710430",
+    "requested_url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-30L-WovenAir/_/prod11710430",
+    "url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-30L-WovenAir/_/prod11710430",
+    "title": "ABC Classic-Fit Trouser 30L *WovenAir",
+    "status": "captured",
+    "color_count": 6,
+    "available_colors": [
+      "True Navy",
+      "Black",
+      "Light Ivory",
+      "Oil Grey",
+      "Wacky Khaki",
+      "Feather Grey"
+    ],
+    "unavailable_colors": [],
+    "color_variants": [
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AXWS_031382_1",
+        "available": true,
+        "sizes": [
+          "34",
+          "40",
+          "28",
+          "31",
+          "30",
+          "32",
+          "38",
+          "33",
+          "29",
+          "36",
+          "35"
+        ]
+      },
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AXWS_0001_1",
+        "available": true,
+        "sizes": [
+          "33",
+          "31",
+          "35",
+          "34",
+          "36",
+          "28",
+          "29",
+          "30",
+          "32",
+          "40",
+          "38"
+        ]
+      },
+      {
+        "color": "Light Ivory",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AXWS_033454_1",
+        "available": true,
+        "sizes": [
+          "32",
+          "30",
+          "40",
+          "35",
+          "36",
+          "34",
+          "31",
+          "33",
+          "38",
+          "28",
+          "29"
+        ]
+      },
+      {
+        "color": "Oil Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AXWS_033123_1",
+        "available": true,
+        "sizes": [
+          "29",
+          "34",
+          "38",
+          "28",
+          "33",
+          "32",
+          "40",
+          "31",
+          "30",
+          "35",
+          "36"
+        ]
+      },
+      {
+        "color": "Wacky Khaki",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AXWS_019222_1",
+        "available": true,
+        "sizes": [
+          "28",
+          "35",
+          "32",
+          "38",
+          "30",
+          "36",
+          "33",
+          "34",
+          "29",
+          "31",
+          "40"
+        ]
+      },
+      {
+        "color": "Feather Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AXWS_074043_1",
+        "available": true,
+        "sizes": [
+          "33",
+          "28",
+          "35",
+          "40",
+          "34",
+          "36",
+          "30",
+          "38",
+          "29",
+          "31",
+          "32"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 53% Polyester (recycled), 43% Elastomultiester, 4% Elastane"
+    ],
+    "innovations": [
+      "Naturally Breathable WovenAirTM Fabric",
+      "Naturally breathable",
+      "Four-way stretch",
+      "100% of the polyester in this product is recycled (excluding trims)",
+      "Discreet zippered pocket on side seam",
+      "Back welt pockets with hidden snaps",
+      "Flip up the cuffs to reveal reflective details",
+      "Streamlined fit that gives glutes and thighs breathing room",
+      "Tapers from thigh to hem",
+      "Our ABCTM (Anti-Ball-Crushing) technology uses an ergonomic gusset to remove tension from the crotch of our pants so you can move in comfort"
+    ],
+    "pdp_color_attributes": 6,
+    "pdp_carousel_colors": 6,
+    "schema_variants": 66
+  },
+  {
+    "product_id": "prod11660054",
+    "requested_url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-32-Warpstreme-MD/_/prod11660054",
+    "url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-32-Warpstreme-MD/_/prod11660054",
+    "title": "ABC Classic-Fit Trouser 32L *Warpstreme",
+    "status": "captured",
+    "color_count": 6,
+    "available_colors": [
+      "Trench",
+      "Raw Linen"
+    ],
+    "unavailable_colors": [
+      "Sheer Oak",
+      "Dark Olive",
+      "Gator Green",
+      "Iron Blue"
+    ],
+    "color_variants": [
+      {
+        "color": "Sheer Oak",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_068684_1",
+        "available": false,
+        "sizes": [
+          "44",
+          "28",
+          "46",
+          "29",
+          "31",
+          "30",
+          "33",
+          "36",
+          "38",
+          "35",
+          "40",
+          "34",
+          "32",
+          "42"
+        ]
+      },
+      {
+        "color": "Dark Olive",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_026083_1",
+        "available": false,
+        "sizes": [
+          "33",
+          "34",
+          "30",
+          "42",
+          "31",
+          "46",
+          "35",
+          "29",
+          "28",
+          "38",
+          "40",
+          "44",
+          "32",
+          "36"
+        ]
+      },
+      {
+        "color": "Trench",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_043731_1",
+        "available": true,
+        "sizes": [
+          "31",
+          "35",
+          "40",
+          "38",
+          "44",
+          "29",
+          "46",
+          "34",
+          "30",
+          "42",
+          "32",
+          "28",
+          "33",
+          "36"
+        ]
+      },
+      {
+        "color": "Gator Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_018615_1",
+        "available": false,
+        "sizes": [
+          "44",
+          "46",
+          "31",
+          "42",
+          "32",
+          "36",
+          "33",
+          "35",
+          "28",
+          "38",
+          "30",
+          "34",
+          "40",
+          "29"
+        ]
+      },
+      {
+        "color": "Iron Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_026865_1",
+        "available": false,
+        "sizes": [
+          "42",
+          "31",
+          "38",
+          "33",
+          "35",
+          "34",
+          "44",
+          "40",
+          "32",
+          "46",
+          "29",
+          "30",
+          "36",
+          "28"
+        ]
+      },
+      {
+        "color": "Raw Linen",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_048432_1",
+        "available": true,
+        "sizes": [
+          "30",
+          "38",
+          "35",
+          "29",
+          "44",
+          "40",
+          "28",
+          "31",
+          "42",
+          "46",
+          "32",
+          "34",
+          "36",
+          "33"
+        ]
+      }
+    ],
+    "body_materials": [],
+    "innovations": [],
+    "pdp_color_attributes": 0,
+    "pdp_carousel_colors": 0,
+    "schema_variants": 84
+  },
+  {
+    "product_id": "prod11500061",
+    "requested_url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-32-Warpstreme/_/prod11500061",
+    "url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-32-Warpstreme/_/prod11500061",
+    "title": "ABC Classic-Fit Trouser 32L *Warpstreme",
+    "status": "captured",
+    "color_count": 14,
+    "available_colors": [
+      "Oil Grey",
+      "Black",
+      "Wacky Khaki",
+      "True Navy",
+      "Solar Grey",
+      "Silver Drop",
+      "Warm Ash Grey",
+      "Obsidian",
+      "Nomad",
+      "Willow Leaf",
+      "Steel Blue",
+      "Oakwood Tan"
+    ],
+    "unavailable_colors": [
+      "Army Green",
+      "Olive Brown"
+    ],
+    "color_variants": [
+      {
+        "color": "Oil Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_033123_1",
+        "available": true,
+        "sizes": [
+          "38",
+          "40",
+          "35",
+          "34",
+          "32",
+          "29",
+          "33",
+          "28",
+          "36",
+          "30",
+          "31",
+          "44",
+          "42",
+          "46"
+        ]
+      },
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_0001_1",
+        "available": true,
+        "sizes": [
+          "29",
+          "31",
+          "30",
+          "40",
+          "35",
+          "28",
+          "38",
+          "36",
+          "32",
+          "33",
+          "34",
+          "44",
+          "46",
+          "42"
+        ]
+      },
+      {
+        "color": "Wacky Khaki",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_019222_1",
+        "available": true,
+        "sizes": [
+          "33",
+          "36",
+          "34",
+          "31",
+          "40",
+          "32",
+          "30",
+          "38",
+          "35",
+          "46",
+          "28",
+          "29",
+          "44",
+          "42"
+        ]
+      },
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_031382_1",
+        "available": true,
+        "sizes": [
+          "29",
+          "35",
+          "31",
+          "30",
+          "28",
+          "40",
+          "38",
+          "32",
+          "33",
+          "34",
+          "36",
+          "46",
+          "42",
+          "44"
+        ]
+      },
+      {
+        "color": "Solar Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_038426_1",
+        "available": true,
+        "sizes": [
+          "38",
+          "36",
+          "29",
+          "35",
+          "30",
+          "31",
+          "40",
+          "32",
+          "34",
+          "28",
+          "44",
+          "33",
+          "42",
+          "46"
+        ]
+      },
+      {
+        "color": "Silver Drop",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_033928_1",
+        "available": true,
+        "sizes": [
+          "40",
+          "32",
+          "34",
+          "38",
+          "36",
+          "35",
+          "28",
+          "46",
+          "29",
+          "42",
+          "31",
+          "44",
+          "33",
+          "30"
+        ]
+      },
+      {
+        "color": "Warm Ash Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_070108_1",
+        "available": true,
+        "sizes": [
+          "38",
+          "35",
+          "42",
+          "46",
+          "32",
+          "30",
+          "28",
+          "40",
+          "44",
+          "33",
+          "36",
+          "29",
+          "31",
+          "34"
+        ]
+      },
+      {
+        "color": "Obsidian",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_032476_1",
+        "available": true,
+        "sizes": [
+          "30",
+          "28",
+          "31",
+          "35",
+          "29",
+          "40",
+          "32",
+          "38",
+          "34",
+          "33",
+          "36",
+          "44",
+          "46",
+          "42"
+        ]
+      },
+      {
+        "color": "Army Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_045739_1",
+        "available": false,
+        "sizes": [
+          "29",
+          "28",
+          "44",
+          "42",
+          "31",
+          "35",
+          "46",
+          "33",
+          "32",
+          "36",
+          "30",
+          "34",
+          "38",
+          "40"
+        ]
+      },
+      {
+        "color": "Olive Brown",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_071148_1",
+        "available": false,
+        "sizes": [
+          "46",
+          "42",
+          "44",
+          "33",
+          "30",
+          "40",
+          "34",
+          "31",
+          "29",
+          "36",
+          "32",
+          "38",
+          "35",
+          "28"
+        ]
+      },
+      {
+        "color": "Nomad",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_035955_1",
+        "available": true,
+        "sizes": [
+          "28",
+          "35",
+          "40",
+          "31",
+          "44",
+          "36",
+          "32",
+          "34",
+          "30",
+          "42",
+          "33",
+          "29",
+          "46",
+          "38"
+        ]
+      },
+      {
+        "color": "Willow Leaf",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_072763_1",
+        "available": true,
+        "sizes": [
+          "34",
+          "31",
+          "38",
+          "40",
+          "29",
+          "30",
+          "28",
+          "32",
+          "33",
+          "35",
+          "36",
+          "42",
+          "44",
+          "46"
+        ]
+      },
+      {
+        "color": "Steel Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_1179_1",
+        "available": true,
+        "sizes": [
+          "35",
+          "38",
+          "28",
+          "33",
+          "32",
+          "40",
+          "30",
+          "34",
+          "36",
+          "31",
+          "29",
+          "42",
+          "44",
+          "46"
+        ]
+      },
+      {
+        "color": "Oakwood Tan",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5AO5S_075675_1",
+        "available": true,
+        "sizes": [
+          "29",
+          "34",
+          "40",
+          "35",
+          "28",
+          "33",
+          "31",
+          "32",
+          "36",
+          "42",
+          "30",
+          "38",
+          "44",
+          "46"
+        ]
+      }
+    ],
+    "body_materials": [],
+    "innovations": [],
+    "pdp_color_attributes": 0,
+    "pdp_carousel_colors": 0,
+    "schema_variants": 196
+  },
+  {
+    "product_id": "prod20004926",
+    "requested_url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-32L-Cord-MD/_/prod20004926",
+    "url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-32L-Cord-MD/_/prod20004926",
+    "title": "ABC Classic-Fit Trouser 32L *Corduroy",
+    "status": "captured",
+    "color_count": 2,
+    "available_colors": [
+      "Light Ivory",
+      "Olive Brown"
+    ],
+    "unavailable_colors": [],
+    "color_variants": [
+      {
+        "color": "Light Ivory",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5BF9S_033454_1",
+        "available": true,
+        "sizes": [
+          "29",
+          "34",
+          "36",
+          "38",
+          "35",
+          "28",
+          "30",
+          "31",
+          "32",
+          "33",
+          "40"
+        ]
+      },
+      {
+        "color": "Olive Brown",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5BF9S_071148_1",
+        "available": true,
+        "sizes": [
+          "28",
+          "36",
+          "33",
+          "32",
+          "35",
+          "40",
+          "31",
+          "30",
+          "29",
+          "38",
+          "34"
+        ]
+      }
+    ],
+    "body_materials": [],
+    "innovations": [],
+    "pdp_color_attributes": 0,
+    "pdp_carousel_colors": 0,
+    "schema_variants": 22
+  },
+  {
+    "product_id": "prod11790010",
+    "requested_url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-32L-Twill-MD/_/prod11790010",
+    "url": "https://shop.lululemon.com/p/mens-trousers/ABC-Classic-Fit-Trouser-32L-Twill-MD/_/prod11790010",
+    "title": "ABC Classic-Fit Trouser 32L *Smooth Twill",
+    "status": "captured",
+    "color_count": 5,
+    "available_colors": [],
+    "unavailable_colors": [
+      "Army Green",
+      "Dark Olive",
+      "Grey Sage",
+      "True Navy",
+      "Sheer Oak"
+    ],
+    "color_variants": [
+      {
+        "color": "Army Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B08S_045739_1",
+        "available": false,
+        "sizes": [
+          "31",
+          "35",
+          "30",
+          "33",
+          "34",
+          "28",
+          "29",
+          "32",
+          "40",
+          "38",
+          "36"
+        ]
+      },
+      {
+        "color": "Dark Olive",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B08S_026083_1",
+        "available": false,
+        "sizes": [
+          "28",
+          "35",
+          "34",
+          "29",
+          "36",
+          "33",
+          "40",
+          "38",
+          "32",
+          "31",
+          "30"
+        ]
+      },
+      {
+        "color": "Grey Sage",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B08S_036763_1",
+        "available": false,
+        "sizes": [
+          "31",
+          "28",
+          "29",
+          "34",
+          "38",
+          "33",
+          "40",
+          "36",
+          "32",
+          "35",
+          "30"
+        ]
+      },
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B08S_031382_1",
+        "available": false,
+        "sizes": [
+          "40",
+          "29",
+          "30",
+          "33",
+          "35",
+          "28",
+          "36",
+          "38",
+          "32",
+          "34",
+          "31"
+        ]
+      },
+      {
+        "color": "Sheer Oak",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5B08S_068684_1",
+        "available": false,
+        "sizes": [
+          "29",
+          "28",
+          "36",
+          "33",
+          "34",
+          "35",
+          "31",
+          "32",
+          "40",
+          "30",
+          "38"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 55% Polyester, 45% Elastomultiester"
+    ],
+    "innovations": [
+      "Structured, Smooth Twill Fabric",
+      "Structured feel",
+      "Refined, slightly sueded texture",
+      "Discreet zippered pocket on side seam",
+      "Back welt pockets with hidden snaps",
+      "Flip up the cuffs to reveal reflective details",
+      "Streamlined fit that gives glutes and thighs breathing room",
+      "Our ABCTM (Anti-Ball-Crushing) technology uses an ergonomic gusset to remove tension from the crotch of our pants so you can move in comfort"
+    ],
+    "pdp_color_attributes": 5,
+    "pdp_carousel_colors": 5,
+    "schema_variants": 55
+  }
+]
