@@ -706,7 +706,7 @@ function App() {
       setMessage(
         canViewAllBrands
           ? "Live data for all authorized brands"
-          : "Live data from Strauss, Rhone and Arc'teryx",
+          : `Live data from ${brandOptions.map((brand) => brand.label).join(", ")}`,
       );
     } catch {
       setMessage("Demo preview: start the Python API for live data");

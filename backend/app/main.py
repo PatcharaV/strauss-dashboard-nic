@@ -45,14 +45,14 @@ auto_scrape_task: asyncio.Task | None = None
 DASHBOARD_USERS = {
     "NYKOversea": {
         "password": "Nanyang",
-        "allowed_brands": ["strauss", "rhone", "arcteryx"],
+        "allowed_brands": ["strauss"],
     },
     "NIC": {
         "password": "Nicnanyang",
         "allowed_brands": ["*"],
     },
 }
-LIMITED_BRAND_ORDER = ["strauss", "rhone", "arcteryx"]
+LIMITED_BRAND_ORDER = ["strauss"]
 
 
 class LoginRequest(BaseModel):
