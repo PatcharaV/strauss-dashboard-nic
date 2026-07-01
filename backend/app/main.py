@@ -151,10 +151,19 @@ async def get_data(
             if not scrape_period:
                 store["data"] = store[cache_key]
         elif cache_key not in store:
-            cached = load_period_cache(scrape_period) if scrape_period else load_cache()
-            store[cache_key] = cached or load_cache() or await scrape_products(
-                scrape_period=scrape_period
-            )
+            if scrape_period:
+                cached = load_period_cache(scrape_period)
+                if not cached:
+                    raise HTTPException(
+                        status_code=404,
+                        detail=(
+                            f"No cached snapshot for {scrape_period['label']}. "
+                            "Run scrape for this month first."
+                        ),
+                    )
+                store[cache_key] = cached
+            else:
+                store[cache_key] = load_cache() or await scrape_products()
     return store[cache_key]
 
 

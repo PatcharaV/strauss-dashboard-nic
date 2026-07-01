@@ -113,6 +113,37 @@ function formatMultilineList(values, fallback = "Not specified") {
   return values?.length ? values.join("\n") : fallback;
 }
 
+function emptyDashboardForPeriod(month, year) {
+  return {
+    source: [],
+    scraped_at: null,
+    scrape_period: { month, year, label: `${month} ${year}` },
+    summary: {
+      total_products: 0,
+      brands: 0,
+      categories: 0,
+      average_price: 0,
+      available_products: 0,
+      collection_memberships: 0,
+      named_collection_products: 0,
+      unassigned_collection_products: 0,
+      multi_collection_products: 0,
+      overlap_memberships: 0,
+      category_memberships: 0,
+      multi_category_products: 0,
+      category_overlap_memberships: 0,
+      availability_rate: 0,
+    },
+    brands: [],
+    audiences: [],
+    collections: [],
+    categories: [],
+    subcategories: [],
+    activities: [],
+    products: [],
+  };
+}
+
 function getMaterialValues(product) {
   if (product.material_details?.length) return product.material_details;
   return product.material ? [product.material] : [];
@@ -713,6 +744,11 @@ function App() {
       ]);
       if (optionsResponse.status === 401 || dashboardResponse.status === 401) {
         handleLogout();
+        return;
+      }
+      if (optionsResponse.status === 404 || dashboardResponse.status === 404) {
+        setDashboard(emptyDashboardForPeriod(scrapeMonth, scrapeYear));
+        setMessage(`No saved snapshot for ${scrapeMonth} ${scrapeYear}. Run scrape once for this month.`);
         return;
       }
       if (!optionsResponse.ok || !dashboardResponse.ok) {
