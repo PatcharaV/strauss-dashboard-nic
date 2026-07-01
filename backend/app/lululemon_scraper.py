@@ -125,7 +125,7 @@ def _contains_any(text: str, keywords: set[str]) -> bool:
     return any(keyword in text for keyword in keywords)
 
 
-def _category(segment: str, title: str) -> str:
+def _fallback_category(segment: str, title: str) -> str:
     text = f"{segment} {title}".lower()
     if "sports-bra" in text or re.search(r"\bbra\b", text):
         return "Sports Bras"
@@ -166,7 +166,7 @@ def _category(segment: str, title: str) -> str:
     return "Other"
 
 
-def _subcategories(segment: str, title: str, category: str) -> list[str]:
+def _website_category(segment: str, title: str, fallback_category: str) -> str:
     text = f"{segment} {title}".lower()
     rules = [
         ("Button Down Shirts", ("button-down", "button down")),
@@ -178,6 +178,7 @@ def _subcategories(segment: str, title: str, category: str) -> list[str]:
         ("Quarter Zips", ("quarter-zip", "quarter zip", "half zip", "1/2 zip")),
         ("Hoodies", ("hoodie",)),
         ("Sweatshirts", ("sweatshirt", "crewneck")),
+        ("Sweatpants", ("sweatpant",)),
         ("Joggers", ("jogger",)),
         ("Dress Pants", ("dress pant",)),
         ("Trousers", ("trouser",)),
@@ -192,17 +193,16 @@ def _subcategories(segment: str, title: str, category: str) -> list[str]:
         ("Vests", ("vest",)),
         ("Jackets", ("jacket",)),
     ]
-    values: list[str] = []
     for label, needles in rules:
-        if label in {"Jackets", "Vests"} and category != "Coats & Jackets":
+        if label in {"Jackets", "Vests"} and fallback_category != "Coats & Jackets":
             continue
-        if label == "Skirts" and category != "Skirts":
+        if label == "Skirts" and fallback_category != "Skirts":
             continue
-        if label == "Dresses" and category != "Dresses":
+        if label == "Dresses" and fallback_category != "Dresses":
             continue
-        if any(needle in text for needle in needles) and label not in values:
-            values.append(label)
-    return values or [category]
+        if any(needle in text for needle in needles):
+            return label
+    return fallback_category
 
 
 def _keyword_values(title: str, keywords: list[str]) -> list[str]:
@@ -244,12 +244,12 @@ def _normalize(url: str, lastmod: str | None = None) -> dict[str, Any] | None:
         return None
 
     title = _title_from_slug(parsed["title_slug"])
-    category = _category(segment, title)
+    fallback_category = _fallback_category(segment, title)
+    category = _website_category(segment, title, fallback_category)
     if category == "Other":
         return None
 
     audiences, audience_labels = _audience(segment)
-    subcategories = _subcategories(segment, title, category)
     collections = _keyword_values(title, COLLECTION_KEYWORDS)
     fabrics = _keyword_values(title, FABRIC_KEYWORDS)
     activities = _activities(title, category)
@@ -268,7 +268,7 @@ def _normalize(url: str, lastmod: str | None = None) -> dict[str, Any] | None:
         "description": "",
         "category": category,
         "categories": [category],
-        "subcategories": subcategories,
+        "subcategories": [],
         "collections": collections,
         "features": [],
         "shop_highlights": [],

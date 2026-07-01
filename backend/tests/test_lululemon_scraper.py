@@ -14,8 +14,8 @@ class LululemonScraperTests(unittest.TestCase):
         self.assertIsNotNone(product)
         self.assertEqual(product["brand"], "lululemon")
         self.assertEqual(product["audiences"], ["men"])
-        self.assertEqual(product["categories"], ["Shirts"])
-        self.assertIn("Short Sleeve Shirts", product["subcategories"])
+        self.assertEqual(product["categories"], ["Short Sleeve Shirts"])
+        self.assertEqual(product["subcategories"], [])
         self.assertEqual(product["price_known"], False)
 
     def test_excludes_non_clothing_products(self):
