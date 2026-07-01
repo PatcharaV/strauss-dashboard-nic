@@ -1,0 +1,323 @@
+[
+  {
+    "url": "https://shop.lululemon.com/p/men-ss-tops/Zeroed-In-Short-Sleeve-Shirt/_/prod11680098",
+    "title": "Zeroed In Short-Sleeve Shirt",
+    "status": "captured",
+    "color_count": 13,
+    "available_colors": [
+      "Graphite Grey",
+      "Black",
+      "Heathered Feather Grey",
+      "White",
+      "Heathered Club Blue",
+      "Beach Ball Blue",
+      "Army Green",
+      "Polo Pastel",
+      "Ivy Grove",
+      "Sand",
+      "Seafoam"
+    ],
+    "unavailable_colors": [
+      "True Navy",
+      "Lavender Frost"
+    ],
+    "color_variants": [
+      {
+        "color": "Graphite Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3F16S_030210_1",
+        "available": true,
+        "sizes": [
+          "XXXL",
+          "M",
+          "XXL",
+          "XL",
+          "S",
+          "L",
+          "XS"
+        ]
+      },
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3F16S_0001_1",
+        "available": true,
+        "sizes": [
+          "XXXL",
+          "L",
+          "S",
+          "XL",
+          "M",
+          "XXL",
+          "XS"
+        ]
+      },
+      {
+        "color": "True Navy",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3F16S_031382_1",
+        "available": false,
+        "sizes": [
+          "XXXL",
+          "M",
+          "XS",
+          "XXL",
+          "S",
+          "XL",
+          "L"
+        ]
+      },
+      {
+        "color": "Lavender Frost",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3F16S_0641_1",
+        "available": false,
+        "sizes": [
+          "S",
+          "XS",
+          "XL",
+          "XXL",
+          "L",
+          "M"
+        ]
+      },
+      {
+        "color": "Heathered Feather Grey",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3GBRS_074095_1",
+        "available": true,
+        "sizes": [
+          "XL",
+          "S",
+          "XXL",
+          "XS",
+          "M",
+          "L"
+        ]
+      },
+      {
+        "color": "White",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_0002_1",
+        "available": true,
+        "sizes": [
+          "XXL",
+          "XL",
+          "L",
+          "S",
+          "XS",
+          "M"
+        ]
+      },
+      {
+        "color": "Heathered Club Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3GBRS_069600_1",
+        "available": true,
+        "sizes": [
+          "XL",
+          "L",
+          "M",
+          "XXL",
+          "XS",
+          "S"
+        ]
+      },
+      {
+        "color": "Beach Ball Blue",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_075700_1",
+        "available": true,
+        "sizes": [
+          "XL",
+          "L",
+          "S",
+          "XXL",
+          "XS",
+          "M"
+        ]
+      },
+      {
+        "color": "Army Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_045739_1",
+        "available": true,
+        "sizes": [
+          "S",
+          "XS",
+          "XL",
+          "XXL",
+          "M",
+          "L"
+        ]
+      },
+      {
+        "color": "Polo Pastel",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_074044_1",
+        "available": true,
+        "sizes": [
+          "S",
+          "XXL",
+          "M",
+          "XS",
+          "L",
+          "XL"
+        ]
+      },
+      {
+        "color": "Ivy Grove",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_073703_1",
+        "available": true,
+        "sizes": [
+          "M",
+          "L",
+          "XL",
+          "XXL",
+          "XS",
+          "S"
+        ]
+      },
+      {
+        "color": "Sand",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_0312_1",
+        "available": true,
+        "sizes": [
+          "M",
+          "XXL",
+          "S",
+          "L",
+          "XS",
+          "XL"
+        ]
+      },
+      {
+        "color": "Seafoam",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_0284_1",
+        "available": true,
+        "sizes": [
+          "M",
+          "XL",
+          "XS",
+          "L",
+          "S",
+          "XXL"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 61% Organic Cotton, 32% Polyester (recycled), 7% Elastane",
+      "Body: 61% Cotton, 32% Polyester, 7% Lycra Elastane"
+    ],
+    "pdp_color_attributes": 15,
+    "pdp_carousel_colors": 13,
+    "schema_variants": 81
+  },
+  {
+    "url": "https://shop.lululemon.com/p/men-pants/ABC-Cargo-Pant-Warpstreme-MD/_/prod11800821",
+    "title": "ABC Warpsteme Cargo Pant *Regular",
+    "status": "captured",
+    "color_count": 2,
+    "available_colors": [],
+    "unavailable_colors": [
+      "Black",
+      "Army Green"
+    ],
+    "color_variants": [
+      {
+        "color": "Black",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5BD0S_0001_1",
+        "available": false,
+        "sizes": [
+          "29",
+          "31",
+          "40",
+          "28",
+          "38",
+          "35",
+          "34",
+          "32",
+          "33",
+          "36",
+          "30"
+        ]
+      },
+      {
+        "color": "Army Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LM5BD0S_045739_1",
+        "available": false,
+        "sizes": [
+          "29",
+          "35",
+          "31",
+          "30",
+          "40",
+          "28",
+          "33",
+          "34",
+          "38",
+          "36",
+          "32"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 53% Elastomultiester, 47% Polyester (recycled)"
+    ],
+    "pdp_color_attributes": 2,
+    "pdp_carousel_colors": 2,
+    "schema_variants": 22
+  },
+  {
+    "url": "https://shop.lululemon.com/p/skirts-and-dresses-dresses/2-in-1-Maxi-Dress-MD/_/prod20002014",
+    "title": "2-in-1 Maxi Dress",
+    "status": "captured",
+    "color_count": 3,
+    "available_colors": [
+      "Willow Leaf",
+      "Cherry Ember"
+    ],
+    "unavailable_colors": [
+      "Raceway Green"
+    ],
+    "color_variants": [
+      {
+        "color": "Raceway Green",
+        "image": "https://images.lululemon.com/is/image/lululemon/LW1FFRS_062468_1",
+        "available": false,
+        "sizes": [
+          "XXXS",
+          "XS",
+          "XXS",
+          "L",
+          "XL",
+          "M",
+          "S"
+        ]
+      },
+      {
+        "color": "Willow Leaf",
+        "image": "https://images.lululemon.com/is/image/lululemon/LW1FFRS_072763_1",
+        "available": true,
+        "sizes": [
+          "XL",
+          "M",
+          "XXXS",
+          "XS",
+          "S",
+          "XXS",
+          "L"
+        ]
+      },
+      {
+        "color": "Cherry Ember",
+        "image": "https://images.lululemon.com/is/image/lululemon/LW1FFRS_075671_1",
+        "available": true,
+        "sizes": [
+          "L",
+          "S",
+          "XL",
+          "XXS",
+          "M",
+          "XS"
+        ]
+      }
+    ],
+    "body_materials": [
+      "Body: 79% Nylon, 21% Lycra Elastane"
+    ],
+    "pdp_color_attributes": 3,
+    "pdp_carousel_colors": 3,
+    "schema_variants": 20
+  }
+]
