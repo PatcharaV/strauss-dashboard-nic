@@ -103,6 +103,11 @@ function formatMultilineList(values, fallback = "Not specified") {
   return values?.length ? values.join("\n") : fallback;
 }
 
+function getMaterialValues(product) {
+  if (product.material_details?.length) return product.material_details;
+  return product.material ? [product.material] : [];
+}
+
 function DetailList({ values, fallback = "Not specified" }) {
   if (!values?.length) return <span className="muted-detail">{fallback}</span>;
   return (
@@ -219,10 +224,7 @@ async function exportProductsToExcel(products) {
     Collection: (product.collections || []).join(", "),
     "Available Colors": (product.available_colors || []).join(", ") || "None",
     "Unavailable Colors": (product.unavailable_colors || []).join(", "),
-    Material: formatMultilineList(
-      product.material_details,
-      product.material || "Not specified",
-    ),
+    Material: formatMultilineList(getMaterialValues(product)),
     "Technical Features": formatMultilineList(product.technical_features),
     "Fabric Treatment": formatMultilineList(product.fabric_treatment),
     Construction: formatMultilineList(product.construction),
@@ -518,8 +520,10 @@ function App() {
   const hasSubcategoryData = dashboard.products.some(
     (product) => product.subcategories?.length,
   );
-  const hasMaterialData = dashboard.products.some((product) =>
-    Boolean(String(product.material || "").trim()),
+  const hasMaterialData = dashboard.products.some(
+    (product) =>
+      Boolean(String(product.material || "").trim()) ||
+      Boolean(product.material_details?.length),
   );
   const hasTechnicalFeatureData = dashboard.products.some(
     (product) => product.technical_features?.length,
@@ -1535,12 +1539,7 @@ function App() {
                         </td>
                         {hasMaterialData && (
                           <td className="material-cell">
-                            <DetailList
-                              values={
-                                product.material_details ||
-                                (product.material ? [product.material] : [])
-                              }
-                            />
+                            <DetailList values={getMaterialValues(product)} />
                           </td>
                         )}
                         {hasTechnicalFeatureData && (
