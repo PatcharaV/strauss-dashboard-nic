@@ -280,6 +280,7 @@ async function exportProductsToExcel(products) {
     "Available Colors": (product.available_colors || []).join(", ") || "None",
     "Unavailable Colors": (product.unavailable_colors || []).join(", "),
     Material: formatMultilineList(getMaterialValues(product)),
+    Innovation: formatMultilineList(product.innovations),
     "Technical Features": formatMultilineList(product.technical_features),
     "Fabric Treatment": formatMultilineList(product.fabric_treatment),
     Construction: formatMultilineList(product.construction),
@@ -661,6 +662,12 @@ function App() {
     (product) =>
       Boolean(String(product.material || "").trim()) ||
       Boolean(product.material_details?.length),
+  );
+  const hasProductImageData = dashboard.products.some(
+    (product) => product.image || product.color_variants?.length,
+  );
+  const hasInnovationData = dashboard.products.some(
+    (product) => product.innovations?.length,
   );
   const hasTechnicalFeatureData = dashboard.products.some(
     (product) => product.technical_features?.length,
@@ -1508,7 +1515,7 @@ function App() {
                   <thead>
                     <tr className="table-heading-row">
                       <th>No.</th>
-                      {showStraussPitch && <th>Image</th>}
+                      {hasProductImageData && <th>Image</th>}
                       <th>Product</th>
                       {hasSeriesData && <th>Series</th>}
                       {hasSeriesData && <th>Season</th>}
@@ -1518,6 +1525,7 @@ function App() {
                       {hasCollectionData && <th>Collection</th>}
                       <th>Color</th>
                       {hasMaterialData && <th>Material</th>}
+                      {hasInnovationData && <th>Innovation</th>}
                       {hasTechnicalFeatureData && <th>Technical features</th>}
                       {hasFabricTreatmentData && <th>Fabric treatment</th>}
                       {hasConstructionData && <th>Construction</th>}
@@ -1532,7 +1540,7 @@ function App() {
                         <td className="number-cell">
                           {(currentProductPage - 1) * productsPerPage + index + 1}
                         </td>
-                        {showStraussPitch && (
+                        {hasProductImageData && (
                           <td className="product-image-cell">
                             {product.color_variants?.length ? (
                               <div className="product-image-gallery">
@@ -1705,6 +1713,11 @@ function App() {
                         {hasMaterialData && (
                           <td className="material-cell">
                             <DetailList values={getMaterialValues(product)} />
+                          </td>
+                        )}
+                        {hasInnovationData && (
+                          <td className="detail-cell">
+                            <DetailList values={product.innovations} />
                           </td>
                         )}
                         {hasTechnicalFeatureData && (

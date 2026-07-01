@@ -97,6 +97,76 @@ class StraussVariantAggregationTests(unittest.TestCase):
         self.assertEqual(dashboard["summary"]["total_products"], 2)
         self.assertEqual(len(dashboard["products"]), 2)
 
+    def test_lululemon_styles_are_grouped_for_table_only(self):
+        products = [
+            {
+                "id": "lululemon:one",
+                "product_id": "prod-one",
+                "style_number": "LM123",
+                "brand": "lululemon",
+                "brand_label": "lululemon",
+                "title": "Zeroed In Shirt",
+                "categories": ["T-Shirts"],
+                "audiences": ["men"],
+                "audience_labels": ["Men"],
+                "available_colors": ["Black"],
+                "color": "Black",
+                "image": "https://example.com/black.jpg",
+                "color_variants": [
+                    {
+                        "color": "Black",
+                        "image": "https://example.com/black.jpg",
+                        "url": "https://example.com/black",
+                        "available": True,
+                    }
+                ],
+                "material_details": ["Body: 61% Organic Cotton"],
+                "innovations": ["Four-way stretch"],
+                "price_min": 0,
+                "price_max": 0,
+                "price_known": False,
+                "available": True,
+            },
+            {
+                "id": "lululemon:two",
+                "product_id": "prod-two",
+                "style_number": "LM123",
+                "brand": "lululemon",
+                "brand_label": "lululemon",
+                "title": "Zeroed In Shirt",
+                "categories": ["T-Shirts"],
+                "audiences": ["men"],
+                "audience_labels": ["Men"],
+                "available_colors": ["Seafoam"],
+                "color": "Seafoam",
+                "image": "https://example.com/seafoam.jpg",
+                "color_variants": [
+                    {
+                        "color": "Seafoam",
+                        "image": "https://example.com/seafoam.jpg",
+                        "url": "https://example.com/seafoam",
+                        "available": True,
+                    }
+                ],
+                "material_details": ["Body: 61% Organic Cotton"],
+                "innovations": ["Sweat-wicking"],
+                "price_min": 0,
+                "price_max": 0,
+                "price_known": False,
+                "available": True,
+            },
+        ]
+
+        dashboard = build_dashboard(products, "test", "2026-07-01")
+        product = dashboard["products"][0]
+
+        self.assertEqual(dashboard["summary"]["total_products"], 2)
+        self.assertEqual(dashboard["categories"], [{"name": "T-Shirts", "value": 2}])
+        self.assertEqual(len(dashboard["products"]), 1)
+        self.assertEqual(product["available_colors"], ["Black", "Seafoam"])
+        self.assertEqual(len(product["color_variants"]), 2)
+        self.assertEqual(product["innovations"], ["Four-way stretch", "Sweat-wicking"])
+
 
 if __name__ == "__main__":
     unittest.main()

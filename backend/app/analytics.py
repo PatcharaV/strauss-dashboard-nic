@@ -1,3 +1,4 @@
+import re
 from collections import Counter
 from statistics import mean
 from typing import Any
@@ -416,6 +417,21 @@ def _strauss_product_key(product: dict[str, Any]) -> str:
     )
 
 
+def _table_merge_key(product: dict[str, Any]) -> str:
+    brand = str(product.get("brand", "")).strip()
+    if brand == "strauss":
+        return f"strauss:{_strauss_product_key(product)}"
+    if brand == "lululemon":
+        style = str(product.get("style_number") or "").strip()
+        if style:
+            return f"lululemon:{style}"
+        title = re.sub(r"\s+", " ", str(product.get("title", "")).strip().lower())
+        audience = "|".join(product.get("audiences", []))
+        category = "|".join(product.get("categories", []))
+        return f"lululemon:{audience}:{category}:{title}"
+    return f"row:{product.get('id')}"
+
+
 def _merge_strauss_variants(
     products: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
@@ -423,21 +439,25 @@ def _merge_strauss_variants(
     order: list[str] = []
 
     for product in products:
-        if product.get("brand") != "strauss":
+        if product.get("brand") not in {"strauss", "lululemon"}:
             key = f"row:{product.get('id')}"
             merged[key] = product
             order.append(key)
             continue
 
-        key = f"strauss:{_strauss_product_key(product)}"
+        key = _table_merge_key(product)
         color = str(product.get("color", "")).strip()
         image = str(product.get("image", "")).strip()
-        variant = {
-            "color": color,
-            "image": image,
-            "url": str(product.get("url", "")).strip(),
-            "available": bool(product.get("available")),
-        }
+        variants = product.get("color_variants")
+        if not isinstance(variants, list) or not variants:
+            variants = [
+                {
+                    "color": color,
+                    "image": image,
+                    "url": str(product.get("url", "")).strip(),
+                    "available": bool(product.get("available")),
+                }
+            ]
 
         if key not in merged:
             merged[key] = {
@@ -466,6 +486,7 @@ def _merge_strauss_variants(
             "technical_features",
             "fabric_treatment",
             "construction",
+            "innovations",
             "product_functions",
         ):
             _append_unique(row.setdefault(field, []), product.get(field))
@@ -474,10 +495,19 @@ def _merge_strauss_variants(
         _append_unique(row["unavailable_colors"], product.get("unavailable_colors"))
         _append_unique(row["all_colors"], _product_all_colors(product))
 
-        if color and not any(
-            item.get("color") == color for item in row["color_variants"]
-        ):
-            row["color_variants"].append(variant)
+        for variant in variants:
+            variant_color = str(variant.get("color", "")).strip()
+            if variant_color and not any(
+                item.get("color") == variant_color for item in row["color_variants"]
+            ):
+                row["color_variants"].append(
+                    {
+                        "color": variant_color,
+                        "image": str(variant.get("image", "")).strip(),
+                        "url": str(variant.get("url") or product.get("url") or "").strip(),
+                        "available": bool(variant.get("available", product.get("available"))),
+                    }
+                )
 
         row["available"] = bool(row.get("available")) or bool(product.get("available"))
         row["top_seller"] = bool(row.get("top_seller")) or bool(
@@ -496,7 +526,7 @@ def _merge_strauss_variants(
         )
 
     for row in merged.values():
-        if row.get("brand") != "strauss":
+        if row.get("brand") not in {"strauss", "lululemon"}:
             continue
         available = set(row.get("available_colors", []))
         row["unavailable_colors"] = [

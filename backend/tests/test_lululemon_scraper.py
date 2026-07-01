@@ -1,6 +1,10 @@
 import unittest
 
-from app.lululemon_scraper import _normalize
+from app.lululemon_scraper import (
+    _apply_pdp_details,
+    _apply_schema_details,
+    _normalize,
+)
 
 
 class LululemonScraperTests(unittest.TestCase):
@@ -26,6 +30,108 @@ class LululemonScraperTests(unittest.TestCase):
         )
 
         self.assertIsNone(product)
+
+    def test_applies_pdp_details(self):
+        product = _normalize(
+            "https://shop.lululemon.com/p/men-ss-tops/"
+            "Zeroed-In-Short-Sleeve-Shirt/_/prod11680098",
+            "2026-06-30",
+        )
+        pdp_data = {
+            "productCarousel": [
+                {
+                    "color": {"name": "Seafoam"},
+                    "imageInfo": [
+                        "https://images.lululemon.com/is/image/lululemon/LM3GFNS_0284_1"
+                    ],
+                }
+            ],
+            "colorAttributes": [
+                {
+                    "styleColorId": "LM3GFNS-0284",
+                    "careAndContent": {
+                        "sections": [
+                            {
+                                "attributes": [
+                                    {
+                                        "list": {
+                                            "title": "Body",
+                                            "items": ["61% Organic Cotton", "32% Polyester"],
+                                        },
+                                        "text": "",
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "fabricOrBenefits": {
+                        "title": "Soft Cotton-Blend Fabric",
+                        "sections": [
+                            {
+                                "attributes": [
+                                    {"text": "Four-way stretch", "list": None}
+                                ]
+                            }
+                        ],
+                    },
+                }
+            ],
+        }
+
+        _apply_pdp_details(product, pdp_data)
+
+        self.assertEqual(product["style_number"], "LM3GFNS")
+        self.assertEqual(product["available_colors"], ["Seafoam"])
+        self.assertIn("LM3GFNS_0284_1", product["image"])
+        self.assertEqual(product["material_details"], ["Body: 61% Organic Cotton, 32% Polyester"])
+        self.assertEqual(
+            product["innovations"],
+            ["Soft Cotton-Blend Fabric", "Four-way stretch"],
+        )
+
+    def test_applies_schema_details(self):
+        product = _normalize(
+            "https://shop.lululemon.com/p/men-ss-tops/"
+            "Zeroed-In-Short-Sleeve-Shirt/_/prod11680098",
+            "2026-06-30",
+        )
+        schema = {
+            "@type": "ProductGroup",
+            "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_0284_1",
+            "hasVariant": [
+                {
+                    "color": "Black",
+                    "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_0001_1",
+                    "offers": [
+                        {
+                            "price": "58.00",
+                            "availability": "https://schema.org/InStock",
+                        }
+                    ],
+                },
+                {
+                    "color": "Seafoam",
+                    "image": "https://images.lululemon.com/is/image/lululemon/LM3GFNS_0284_1",
+                    "offers": [
+                        {
+                            "price": "58.00",
+                            "availability": "https://schema.org/OutOfStock",
+                        }
+                    ],
+                },
+            ],
+        }
+
+        _apply_schema_details(product, schema)
+
+        self.assertEqual(product["style_number"], "LM3GFNS")
+        self.assertEqual(product["available_colors"], ["Black"])
+        self.assertEqual(product["unavailable_colors"], ["Seafoam"])
+        self.assertEqual(len(product["color_variants"]), 2)
+        self.assertIn("LM3GFNS_0284_1", product["image"])
+        self.assertEqual(product["price_min"], 58)
+        self.assertEqual(product["price_max"], 58)
+        self.assertTrue(product["price_known"])
 
 
 if __name__ == "__main__":
