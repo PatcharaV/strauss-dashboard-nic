@@ -46,6 +46,8 @@ const STRAUSS_PITCH_SLIDES = [
   "/strauss-pitch-slides/Slide2.PNG",
   "/strauss-pitch-slides/Slide3.PNG",
   "/strauss-pitch-slides/Slide4.PNG",
+  "/strauss-pitch-slides/Slide5.PNG",
+  "/strauss-pitch-slides/Slide6.PNG",
 ];
 
 const ARCTERYX_COTTON_SLIDES = [
