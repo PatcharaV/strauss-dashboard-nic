@@ -1066,9 +1066,9 @@ function App() {
             onClick={() => setFilters({ ...filters, categories: [] })}
             title="Clear category selection"
           >
-            <span>Product categories</span>
+            <span>Category groups</span>
             <strong>{formatNumber.format(dashboard.summary.categories)}</strong>
-            <small>Across the current brand selection</small>
+            <small>Product category groups in the current selection</small>
           </button>
           <button
             className="kpi-card interactive-card"
