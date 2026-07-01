@@ -135,6 +135,7 @@ function SlideDeckPanel({
   title,
   downloadHref,
   downloadLabel = "Download PPTX",
+  extraDownloads = [],
   slides,
   slideIndex,
   setSlideIndex,
@@ -148,15 +149,29 @@ function SlideDeckPanel({
           <p className="eyebrow">{eyebrow}</p>
           <h2>{title}</h2>
         </div>
-        <a
-          className="export-button"
-          href={downloadHref}
-          target="_blank"
-          rel="noreferrer"
-          download
-        >
-          {downloadLabel}
-        </a>
+        <div className="document-downloads">
+          <a
+            className="export-button"
+            href={downloadHref}
+            target="_blank"
+            rel="noreferrer"
+            download
+          >
+            {downloadLabel}
+          </a>
+          {extraDownloads.map((item) => (
+            <a
+              className="secondary-link"
+              href={item.href}
+              target="_blank"
+              rel="noreferrer"
+              download
+              key={item.href}
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
       </div>
       <p className="panel-help">
         Slide preview rendered from the attached PowerPoint deck.
@@ -1751,6 +1766,9 @@ function App() {
           eyebrow="NAN YANG TEXTILE"
           title="NAN YANG STRAUSS PITCH"
           downloadHref="/nanyang-strauss-pitch.pptx"
+          extraDownloads={[
+            { href: "/nictrend-ss28.pdf", label: "Download Trend PDF" },
+          ]}
           slides={STRAUSS_PITCH_SLIDES}
           slideIndex={pitchSlideIndex}
           setSlideIndex={setPitchSlideIndex}
