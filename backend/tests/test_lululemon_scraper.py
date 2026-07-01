@@ -20,6 +20,8 @@ class LululemonScraperTests(unittest.TestCase):
         self.assertEqual(product["audiences"], ["men"])
         self.assertEqual(product["categories"], ["Short Sleeve Shirts"])
         self.assertEqual(product["subcategories"], [])
+        self.assertEqual(product["material_details"], [])
+        self.assertEqual(product["material"], "")
         self.assertEqual(product["price_known"], False)
 
     def test_excludes_non_clothing_products(self):
@@ -57,6 +59,13 @@ class LululemonScraperTests(unittest.TestCase):
                                         "list": {
                                             "title": "Body",
                                             "items": ["61% Organic Cotton", "32% Polyester"],
+                                        },
+                                        "text": "",
+                                    },
+                                    {
+                                        "list": {
+                                            "title": "Rib",
+                                            "items": ["95% Cotton", "5% Elastane"],
                                         },
                                         "text": "",
                                     }

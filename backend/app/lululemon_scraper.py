@@ -278,6 +278,8 @@ def _material_values(color_attributes: list[dict[str, Any]]) -> list[str]:
     for attribute in color_attributes:
         care = attribute.get("careAndContent")
         for value in _panel_text_values(care):
+            if not value.lower().startswith("body:"):
+                continue
             if re.search(r"\d+\s*%|cotton|polyester|nylon|elastane|lycra|wool|modal|viscose", value, re.I):
                 _append_unique(values, value)
     return values
@@ -495,12 +497,21 @@ def _apply_pdp_details(product: dict[str, Any], pdp_data: dict[str, Any]) -> Non
     innovations = _innovation_values(color_attributes)
     style_number = _style_number(color_attributes)
     product["style_number"] = style_number or product.get("style_number", "")
-    product["available_colors"] = available_colors
-    product["all_colors"] = all_colors
-    product["color"] = " / ".join(available_colors)
-    product["color_variants"] = color_variants
-    product["image"] = color_variants[0]["image"] if color_variants else product.get("image", "")
-    product["variant_count"] = max(1, len(color_variants))
+    existing_variants = product.get("color_variants")
+    if isinstance(existing_variants, list) and existing_variants:
+        by_color = {str(item.get("color", "")).strip(): item for item in existing_variants}
+        for variant in color_variants:
+            color = str(variant.get("color", "")).strip()
+            if color in by_color and variant.get("image") and not by_color[color].get("image"):
+                by_color[color]["image"] = variant["image"]
+        product["color_variants"] = existing_variants
+    else:
+        product["available_colors"] = available_colors
+        product["all_colors"] = all_colors
+        product["color"] = " / ".join(available_colors)
+        product["color_variants"] = color_variants
+        product["image"] = color_variants[0]["image"] if color_variants else product.get("image", "")
+        product["variant_count"] = max(1, len(color_variants))
     product["material_details"] = materials or product.get("material_details", [])
     product["material"] = " | ".join(product["material_details"])
     product["innovations"] = innovations
@@ -539,10 +550,8 @@ def _normalize(url: str, lastmod: str | None = None) -> dict[str, Any] | None:
 
     audiences, audience_labels = _audience(segment)
     collections = _keyword_values(title, COLLECTION_KEYWORDS)
-    fabrics = _keyword_values(title, FABRIC_KEYWORDS)
     activities = _activities(title, category)
     product_id = parsed["product_id"]
-    material = ", ".join(fabrics)
 
     return {
         "id": f"lululemon:{product_id}",
@@ -576,8 +585,8 @@ def _normalize(url: str, lastmod: str | None = None) -> dict[str, Any] | None:
         "tags": [segment],
         "image": "",
         "url": url,
-        "material": material,
-        "material_details": fabrics,
+        "material": "",
+        "material_details": [],
         "technical_features": [],
         "fabric_treatment": [],
         "construction": [],
