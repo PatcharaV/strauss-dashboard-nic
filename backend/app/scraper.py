@@ -874,7 +874,6 @@ async def scrape_strauss_products() -> dict[str, Any]:
             await asyncio.sleep(REQUEST_DELAY_SECONDS)
 
     products: list[dict[str, Any]] = []
-    mapped_categories = set(CATEGORY_COLLECTIONS)
     for identity, card in listings.items():
         product = raw_products.get(card["handle"])
         if not product:
@@ -882,11 +881,8 @@ async def scrape_strauss_products() -> dict[str, Any]:
         categories = sorted(category_memberships.get(identity, set()))
         subcategories = sorted(subcategory_memberships.get(identity, set()))
         features = sorted(feature_memberships.get(identity, set()))
-        product_type = str(product.get("product_type") or "Other").strip()
         if not categories:
-            categories = [
-                product_type if product_type in mapped_categories else "Other"
-            ]
+            categories = ["Other"]
         categories, subcategories = _fallback_classification(
             str(card.get("title") or product.get("title", "")),
             categories,
