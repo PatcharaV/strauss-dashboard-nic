@@ -25,7 +25,6 @@ const COLORS = [
   "#9b59b6",
 ];
 
-const AUTH_STORAGE_KEY = "nic-dashboard-session";
 const DEFAULT_BRAND_OPTIONS = [
   { value: "strauss", label: "Strauss" },
   { value: "rhone", label: "Rhone" },
@@ -524,7 +523,6 @@ function LoginScreen({ onLogin }) {
         throw new Error("Invalid username or password");
       }
       const session = await response.json();
-      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(session));
       onLogin(session);
     } catch {
       setError("Username หรือ Password ไม่ถูกต้อง");
@@ -575,13 +573,7 @@ function LoginScreen({ onLogin }) {
 }
 
 function App() {
-  const [session, setSession] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY));
-    } catch {
-      return null;
-    }
-  });
+  const [session, setSession] = useState(null);
   const [options, setOptions] = useState(demoOptions);
   const [dashboard, setDashboard] = useState(demoDashboard);
   const [filters, setFilters] = useState({
@@ -712,12 +704,13 @@ function App() {
   );
 
   function handleLogin(nextSession) {
+    localStorage.removeItem("nic-dashboard-session");
     setSession(nextSession);
     setMessage("Connecting to Python API...");
   }
 
   function handleLogout() {
-    localStorage.removeItem(AUTH_STORAGE_KEY);
+    localStorage.removeItem("nic-dashboard-session");
     setSession(null);
     setOptions(demoOptions);
     setDashboard(demoDashboard);
