@@ -25,6 +25,13 @@ const COLORS = [
   "#9b59b6",
 ];
 
+const AUTH_STORAGE_KEY = "nic-dashboard-session";
+const ALLOWED_BRAND_OPTIONS = [
+  { value: "strauss", label: "Strauss" },
+  { value: "rhone", label: "Rhone" },
+  { value: "arcteryx", label: "Arc'Teryx" },
+];
+
 const DEFAULT_SECTIONS = {
   summary: true,
   audience: true,
@@ -448,7 +455,84 @@ function FilterGroup({ title, options, selected, onChange }) {
   );
 }
 
+function LoginScreen({ onLogin }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setSubmitting(true);
+    setError("");
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!response.ok) {
+        throw new Error("Invalid username or password");
+      }
+      const session = await response.json();
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(session));
+      onLogin(session);
+    } catch {
+      setError("Username หรือ Password ไม่ถูกต้อง");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <main className="login-page">
+      <section className="login-card">
+        <div className="brand-mark">N</div>
+        <p className="eyebrow">NAN YANG TEXTILE</p>
+        <h1>NIC Dashboard Login</h1>
+        <p className="page-description">
+          Sign in to view Strauss, Rhone and Arc&apos;teryx dashboards.
+        </p>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <label>
+            <span className="filter-title">Username</span>
+            <input
+              autoComplete="username"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              placeholder="Enter username"
+              required
+            />
+          </label>
+          <label>
+            <span className="filter-title">Password</span>
+            <input
+              autoComplete="current-password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Enter password"
+              required
+            />
+          </label>
+          {error && <p className="login-error">{error}</p>}
+          <button className="primary-button" type="submit" disabled={submitting}>
+            {submitting ? "Signing in..." : "Sign in"}
+          </button>
+        </form>
+      </section>
+    </main>
+  );
+}
+
 function App() {
+  const [session, setSession] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY));
+    } catch {
+      return null;
+    }
+  });
   const [options, setOptions] = useState(demoOptions);
   const [dashboard, setDashboard] = useState(demoDashboard);
   const [filters, setFilters] = useState({
@@ -496,6 +580,10 @@ function App() {
   const query = useMemo(
     () => buildQuery(filters, selectedPeriod),
     [filters, selectedPeriod],
+  );
+  const authHeaders = useMemo(
+    () => (session?.token ? { "X-Dashboard-Token": session.token } : {}),
+    [session],
   );
   const productCategories = options.categories;
   const availableShopHighlights = options.shop_highlights || [];
@@ -566,19 +654,47 @@ function App() {
     currentProductPage * productsPerPage,
   );
 
+  function handleLogin(nextSession) {
+    setSession(nextSession);
+    setMessage("Connecting to Python API...");
+  }
+
+  function handleLogout() {
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+    setSession(null);
+    setOptions(demoOptions);
+    setDashboard(demoDashboard);
+    setMessage("Please sign in to view live data");
+  }
+
+  function authorizedFetch(url, options = {}) {
+    return fetch(url, {
+      ...options,
+      headers: {
+        ...(options.headers || {}),
+        ...authHeaders,
+      },
+    });
+  }
+
   async function loadDashboard() {
+    if (!session?.token) return;
     setLoading(true);
     try {
       const [optionsResponse, dashboardResponse] = await Promise.all([
-        fetch(`/api/options${query ? `?${query}` : ""}`),
-        fetch(`/api/dashboard${query ? `?${query}` : ""}`),
+        authorizedFetch(`/api/options${query ? `?${query}` : ""}`),
+        authorizedFetch(`/api/dashboard${query ? `?${query}` : ""}`),
       ]);
+      if (optionsResponse.status === 401 || dashboardResponse.status === 401) {
+        handleLogout();
+        return;
+      }
       if (!optionsResponse.ok || !dashboardResponse.ok) {
         throw new Error("API response was not successful");
       }
       setOptions(await optionsResponse.json());
       setDashboard(await dashboardResponse.json());
-      setMessage("Live data from Strauss, Rhone, Arc'teryx and lululemon");
+      setMessage("Live data from Strauss, Rhone and Arc'teryx");
     } catch {
       setMessage("Demo preview: start the Python API for live data");
     } finally {
@@ -587,9 +703,10 @@ function App() {
   }
 
   useEffect(() => {
+    if (!session?.token) return;
     const timer = setTimeout(loadDashboard, 250);
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, session?.token]);
 
   useEffect(() => {
     if (
@@ -626,7 +743,7 @@ function App() {
         month: scrapeMonth,
         year: String(scrapeYear),
       });
-      const response = await fetch(`/api/scrape?${params.toString()}`, {
+      const response = await authorizedFetch(`/api/scrape?${params.toString()}`, {
         method: "POST",
       });
       if (!response.ok) throw new Error("Scrape failed");
@@ -715,6 +832,10 @@ function App() {
     });
   }
 
+  if (!session?.token) {
+    return <LoginScreen onLogin={handleLogin} />;
+  }
+
   return (
     <main>
       <header className="topbar">
@@ -724,12 +845,15 @@ function App() {
             <p className="eyebrow">PUBLIC CLOTHING CATALOG ANALYTICS</p>
             <h1>Multi-Brand Clothing Dashboard</h1>
             <p className="page-description">
-              Compare clothing from Strauss, Rhone, Arc&apos;teryx and lululemon.
-              Footwear and gear are excluded.
+              Compare clothing from Strauss, Rhone and Arc&apos;teryx. Footwear and
+              gear are excluded.
             </p>
           </div>
         </div>
         <div className="header-actions">
+          <button className="secondary-link logout-button" type="button" onClick={handleLogout}>
+            Logout
+          </button>
           <div className="status">
             <span className={message.startsWith("Live") ? "dot live" : "dot"} />
             <div>
@@ -790,34 +914,16 @@ function App() {
           <strong>Select one brand to view its dashboard</strong>
         </div>
         <div className="brand-switcher-buttons">
-          <button
-            className={filters.brands.includes("strauss") ? "active" : ""}
-            type="button"
-            onClick={() => selectBrand("strauss")}
-          >
-            Strauss
-          </button>
-          <button
-            className={filters.brands.includes("rhone") ? "active" : ""}
-            type="button"
-            onClick={() => selectBrand("rhone")}
-          >
-            Rhone
-          </button>
-          <button
-            className={filters.brands.includes("arcteryx") ? "active" : ""}
-            type="button"
-            onClick={() => selectBrand("arcteryx")}
-          >
-            Arc&apos;Teryx
-          </button>
-          <button
-            className={filters.brands.includes("lululemon") ? "active" : ""}
-            type="button"
-            onClick={() => selectBrand("lululemon")}
-          >
-            lululemon
-          </button>
+          {ALLOWED_BRAND_OPTIONS.map((brand) => (
+            <button
+              className={filters.brands.includes(brand.value) ? "active" : ""}
+              type="button"
+              key={brand.value}
+              onClick={() => selectBrand(brand.value)}
+            >
+              {brand.label}
+            </button>
+          ))}
         </div>
       </section>
 
