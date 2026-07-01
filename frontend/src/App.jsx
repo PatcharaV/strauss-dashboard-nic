@@ -473,6 +473,16 @@ function App() {
   const seasonOptions = options.seasons || [];
   const showStraussPitch = filters.brands.includes("strauss");
   const showArcteryxDeck = filters.brands.includes("arcteryx");
+  const showCategoryTreemap = filters.brands.includes("lululemon");
+  const treemapRows = showCategoryTreemap
+    ? dashboard.categories || []
+    : dashboard.subcategories || [];
+  const treemapSelectedNames = showCategoryTreemap
+    ? filters.categories
+    : filters.subcategories;
+  const treemapSelectHandler = showCategoryTreemap
+    ? toggleCategory
+    : toggleSubcategory;
   const hasCollectionData =
     (dashboard.collections || []).length > 0 ||
     dashboard.products.some((product) => product.collections?.length);
@@ -1163,20 +1173,20 @@ function App() {
           <article className="panel treemap-panel">
             <div className="panel-heading">
               <div>
-                <h2>Sub category treemap</h2>
+                <h2>{showCategoryTreemap ? "Product category treemap" : "Sub category treemap"}</h2>
               </div>
               <span className="panel-tag">Click a block</span>
             </div>
             <ResponsiveContainer width="100%" height={410}>
               <Treemap
-                data={dashboard.subcategories || []}
+                data={treemapRows}
                 dataKey="value"
                 nameKey="name"
                 stroke="#fff"
                 content={
                   <TreemapContent
-                    onSelect={toggleSubcategory}
-                    selectedNames={filters.subcategories}
+                    onSelect={treemapSelectHandler}
+                    selectedNames={treemapSelectedNames}
                   />
                 }
               >
