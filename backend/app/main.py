@@ -91,13 +91,14 @@ async def get_data(
 
 async def monthly_auto_scrape_loop() -> None:
     while True:
+        now = datetime.now(timezone.utc)
         period = current_scrape_period()
         try:
-            if load_period_cache(period) is None:
+            if now.day == 1 and load_period_cache(period) is None:
                 await get_data(force=True, scrape_period=period)
         except Exception:
             pass
-        await asyncio.sleep(24 * 60 * 60)
+        await asyncio.sleep(60 * 60)
 
 
 @asynccontextmanager

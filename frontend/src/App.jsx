@@ -474,8 +474,8 @@ function App() {
   const [productsPerPage, setProductsPerPage] = useState(50);
   const [pitchSlideIndex, setPitchSlideIndex] = useState(0);
   const [arcteryxSlideIndex, setArcteryxSlideIndex] = useState(0);
-  const [scrapeMonth, setScrapeMonth] = useState(HISTORY_START.month);
-  const [scrapeYear, setScrapeYear] = useState(HISTORY_START.year);
+  const [scrapeMonth, setScrapeMonth] = useState(CURRENT_PERIOD.month);
+  const [scrapeYear, setScrapeYear] = useState(CURRENT_PERIOD.year);
 
   const selectedPeriod = useMemo(
     () => ({ month: scrapeMonth, year: scrapeYear }),
