@@ -61,7 +61,15 @@ const SCRAPE_MONTHS = [
   "NOV",
   "DEC",
 ];
-const SCRAPE_YEARS = [2026, 2027, 2028, 2029, 2030];
+const HISTORY_START = { month: "JUN", year: 2026 };
+const CURRENT_PERIOD = {
+  month: SCRAPE_MONTHS[new Date().getMonth()],
+  year: new Date().getFullYear(),
+};
+const SCRAPE_YEARS = Array.from(
+  { length: Math.max(HISTORY_START.year, CURRENT_PERIOD.year) - HISTORY_START.year + 1 },
+  (_, index) => 2026 + index,
+);
 
 const formatNumber = new Intl.NumberFormat("en-US");
 const formatMoney = new Intl.NumberFormat("en-US", {
@@ -255,8 +263,12 @@ async function exportProductsToExcel(products) {
   XLSX.writeFile(workbook, `brand-analysis-products-${today}.xlsx`);
 }
 
-function buildQuery(filters) {
+function buildQuery(filters, period) {
   const params = new URLSearchParams();
+  if (period?.month && period?.year) {
+    params.set("month", period.month);
+    params.set("year", String(period.year));
+  }
   if (filters.search.trim()) params.set("search", filters.search.trim());
   if (filters.brands.length) {
     params.set("brands", filters.brands.join(","));
@@ -462,10 +474,27 @@ function App() {
   const [productsPerPage, setProductsPerPage] = useState(50);
   const [pitchSlideIndex, setPitchSlideIndex] = useState(0);
   const [arcteryxSlideIndex, setArcteryxSlideIndex] = useState(0);
-  const [scrapeMonth, setScrapeMonth] = useState("JAN");
-  const [scrapeYear, setScrapeYear] = useState(2026);
+  const [scrapeMonth, setScrapeMonth] = useState(HISTORY_START.month);
+  const [scrapeYear, setScrapeYear] = useState(HISTORY_START.year);
 
-  const query = useMemo(() => buildQuery(filters), [filters]);
+  const selectedPeriod = useMemo(
+    () => ({ month: scrapeMonth, year: scrapeYear }),
+    [scrapeMonth, scrapeYear],
+  );
+  const availableMonths = useMemo(() => {
+    let months = SCRAPE_MONTHS;
+    if (scrapeYear === HISTORY_START.year) {
+      months = months.slice(SCRAPE_MONTHS.indexOf(HISTORY_START.month));
+    }
+    if (scrapeYear === CURRENT_PERIOD.year) {
+      months = months.slice(0, SCRAPE_MONTHS.indexOf(CURRENT_PERIOD.month) + 1);
+    }
+    return months;
+  }, [scrapeYear]);
+  const query = useMemo(
+    () => buildQuery(filters, selectedPeriod),
+    [filters, selectedPeriod],
+  );
   const productCategories = options.categories;
   const availableShopHighlights = options.shop_highlights || [];
   const activityOptions = options.activities || [];
@@ -559,6 +588,22 @@ function App() {
   }, [query]);
 
   useEffect(() => {
+    if (
+      scrapeYear === HISTORY_START.year &&
+      SCRAPE_MONTHS.indexOf(scrapeMonth) < SCRAPE_MONTHS.indexOf(HISTORY_START.month)
+    ) {
+      setScrapeMonth(HISTORY_START.month);
+      return;
+    }
+    if (
+      scrapeYear === CURRENT_PERIOD.year &&
+      SCRAPE_MONTHS.indexOf(scrapeMonth) > SCRAPE_MONTHS.indexOf(CURRENT_PERIOD.month)
+    ) {
+      setScrapeMonth(CURRENT_PERIOD.month);
+    }
+  }, [scrapeMonth, scrapeYear]);
+
+  useEffect(() => {
     setProductPage(1);
   }, [query, productsPerPage]);
 
@@ -571,7 +616,7 @@ function App() {
   async function scrapeLatest() {
     setScraping(true);
     const periodLabel = `${scrapeMonth} ${scrapeYear}`;
-    setMessage(`Scraping ${periodLabel} clothing catalog...`);
+    setMessage(`Scraping ${periodLabel} clothing snapshot...`);
     try {
       const params = new URLSearchParams({
         month: scrapeMonth,
@@ -699,7 +744,7 @@ function App() {
                 onChange={(event) => setScrapeMonth(event.target.value)}
                 disabled={scraping}
               >
-                {SCRAPE_MONTHS.map((month) => (
+                {availableMonths.map((month) => (
                   <option key={month} value={month}>
                     {month}
                   </option>
@@ -721,8 +766,7 @@ function App() {
               </select>
             </label>
             <small>
-              Arc&apos;teryx period uses catalog season code. Other brands scrape
-              current catalog.
+              View or refresh monthly catalog snapshots from JUN 2026 onward.
             </small>
           </div>
           <button
@@ -731,7 +775,7 @@ function App() {
             onClick={scrapeLatest}
             disabled={scraping}
           >
-            {scraping ? "Scraping..." : "Scrape selected period"}
+            {scraping ? "Scraping..." : "Refresh selected month"}
           </button>
         </div>
       </header>

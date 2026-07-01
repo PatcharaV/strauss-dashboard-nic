@@ -12,6 +12,23 @@ from .scraper import extract_product_functions, scrape_strauss_products
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 CACHE_PATH = DATA_DIR / "products.json"
+HISTORY_DIR = DATA_DIR / "history"
+MONTH_CODES = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC",
+]
+HISTORY_START_YEAR = 2026
+HISTORY_START_MONTH = 6
 PERIOD_SEASON_MONTHS = {
     "JAN": "S",
     "FEB": "S",
@@ -26,6 +43,51 @@ PERIOD_SEASON_MONTHS = {
     "NOV": "F",
     "DEC": "F",
 }
+
+
+def period_key(scrape_period: dict[str, Any] | None) -> str:
+    if not scrape_period:
+        return "latest"
+    month = str(scrape_period.get("month", "")).upper()
+    year = int(scrape_period.get("year", 0) or 0)
+    if month not in MONTH_CODES or not year:
+        return "latest"
+    return f"{year:04d}-{MONTH_CODES.index(month) + 1:02d}"
+
+
+def period_label(scrape_period: dict[str, Any] | None) -> str:
+    if not scrape_period:
+        return ""
+    month = str(scrape_period.get("month", "")).upper()
+    year = scrape_period.get("year")
+    return f"{month} {year}" if month and year else ""
+
+
+def period_cache_path(scrape_period: dict[str, Any] | None) -> Path:
+    return HISTORY_DIR / f"{period_key(scrape_period)}.json"
+
+
+def available_periods() -> list[dict[str, Any]]:
+    periods: list[dict[str, Any]] = []
+    if not HISTORY_DIR.exists():
+        return periods
+    for path in sorted(HISTORY_DIR.glob("*.json")):
+        match = re.fullmatch(r"(\d{4})-(\d{2})", path.stem)
+        if not match:
+            continue
+        year = int(match.group(1))
+        month_index = int(match.group(2)) - 1
+        if month_index < 0 or month_index >= len(MONTH_CODES):
+            continue
+        periods.append(
+            {
+                "key": path.stem,
+                "month": MONTH_CODES[month_index],
+                "year": year,
+                "label": f"{MONTH_CODES[month_index]} {year}",
+            }
+        )
+    return periods
 CLOTHING_CATEGORIES = {
     "strauss": {
         "Shirts",
@@ -246,6 +308,28 @@ def _normalize_cached_payload(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _write_payload(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+
+def load_period_cache(scrape_period: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not scrape_period:
+        return load_cache()
+    path = period_cache_path(scrape_period)
+    if not path.exists():
+        return None
+    try:
+        return _normalize_cached_payload(
+            json.loads(path.read_text(encoding="utf-8"))
+        )
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
 async def scrape_products(scrape_period: dict[str, Any] | None = None) -> dict[str, Any]:
     cached = load_cache() or {}
     cached_products = cached.get("products", [])
@@ -340,11 +424,9 @@ async def scrape_products(scrape_period: dict[str, Any] | None = None) -> dict[s
         "product_count": len(products),
         "products": products,
     }
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    CACHE_PATH.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    _write_payload(CACHE_PATH, payload)
+    if scrape_period:
+        _write_payload(period_cache_path(scrape_period), payload)
     return payload
 
 

@@ -1,5 +1,6 @@
 import asyncio
 from contextlib import asynccontextmanager
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -8,7 +9,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from .analytics import build_dashboard, build_options, filter_products
-from .catalog import CACHE_PATH, load_cache, normalize_csv, scrape_products
+from .catalog import (
+    CACHE_PATH,
+    HISTORY_START_MONTH,
+    HISTORY_START_YEAR,
+    available_periods,
+    load_cache,
+    load_period_cache,
+    normalize_csv,
+    scrape_products,
+)
 
 MONTH_LABELS = {
     "JAN": "January",
@@ -27,25 +37,78 @@ MONTH_LABELS = {
 
 store: dict[str, Any] = {}
 scrape_lock = asyncio.Lock()
+auto_scrape_task: asyncio.Task | None = None
+
+
+def make_scrape_period(month: str | None, year: int | None) -> dict[str, Any] | None:
+    if not month or not year:
+        return None
+    month = month.upper()
+    return {
+        "month": month,
+        "month_label": MONTH_LABELS[month],
+        "year": year,
+        "label": f"{month} {year}",
+    }
+
+
+def current_scrape_period() -> dict[str, Any]:
+    now = datetime.now(timezone.utc)
+    month = list(MONTH_LABELS)[now.month - 1]
+    year = now.year
+    if year < HISTORY_START_YEAR or (
+        year == HISTORY_START_YEAR and now.month < HISTORY_START_MONTH
+    ):
+        month = "JUN"
+        year = 2026
+    return make_scrape_period(month, year) or {
+        "month": "JUN",
+        "month_label": "June",
+        "year": 2026,
+        "label": "JUN 2026",
+    }
 
 
 async def get_data(
     force: bool = False, scrape_period: dict[str, Any] | None = None
 ) -> dict[str, Any]:
-    if not force and "data" in store:
-        return store["data"]
+    cache_key = f"data:{scrape_period.get('label')}" if scrape_period else "data"
+    if not force and cache_key in store:
+        return store[cache_key]
 
     async with scrape_lock:
         if force:
-            store["data"] = await scrape_products(scrape_period=scrape_period)
-        elif "data" not in store:
-            store["data"] = load_cache() or await scrape_products()
-    return store["data"]
+            store[cache_key] = await scrape_products(scrape_period=scrape_period)
+            if not scrape_period:
+                store["data"] = store[cache_key]
+        elif cache_key not in store:
+            cached = load_period_cache(scrape_period) if scrape_period else load_cache()
+            store[cache_key] = cached or load_cache() or await scrape_products(
+                scrape_period=scrape_period
+            )
+    return store[cache_key]
+
+
+async def monthly_auto_scrape_loop() -> None:
+    while True:
+        period = current_scrape_period()
+        try:
+            if load_period_cache(period) is None:
+                await get_data(force=True, scrape_period=period)
+        except Exception:
+            pass
+        await asyncio.sleep(24 * 60 * 60)
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    yield
+    global auto_scrape_task
+    auto_scrape_task = asyncio.create_task(monthly_auto_scrape_loop())
+    try:
+        yield
+    finally:
+        if auto_scrape_task:
+            auto_scrape_task.cancel()
 
 
 app = FastAPI(
@@ -69,11 +132,23 @@ async def health() -> dict[str, Any]:
         "status": "ok",
         "cache_available": CACHE_PATH.exists(),
         "data_loaded": "data" in store,
+        "available_periods": available_periods(),
+    }
+
+
+@app.get("/api/periods")
+async def periods() -> dict[str, Any]:
+    return {
+        "start": {"month": "JUN", "year": 2026, "label": "JUN 2026"},
+        "current": current_scrape_period(),
+        "available": available_periods(),
     }
 
 
 @app.get("/api/options")
 async def options(
+    month: str | None = Query(default=None, pattern="^(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)$"),
+    year: int | None = Query(default=None, ge=2026, le=2100),
     search: str | None = None,
     brands: str | None = None,
     audiences: str | None = None,
@@ -94,7 +169,8 @@ async def options(
     if min_price is not None and max_price is not None and min_price > max_price:
         raise HTTPException(status_code=400, detail="min_price must not exceed max_price")
 
-    data = await get_data()
+    scrape_period = make_scrape_period(month, year)
+    data = await get_data(scrape_period=scrape_period)
     selected_categories = normalize_csv(categories)
     products = filter_products(
         data["products"],
@@ -134,6 +210,8 @@ async def options(
 
 @app.get("/api/dashboard")
 async def dashboard(
+    month: str | None = Query(default=None, pattern="^(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)$"),
+    year: int | None = Query(default=None, ge=2026, le=2100),
     search: str | None = None,
     brands: str | None = None,
     audiences: str | None = None,
@@ -154,7 +232,8 @@ async def dashboard(
     if min_price is not None and max_price is not None and min_price > max_price:
         raise HTTPException(status_code=400, detail="min_price must not exceed max_price")
 
-    data = await get_data()
+    scrape_period = make_scrape_period(month, year)
+    data = await get_data(scrape_period=scrape_period)
     selected_categories = normalize_csv(categories)
     products = filter_products(
         data["products"],
@@ -186,6 +265,8 @@ async def dashboard(
 
 @app.get("/api/products")
 async def products(
+    month: str | None = Query(default=None, pattern="^(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)$"),
+    year: int | None = Query(default=None, ge=2026, le=2100),
     search: str | None = None,
     brands: str | None = None,
     audiences: str | None = None,
@@ -204,7 +285,8 @@ async def products(
     season: str | None = None,
     limit: int = Query(default=100, ge=1, le=500),
 ) -> dict[str, Any]:
-    data = await get_data()
+    scrape_period = make_scrape_period(month, year)
+    data = await get_data(scrape_period=scrape_period)
     rows = filter_products(
         data["products"],
         search=search,
