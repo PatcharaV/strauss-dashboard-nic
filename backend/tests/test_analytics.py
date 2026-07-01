@@ -55,12 +55,13 @@ class StraussVariantAggregationTests(unittest.TestCase):
         dashboard = build_dashboard(products, "test", "2026-06-24")
         product = dashboard["products"][0]
 
-        self.assertEqual(dashboard["summary"]["total_products"], 1)
-        self.assertEqual(dashboard["categories"], [{"name": "Shirts", "value": 1}])
+        self.assertEqual(dashboard["summary"]["total_products"], 2)
+        self.assertEqual(dashboard["categories"], [{"name": "Shirts", "value": 2}])
         self.assertEqual(
             dashboard["subcategories"],
-            [{"name": "T-Shirts", "value": 1}],
+            [{"name": "T-Shirts", "value": 2}],
         )
+        self.assertEqual(len(dashboard["products"]), 1)
         self.assertEqual(product["available_colors"], ["black", "almondbrown"])
         self.assertEqual(len(product["color_variants"]), 2)
         self.assertEqual(product["variant_count"], 9)

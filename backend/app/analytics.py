@@ -516,53 +516,54 @@ def build_dashboard(
     scrape_period: dict[str, Any] | None = None,
     selected_categories: list[str] | None = None,
 ) -> dict[str, Any]:
-    products = _merge_strauss_variants(products)
+    chart_products = products
+    table_products = _merge_strauss_variants(products)
     selected_category_set = set(selected_categories or [])
     brand_counts = Counter(
-        product.get("brand_label", "Unknown") for product in products
+        product.get("brand_label", "Unknown") for product in chart_products
     )
     category_counts: Counter[str] = Counter()
-    for product in products:
+    for product in chart_products:
         category_counts.update(_visible_categories(product, selected_category_set))
     audience_counts: Counter[str] = Counter()
-    for product in products:
+    for product in chart_products:
         labels = product.get("audience_labels", [])
         for label in labels:
             audience_counts[label] += 1
     collection_counts: Counter[str] = Counter()
-    for product in products:
+    for product in chart_products:
         collection_counts.update(_product_collections(product))
     activity_counts: Counter[str] = Counter()
-    for product in products:
+    for product in chart_products:
         activity_counts.update(product.get("activities", []))
     subcategory_counts: Counter[str] = Counter()
-    for product in products:
+    for product in chart_products:
         subcategory_counts.update(
             _visible_subcategories(product, selected_category_set)
         )
 
     prices = [
         float(product.get("price_min", 0))
-        for product in products
+        for product in chart_products
         if product.get("price_known", True) or float(product.get("price_min", 0)) > 0
     ]
-    available_count = sum(bool(product.get("available")) for product in products)
+    available_count = sum(bool(product.get("available")) for product in chart_products)
     collection_memberships = sum(
-        len(_product_collections(product)) for product in products
+        len(_product_collections(product)) for product in chart_products
     )
     named_collection_products = sum(
-        bool(_product_collections(product)) for product in products
+        bool(_product_collections(product)) for product in chart_products
     )
     multi_collection_products = sum(
-        len(_product_collections(product)) > 1 for product in products
+        len(_product_collections(product)) > 1 for product in chart_products
     )
     category_memberships = sum(
         len(_visible_categories(product, selected_category_set))
-        for product in products
+        for product in chart_products
     )
     multi_category_products = sum(
         len(_visible_categories(product, selected_category_set)) > 1
-        for product in products
+        for product in chart_products
     )
 
     return {
@@ -570,25 +571,26 @@ def build_dashboard(
         "scraped_at": scraped_at,
         "scrape_period": scrape_period or {},
         "summary": {
-            "total_products": len(products),
+            "total_products": len(chart_products),
             "brands": len(brand_counts),
             "categories": len(category_counts),
             "average_price": round(mean(prices), 2) if prices else 0,
             "available_products": available_count,
             "collection_memberships": collection_memberships,
             "named_collection_products": named_collection_products,
-            "unassigned_collection_products": len(products)
+            "unassigned_collection_products": len(chart_products)
             - named_collection_products,
             "multi_collection_products": multi_collection_products,
             "overlap_memberships": collection_memberships
             - named_collection_products,
             "category_memberships": category_memberships,
             "multi_category_products": multi_category_products,
-            "category_overlap_memberships": category_memberships - len(products),
+            "category_overlap_memberships": category_memberships
+            - len(chart_products),
             "availability_rate": round(
-                available_count / len(products) * 100, 1
+                available_count / len(chart_products) * 100, 1
             )
-            if products
+            if chart_products
             else 0,
         },
         "brands": _counter_rows(brand_counts),
@@ -610,7 +612,7 @@ def build_dashboard(
                 "product_functions": _product_functions(product),
                 "shop_highlights": _product_shop_highlights(product),
             }
-            for product in products
+            for product in table_products
         ],
     }
 
