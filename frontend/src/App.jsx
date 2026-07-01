@@ -26,10 +26,11 @@ const COLORS = [
 ];
 
 const AUTH_STORAGE_KEY = "nic-dashboard-session";
-const ALLOWED_BRAND_OPTIONS = [
+const DEFAULT_BRAND_OPTIONS = [
   { value: "strauss", label: "Strauss" },
   { value: "rhone", label: "Rhone" },
   { value: "arcteryx", label: "Arc'Teryx" },
+  { value: "lululemon", label: "lululemon" },
 ];
 
 const DEFAULT_SECTIONS = {
@@ -491,7 +492,7 @@ function LoginScreen({ onLogin }) {
         <p className="eyebrow">NAN YANG TEXTILE</p>
         <h1>NIC Dashboard Login</h1>
         <p className="page-description">
-          Sign in to view Strauss, Rhone and Arc&apos;teryx dashboards.
+          Sign in to view the dashboards available to your account.
         </p>
         <form className="login-form" onSubmit={handleSubmit}>
           <label>
@@ -585,6 +586,14 @@ function App() {
     () => (session?.token ? { "X-Dashboard-Token": session.token } : {}),
     [session],
   );
+  const canViewAllBrands = session?.allowed_brands?.includes("*");
+  const brandOptions = canViewAllBrands
+    ? options.brands?.length
+      ? options.brands
+      : DEFAULT_BRAND_OPTIONS
+    : DEFAULT_BRAND_OPTIONS.filter((brand) =>
+        session?.allowed_brands?.includes(brand.value),
+      );
   const productCategories = options.categories;
   const availableShopHighlights = options.shop_highlights || [];
   const activityOptions = options.activities || [];
@@ -694,7 +703,11 @@ function App() {
       }
       setOptions(await optionsResponse.json());
       setDashboard(await dashboardResponse.json());
-      setMessage("Live data from Strauss, Rhone and Arc'teryx");
+      setMessage(
+        canViewAllBrands
+          ? "Live data for all authorized brands"
+          : "Live data from Strauss, Rhone and Arc'teryx",
+      );
     } catch {
       setMessage("Demo preview: start the Python API for live data");
     } finally {
@@ -914,7 +927,7 @@ function App() {
           <strong>Select one brand to view its dashboard</strong>
         </div>
         <div className="brand-switcher-buttons">
-          {ALLOWED_BRAND_OPTIONS.map((brand) => (
+          {brandOptions.map((brand) => (
             <button
               className={filters.brands.includes(brand.value) ? "active" : ""}
               type="button"
