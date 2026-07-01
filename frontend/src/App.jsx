@@ -1063,16 +1063,6 @@ function App() {
           <button
             className="kpi-card interactive-card"
             type="button"
-            onClick={() => setFilters({ ...filters, categories: [] })}
-            title="Clear category selection"
-          >
-            <span>Category groups</span>
-            <strong>{formatNumber.format(dashboard.summary.categories)}</strong>
-            <small>Product category groups in the current selection</small>
-          </button>
-          <button
-            className="kpi-card interactive-card"
-            type="button"
             onClick={() =>
               setFilters({
                 ...filters,
