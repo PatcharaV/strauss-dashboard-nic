@@ -22,6 +22,8 @@ SUBCATEGORY_PARENTS = {
     "Button Downs": "Shirts",
     "Button ups": "Shirts",
     "Short Sleeve Shirts": "Shirts",
+    "Long Sleeve Shirts": "Shirts",
+    "Polo Shirts": "Shirts",
     "Short sleeves": ["Shirts", "Tees", "Tees/Tanks"],
     "Long sleeves": ["Shirts", "Tees", "Tees/Tanks", "Midlayers"],
     "Work Shirts": "Shirts",
@@ -40,8 +42,10 @@ SUBCATEGORY_PARENTS = {
     "Work Shorts": "Shorts",
     "Cargo Shorts": "Shorts",
     "Women's Shorts": "Shorts",
+    "Athletic Shorts": "Shorts",
     "Half Tights": "Shorts",
     "Liner Shorts": "Shorts",
+    "Swim Trunks": ["Shorts", "Swim"],
     "Skorts": "Shorts",
     "Softshell Jackets": "Outerwear",
     "Lightweight Jackets": "Outerwear",
@@ -59,17 +63,19 @@ SUBCATEGORY_PARENTS = {
         "Collection Only",
     ],
     "Crewnecks": ["Hoodies & Sweatshirts", "Fleece"],
+    "Sweatshirts": "Hoodies & Sweatshirts",
     "Full-Zip Sweatshirts": "Hoodies & Sweatshirts",
     "Women's Hoodies & Sweatshirts": "Hoodies & Sweatshirts",
     "Women's Leggings": "Leggings",
-    "Leggings": ["Pants", "Leggings/Tights"],
+    "Leggings": ["Pants", "Leggings", "Leggings/Tights"],
+    "Capris": ["Leggings", "Pants"],
     "Tank Tops": ["Shirts and Tops", "Tanks", "Tees/Tanks", "Collection Only"],
     "Base Layer Bottoms": "Base Layer",
     "Base Layers": "Base Layer",
     "Fleece": "Fleece",
     "Fleece Jackets": "Fleece",
     "Zip Necks": ["Fleece", "Base Layer"],
-    "Dresses": ["Dresses and Skirts", "Dresses/Jumpsuits", "Collection Only"],
+    "Dresses": ["Dresses", "Dresses and Skirts", "Dresses/Jumpsuits", "Collection Only"],
     "Skirts": ["Dresses and Skirts", "Skirts", "Collection Only"],
     "Down Insulation": "Insulated Jackets",
     "Synthetic Insulation": "Insulated Jackets",
@@ -90,12 +96,18 @@ SUBCATEGORY_PARENTS = {
     "Hoodies & pullovers": ["Midlayers", "Sweaters"],
     "Quarter Zips": "Midlayers",
     "Midlayers": "Midlayers",
-    "Jackets": ["Blazers/Jackets", "Outerwear", "Midlayers", "Collection Only"],
+    "Jackets": [
+        "Blazers/Jackets",
+        "Coats & Jackets",
+        "Outerwear",
+        "Midlayers",
+        "Collection Only",
+    ],
     "Jackets & vests": ["Midlayers", "Outerwear"],
     "Blazers": "Blazers/Jackets",
     "Outerwear": "Outerwear",
     "Tanks": ["Tanks", "Tees/Tanks"],
-    "Sports Bras": ["Bras", "Sports bras"],
+    "Sports Bras": ["Bras", "Sports Bras", "Sports bras"],
     "Sweaters": "Sweaters",
     "Swim": "Swim",
     "Swimwear": "Swim",
@@ -529,7 +541,11 @@ def build_dashboard(
             _visible_subcategories(product, selected_category_set)
         )
 
-    prices = [float(product.get("price_min", 0)) for product in products]
+    prices = [
+        float(product.get("price_min", 0))
+        for product in products
+        if product.get("price_known", True) or float(product.get("price_min", 0)) > 0
+    ]
     available_count = sum(bool(product.get("available")) for product in products)
     collection_memberships = sum(
         len(_product_collections(product)) for product in products
@@ -603,7 +619,11 @@ def build_options(
     products: list[dict[str, Any]],
     selected_categories: list[str] | None = None,
 ) -> dict[str, Any]:
-    prices = [float(product.get("price_min", 0)) for product in products]
+    prices = [
+        float(product.get("price_min", 0))
+        for product in products
+        if product.get("price_known", True) or float(product.get("price_min", 0)) > 0
+    ]
     selected_category_set = set(selected_categories or [])
     return {
         "brands": [

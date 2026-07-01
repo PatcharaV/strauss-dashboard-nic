@@ -71,6 +71,7 @@ const formatMoney = new Intl.NumberFormat("en-US", {
 });
 
 function formatPrice(product) {
+  if (product.price_known === false) return "Not captured";
   const minimum = formatMoney.format(product.price_min);
   const maximum = formatMoney.format(product.price_max);
   return product.price_min === product.price_max
@@ -534,7 +535,7 @@ function App() {
       }
       setOptions(await optionsResponse.json());
       setDashboard(await dashboardResponse.json());
-      setMessage("Live data from Strauss, Rhone and Arc'teryx");
+      setMessage("Live data from Strauss, Rhone, Arc'teryx and lululemon");
     } catch {
       setMessage("Demo preview: start the Python API for live data");
     } finally {
@@ -664,8 +665,8 @@ function App() {
             <p className="eyebrow">PUBLIC CLOTHING CATALOG ANALYTICS</p>
             <h1>Multi-Brand Clothing Dashboard</h1>
             <p className="page-description">
-              Compare clothing from Strauss, Rhone and Arc&apos;teryx. Footwear
-              and gear are excluded.
+              Compare clothing from Strauss, Rhone, Arc&apos;teryx and lululemon.
+              Footwear and gear are excluded.
             </p>
           </div>
         </div>
@@ -751,6 +752,13 @@ function App() {
             onClick={() => selectBrand("arcteryx")}
           >
             Arc&apos;Teryx
+          </button>
+          <button
+            className={filters.brands.includes("lululemon") ? "active" : ""}
+            type="button"
+            onClick={() => selectBrand("lululemon")}
+          >
+            lululemon
           </button>
         </div>
       </section>
@@ -1608,9 +1616,13 @@ function App() {
         <a href="https://www.rhone.com" target="_blank" rel="noreferrer">
           Rhone
         </a>{" "}
-        and{" "}
+        ,{" "}
         <a href="https://arcteryx.com/us/en" target="_blank" rel="noreferrer">
           Arc&apos;teryx
+        </a>
+        {" "}and{" "}
+        <a href="https://shop.lululemon.com" target="_blank" rel="noreferrer">
+          lululemon
         </a>
         . Product names and data belong to their respective owners.
       </footer>

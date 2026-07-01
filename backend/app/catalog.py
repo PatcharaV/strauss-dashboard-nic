@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .arcteryx_scraper import scrape_arcteryx_products
+from .lululemon_scraper import scrape_lululemon_products
 from .rhone_scraper import scrape_rhone_products
 from .scraper import extract_product_functions, scrape_strauss_products
 
@@ -66,6 +67,21 @@ CLOTHING_CATEGORIES = {
         "Vests",
         "Dresses and Skirts",
         "Collection Only",
+    },
+    "lululemon": {
+        "Coats & Jackets",
+        "Dresses",
+        "Hoodies & Sweatshirts",
+        "Leggings",
+        "Pants",
+        "Shirts",
+        "Shorts",
+        "Skirts",
+        "Sports Bras",
+        "Sweaters",
+        "Swim",
+        "Tank Tops",
+        "Underwear",
     },
 }
 
@@ -224,12 +240,14 @@ async def scrape_products(scrape_period: dict[str, Any] | None = None) -> dict[s
         scrape_strauss_products(),
         scrape_rhone_products(),
         scrape_arcteryx_products(scrape_period=scrape_period),
+        scrape_lululemon_products(),
         return_exceptions=True,
     )
     brand_sources = (
         ("strauss", "Strauss", "https://us.strauss.com"),
         ("rhone", "Rhone", "https://www.rhone.com"),
         ("arcteryx", "Arc'teryx", "https://arcteryx.com/us/en"),
+        ("lululemon", "lululemon", "https://shop.lululemon.com"),
     )
     results: list[dict[str, Any]] = []
     errors: list[str] = []
